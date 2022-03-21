@@ -1,11 +1,16 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
 
 const LoginScreen = () => {
     return (
-        <View>
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior="padding">
             <Text>Login</Text>
-        </View>
+            <View>
+                <TextInput placeholder="email"/>
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 

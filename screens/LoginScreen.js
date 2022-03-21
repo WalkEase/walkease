@@ -1,23 +1,35 @@
 import React, { useState } from 'react'
 import { Button, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
-import {getAuth, signInWithEmailAndPassword} from "firebase/auth"
+import {signInWithEmailAndPassword} from 'firebase/auth'
 import { set } from 'firebase/database'
+import {auth, database} from '../firebase'
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const handleLogin = () => {
+        console.log(`${email}`, `${password}`)
+        signInWithEmailAndPassword(auth, email, password).then((res) => {
+    console.log(res)
+        }).catch((err) => {
+    console.log(err)
+})
+    }
+
+    
     return (
         <KeyboardAvoidingView
             style={styles.container}
-            behavior="padding">
+            behavior='padding'>
             
-            <View style={styles.inputs}>
-                <TextInput defaultValue={email}placeholder="email" onChangeText={(newText)=>{setEmail(newText)}} />
-                <TextInput defaultValue={password} secureTextEntry placeholder="password" onChangeText={(newText) => { setPassword(newText) }} />
-                {console.log(email, password)}
+            <View style={styles.login_inputs_container}>
+                <TextInput style={styles.login_input} defaultValue={email} placeholder='email' onChangeText={(newText)=>{setEmail(newText)}} />
+                <TextInput style={styles.login_input} defaultValue={password}  placeholder='password' onChangeText={(newText) => { setPassword(newText) }} />
+                
             </View>
             
-            <Button title="Login" color="white" accessibilityLabel="login-button" onPress={() => {}}/>
+            <Button title='Login' color='white' accessibilityLabel='login-button' onPress={handleLogin}/>
             
                 <Text>If you dont have an account, sign up here</Text>
             
@@ -34,10 +46,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#718355"
     },
-    inputs: {
+    login_inputs_container: {
         backgroundColor: "white",
         width: "60%",
         padding: 5,
         borderRadius: 5
+    },
+    login_input: {
+        padding: 5
     }
 })

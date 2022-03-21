@@ -28,8 +28,12 @@ const LoginScreen = () => {
       });
   };
 
-  return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
+    return (
+        
+      <View style={styles.main_contain}>
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <Text style={styles.header}>WalkEase</Text>
+          
       <View style={styles.login_inputs_container}>
         <TextInput
           style={styles.login_input}
@@ -46,19 +50,19 @@ const LoginScreen = () => {
           onChangeText={(newText) => {
             setPassword(newText);
           }}
-        />
-      </View>
-
-      <Button
+                />
+                </View>
+                 <Button
         style={styles.login_button}
         accessibilityLabel="login-button"
-        onPress={handleLogin}
-      >
+        onPress={handleLogin}>
         Login
       </Button>
+      
 
       <Text>If you dont have an account, sign up here</Text>
-    </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+            </View>
   );
 };
 

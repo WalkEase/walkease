@@ -1,0 +1,43 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["plugin:react/recommended", "airbnb"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "prefer-arrow-functions", "promise"],
+  "rules": {
+    // Enable (or overwrite) additional rules:
+    // 1 - Single quotes
+    "quotes": ["error", "single"],
+    // 2 - Arrow functions
+    "prefer-arrow-functions/prefer-arrow-functions": [
+      "warn",
+      {
+        "classPropertiesAllowed": false,
+        "disallowPrototype": false,
+        "returnStyle": "unchanged",
+        "singleReturnOnly": false
+      }
+    ],
+    // 3 - Promises
+    "promise/always-return": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "promise/no-nesting": "warn",
+    "promise/no-promise-in-callback": "warn",
+    "promise/no-callback-in-promise": "warn",
+    "promise/avoid-new": "warn",
+    "promise/no-new-statics": "error",
+    "promise/no-return-in-finally": "warn",
+    "promise/valid-params": "warn"
+  }
+}

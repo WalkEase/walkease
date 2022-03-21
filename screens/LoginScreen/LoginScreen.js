@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { Button, KeyboardAvoidingView, StyleSheet, Text, TextInput, View } from 'react-native'
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import { set } from 'firebase/database'
-import {auth, database} from '../firebase'
+import { auth, database } from '../../firebase'
+import styles from "./styles";
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('')
@@ -39,20 +40,4 @@ const LoginScreen = () => {
 
 export default LoginScreen
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#718355"
-    },
-    login_inputs_container: {
-        backgroundColor: "white",
-        width: "60%",
-        padding: 5,
-        borderRadius: 5
-    },
-    login_input: {
-        padding: 5
-    }
-})
+

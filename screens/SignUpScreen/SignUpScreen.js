@@ -7,16 +7,19 @@ import {
     ScrollView
 } from 'react-native';
 
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
 import { set, ref } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
+import UserContext from '../../contexts/UserContext';
 
 
-const SignUpScreen = () => {
+const SignUpScreen = ({ navigation }) => {
+
+    const { setUser } = useContext(UserContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -37,7 +40,8 @@ const SignUpScreen = () => {
                 .then((res) => {
 
                     const dbRef = ref(database);
-                    console.log(res.user);
+                    setUser(res.user.uid);
+
                     set(ref(database, `data/users/${res.user.uid}`), {
                         uid: res.user.uid,
                         createdAt: Date.now(),
@@ -53,6 +57,7 @@ const SignUpScreen = () => {
                 })
                 .then((res) => {
 
+                    navigation.navigate('OwnerLandingScreen');
                 })
                 .catch(error => alert(error.message));
         } else {

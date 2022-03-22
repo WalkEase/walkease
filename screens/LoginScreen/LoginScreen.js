@@ -5,15 +5,17 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
+import UserContext from '../../contexts/UserContext';
 import { set } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
+  const { setUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,48 +23,46 @@ const LoginScreen = () => {
     console.log(`${email}`, `${password}`);
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
-        console.log(res);
+        setUser(res.user.uid);
+        navigation.navigate('OwnerLandingScreen');
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(console.log);
   };
 
-    return (
-        
-      <View style={styles.main_contain}>
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <Text style={styles.header}>WalkEase</Text>
-          
-      <View style={styles.login_inputs_container}>
-        <TextInput
-          style={styles.login_input}
-          defaultValue={email}
-          placeholder="email"
-          onChangeText={(newText) => {
-            setEmail(newText);
-          }}
-        />
-        <TextInput
-          style={styles.login_input}
-          defaultValue={password}
-          placeholder="password"
-          onChangeText={(newText) => {
-            setPassword(newText);
-          }}
-                />
-                </View>
-                 <Button
-        style={styles.login_button}
-        accessibilityLabel="login-button"
-        onPress={handleLogin}>
-        Login
-      </Button>
-      
+  return (
+    <View style={styles.main_contain}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <Text style={styles.header}>WalkEase</Text>
 
-      <Text>If you dont have an account, sign up here</Text>
-            </KeyboardAvoidingView>
-            </View>
+        <View style={styles.login_inputs_container}>
+          <TextInput
+            style={styles.login_input}
+            defaultValue={email}
+            placeholder="email"
+            onChangeText={(newText) => {
+              setEmail(newText);
+            }}
+          />
+          <TextInput
+            style={styles.login_input}
+            defaultValue={password}
+            placeholder="password"
+            onChangeText={(newText) => {
+              setPassword(newText);
+            }}
+          />
+        </View>
+        <Button
+          style={styles.login_button}
+          accessibilityLabel="login-button"
+          onPress={handleLogin}
+        >
+          Login
+        </Button>
+
+        <Text>If you dont have an account, sign up here</Text>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 

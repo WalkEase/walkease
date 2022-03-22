@@ -1,18 +1,20 @@
 import {
     KeyboardAvoidingView,
-    StyleSheet,
     Text,
     TextInput,
     View,
+    Picker,
     ScrollView
 } from 'react-native';
+
 import React, { useState } from 'react';
 import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
-import { set } from 'firebase/database';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { set, ref } from 'firebase/database';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
+
 
 const SignUpScreen = () => {
 
@@ -21,67 +23,142 @@ const SignUpScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [userType, setUserType] = useState("");
+    const [postCode, setPostCode] = useState("");
+    const [DoB, setDoB] = useState("");
+    const [avatarURL, setAvatarURL] = useState("");
+
 
     const handleSignUp = () => {
 
+        if (password === confirmPassword) {
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((res) => {
+
+                    const dbRef = ref(database);
+                    console.log(res.user);
+                    set(ref(database, `data/users/${res.user.uid}`), {
+                        uid: res.user.uid,
+                        createdAt: Date.now(),
+                        email: `${email}`,
+                        userType: userType,
+                        firstName: firstName,
+                        lastName: lastName,
+                        postCode: postCode,
+                        dateOfBirth: DoB,
+                        avatarURL: avatarURL,
+                    });
+
+                })
+                .then((res) => {
+
+                })
+                .catch(error => alert(error.message));
+        } else {
+            alert("Passwords must match");
+        }
     };
 
     return (
 
         <View style={styles.main_contain}>
+            <ScrollView>
+                <KeyboardAvoidingView style={styles.container} behavior="padding">
+
+                    <View style={styles.login_inputs_container}>
+                        <Text style={styles.header}>WalkEase</Text>
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={email}
+                            placeholder="Email"
+                            onChangeText={(newText) => {
+                                setEmail(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={password}
+                            placeholder="Password"
+                            onChangeText={(newText) => {
+                                setPassword(newText);
+                            }}
+                            secureTextEntry
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={confirmPassword}
+                            placeholder="Confirm password"
+                            onChangeText={(newText) => {
+                                setUserBio(newText);
+                            }}
+                            secureTextEntry
+                        />
+
+                        <View style={styles.picker}>
+                            <Picker
+                                selectedValue={userType}
+                                onValueChange={(itemValue, itemIndex) => setUserType(itemValue)}
+                            >
+                                <Picker.Item label="Owner" value="Owner" />
+                                <Picker.Item label="Walker" value="Walker" />
+                                <Picker.Item label="Both" value="Both" />
+
+                            </Picker>
+
+                        </View>
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={firstName}
+                            placeholder="First Name"
+                            onChangeText={(newText) => {
+                                setFirstName(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={lastName}
+                            placeholder="Last Name"
+                            onChangeText={(newText) => {
+                                setLastName(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={postCode}
+                            placeholder="Post Code"
+                            onChangeText={newText => {
+                                setPostCode(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={DoB}
+                            placeholder="DD/MM/YYYY"
+                            onChangeText={newText => {
+                                setDoB(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            defaultValue={avatarURL}
+                            placeholder="Web link to image"
+                            onChangeText={newText => {
+                                setAvatarURL(newText);
+                            }}
+                        />
 
 
-            <Text style={styles.header}>WalkEase</Text>
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
 
-
-                <View style={styles.login_inputs_container}>
-
-                    <TextInput
-                        style={styles.login_input}
-                        defaultValue={email}
-                        placeholder="email"
-                        onChangeText={(newText) => {
-                            setEmail(newText);
-                        }}
-                    />
-                    <TextInput
-                        style={styles.login_input}
-                        defaultValue={password}
-                        placeholder="password"
-                        onChangeText={(newText) => {
-                            setPassword(newText);
-                        }}
-                        secureTextEntry
-                    />
-
-                    <TextInput
-                        style={styles.login_input}
-                        defaultValue={confirmPassword}
-                        placeholder="Confirm password"
-                        onChangeText={(newText) => {
-                            setConfirmPassword(newText);
-                        }}
-                        secureTextEntry
-                    />
-
-                    <TextInput
-                        style={styles.login_input}
-                        defaultValue={firstName}
-                        placeholder="First Name"
-                        onChangeText={(newText) => {
-                            setFirstName(newText);
-                        }}
-                    />
-
-                    <TextInput
-                        style={styles.login_input}
-                        defaultValue={lastName}
-                        placeholder="Last Name"
-                        onChangeText={(newText) => {
-                            setLastName(newText);
-                        }}
-                    />
+                    </View>
 
                     <Button
                         style={styles.login_button}
@@ -90,14 +167,8 @@ const SignUpScreen = () => {
                         Sign Up
                     </Button>
 
-                </View>
-
-
-
-
-
-            </KeyboardAvoidingView>
-
+                </KeyboardAvoidingView>
+            </ScrollView>
         </View>
     );
 };

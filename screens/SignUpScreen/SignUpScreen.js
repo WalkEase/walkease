@@ -30,6 +30,7 @@ const SignUpScreen = ({ navigation }) => {
     const [postCode, setPostCode] = useState("");
     const [DoB, setDoB] = useState("");
     const [avatarURL, setAvatarURL] = useState("");
+    const [userBio, setUserBio] = useState('');
 
 
     const handleSignUp = () => {
@@ -52,6 +53,7 @@ const SignUpScreen = ({ navigation }) => {
                         postCode: postCode,
                         dateOfBirth: DoB,
                         avatarURL: avatarURL,
+                        userBio: userBio
                     });
 
                 })
@@ -158,6 +160,16 @@ const SignUpScreen = ({ navigation }) => {
                             placeholder="Web link to image"
                             onChangeText={newText => {
                                 setAvatarURL(newText);
+                            }}
+                        />
+
+                        <TextInput
+                            style={styles.login_input}
+                            multiline={true}
+                            defaultValue={userBio}
+                            placeholder="Tell me about yourself"
+                            onChangeText={newText => {
+                                setUserBio(newText);
                             }}
                         />
 

@@ -13,7 +13,7 @@ import { set } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,8 +29,8 @@ const LoginScreen = () => {
   };
 
     return (
-        
-      <View style={styles.main_contain}>
+        <>
+            <View style={styles.main_contain}>
             <KeyboardAvoidingView style={styles.container} behavior="padding">
             <Text style={styles.header}>WalkEase</Text>
           
@@ -59,10 +59,19 @@ const LoginScreen = () => {
         Login
       </Button>
       
-
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Walker screen</Text>
+      <Button
+        title="Go to walker screen"
+        onPress={() => navigation.navigate('Walker')}
+      >Walker page</Button>
+    </View>
       <Text>If you dont have an account, sign up here</Text>
             </KeyboardAvoidingView>
             </View>
+         
+        </>
+  
   );
 };
 

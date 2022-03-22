@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SignupScreen from './screens/SignupScreen';
 import { StatusBar } from 'expo-status-bar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WalkerWalkMap from './screens/WalkerScreens/WalkerHomePage/WalkerWalkMapCard';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
           component={LoginScreen}
         />
         <Stack.Screen name="Sign-up" component={SignupScreen} />
+        <Stack.Screen name="Walker" component={WalkerWalkMap} />
       </Stack.Navigator>
     </NavigationContainer>
   );

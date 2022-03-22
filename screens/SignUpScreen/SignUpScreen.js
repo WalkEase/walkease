@@ -52,7 +52,7 @@ const SignUpScreen = () => {
 
                 })
                 .then((res) => {
-                    navigation.navigate('OwnerLandingScreen');
+
                 })
                 .catch(error => alert(error.message));
         } else {

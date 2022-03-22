@@ -1,7 +1,7 @@
 import * as React from "react";
 import MapView, { Marker, Callout } from "react-native-maps";
 import { StyleSheet, Text, View, Dimensions, Button } from "react-native";
-
+import styles from './styles';
 
 const WalkerWalkMap = ({navigation}) => {
   return (
@@ -42,34 +42,9 @@ const WalkerWalkMap = ({navigation}) => {
       >Back to Login</Button>
         </View>
       </View>
-    
-
+  
   );
 }
-const styles = StyleSheet.create({
-  tempHeader: {
- 
-    marginBottom: 20,
-    backgroundColor: "lightblue",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 3,
-  },
-  tempBottomNav: {
-
-    marginTop: 20,
-    backgroundColor: "lightblue",
-    padding: 10,
-  },
-
-});
 
 
 export default WalkerWalkMap;

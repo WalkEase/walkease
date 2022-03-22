@@ -52,7 +52,7 @@ const SignUpScreen = () => {
 
                 })
                 .then((res) => {
-
+                    navigation.navigate('OwnerLandingScreen');
                 })
                 .catch(error => alert(error.message));
         } else {
@@ -93,7 +93,7 @@ const SignUpScreen = () => {
                             defaultValue={confirmPassword}
                             placeholder="Confirm password"
                             onChangeText={(newText) => {
-                                setUserBio(newText);
+                                setConfirmPassword(newText);
                             }}
                             secureTextEntry
                         />

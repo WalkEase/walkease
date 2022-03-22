@@ -5,8 +5,9 @@ import { useContext, useEffect } from 'react';
 
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
+import styles from './styles';
 
-const OwnerLandingScreen = () => {
+const OwnerLandingScreen = ({navigation}) => {
   const { user } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -26,14 +27,22 @@ const OwnerLandingScreen = () => {
     );
 
   return (
-    <View>
+    <View style={styles.main_container}>
       <Text>OwnerLandingScreen</Text>
       <Image
+        style={styles.avatar}
         source={{
-          uri: 'https://pngimg.com/uploads/doge_meme/doge_meme_PNG6.png',
+          uri: userDetails.avatarUrl
+        ,
         }}
       />
       <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
+      <View style={styles.owner_list}>
+      <Text style={styles.owner_list_item} onPress={()=>{navigation.navigate('MyDogsScreen')}}>My Dogs</Text>
+      <Text style={styles.owner_list_item} onPress={()=>{navigation.navigate('ListAWalkScreen')}}>List a walk</Text>
+      <Text style={styles.owner_list_item} onPress={()=>{navigation.navigate('MyDetailsScreen')}}>My details</Text>
+        <Text style={styles.owner_list_item} onPress={()=>{navigation.navigate('MyListedWalksScreen')}}>Listed Walks</Text>
+        </View>
     </View>
   );
 };

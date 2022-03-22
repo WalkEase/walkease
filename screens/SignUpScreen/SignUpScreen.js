@@ -11,7 +11,7 @@ import React, { useState, useContext } from 'react';
 import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
-import { set, ref } from 'firebase/database';
+import { set, ref, get } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
@@ -19,17 +19,17 @@ import UserContext from '../../contexts/UserContext';
 
 const SignUpScreen = ({ navigation }) => {
 
-    const { setUser } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [userType, setUserType] = useState("");
+    const [userType, setUserType] = useState("Owner");
     const [postCode, setPostCode] = useState("");
     const [DoB, setDoB] = useState("");
-    const [avatarURL, setAvatarURL] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
     const [userBio, setUserBio] = useState('');
 
 
@@ -52,14 +52,17 @@ const SignUpScreen = ({ navigation }) => {
                         lastName: lastName,
                         postCode: postCode,
                         dateOfBirth: DoB,
-                        avatarURL: avatarURL,
+                        avatarUrl: avatarUrl,
                         userBio: userBio
                     });
-
+                    return res.user.uid;
                 })
-                .then((res) => {
-
-                    navigation.navigate('OwnerLandingScreen');
+                .then((uid) => {
+                    return get(ref(database, `data/users/${uid}`))
+                })
+                .then((user) => {
+                    const userTypeIn = user.val().userType;
+                    navigation.navigate(`${userTypeIn}LandingScreen`);
                 })
                 .catch(error => alert(error.message));
         } else {
@@ -156,10 +159,10 @@ const SignUpScreen = ({ navigation }) => {
 
                         <TextInput
                             style={styles.login_input}
-                            defaultValue={avatarURL}
+                            defaultValue={avatarUrl}
                             placeholder="Web link to image"
                             onChangeText={newText => {
-                                setAvatarURL(newText);
+                                setAvatarUrl(newText);
                             }}
                         />
 
@@ -172,8 +175,6 @@ const SignUpScreen = ({ navigation }) => {
                                 setUserBio(newText);
                             }}
                         />
-
-
 
                     </View>
 

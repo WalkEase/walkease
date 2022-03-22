@@ -5,22 +5,16 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-        backgroundColor: '#718355',
-        maxHeight: '50%'
-    
-    
-   
-    },
-    main_contain: {
-        height: '100%',
-        flex: 1,
-        alignContent: 'space-around',
-        justifyContent: 'center',
-        backgroundColor: '#718355'
-
-        
-        
-    },
+    backgroundColor: '#718355',
+    maxHeight: '50%',
+  },
+  main_contain: {
+    height: '100%',
+    flex: 1,
+    alignContent: 'space-around',
+    justifyContent: 'center',
+    backgroundColor: '#718355',
+  },
 
   login_inputs_container: {
     color: 'black',
@@ -41,11 +35,10 @@ export default StyleSheet.create({
     borderRadius: 15,
     color: 'black',
     backgroundColor: 'white',
-    },
-    header: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: 'white',
-        
-  }
+  },
+  header: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: 'white',
+  },
 });

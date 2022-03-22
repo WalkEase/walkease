@@ -7,10 +7,10 @@ import {
 } from 'react-native';
 import React, { useContext, useState } from 'react';
 import { auth, database } from '../../firebase';
+import { get, ref, set } from 'firebase/database';
 
 import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
-import { set } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 
@@ -24,7 +24,12 @@ const LoginScreen = ({ navigation }) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setUser(res.user.uid);
-        navigation.navigate('OwnerLandingScreen');
+
+        return res.user.uid;
+      })
+      .then((uid) => get(ref(database, `data/users/${uid}`)))
+      .then((user) => {
+        navigation.navigate(`${user.val().userType}LandingScreen`);
       })
       .catch(console.log);
   };
@@ -60,7 +65,13 @@ const LoginScreen = ({ navigation }) => {
           Login
         </Button>
 
-        <Text onPress={() => { navigation.navigate('Sign-up') }}>If you dont have an account, sign up here</Text>
+        <Text
+          onPress={() => {
+            navigation.navigate('Sign-up');
+          }}
+        >
+          If you dont have an account, sign up here
+        </Text>
       </KeyboardAvoidingView>
     </View>
   );

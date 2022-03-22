@@ -93,7 +93,7 @@ const SignUpScreen = () => {
                             defaultValue={confirmPassword}
                             placeholder="Confirm password"
                             onChangeText={(newText) => {
-                                setUserBio(newText);
+                                setConfirmPassword(newText);
                             }}
                             secureTextEntry
                         />

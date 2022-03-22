@@ -1,5 +1,5 @@
+import { Image, Text, View } from 'react-native';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
 import { onValue, ref } from 'firebase/database';
 import { useContext, useEffect } from 'react';
 
@@ -13,7 +13,7 @@ const OwnerLandingScreen = () => {
 
   useEffect(() => {
     onValue(ref(database, `data/users/${user}`), (res) => {
-      setUserDetails(res);
+      setUserDetails(res.val());
       setIsLoading(false);
     });
   }, []);
@@ -27,8 +27,13 @@ const OwnerLandingScreen = () => {
 
   return (
     <View>
-      <Text>{userDetails['firstName']}</Text>
-      <Text>OwnerLandingScreen!</Text>
+      <Text>OwnerLandingScreen</Text>
+      <Image
+        source={{
+          uri: 'https://pngimg.com/uploads/doge_meme/doge_meme_PNG6.png',
+        }}
+      />
+      <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
     </View>
   );
 };

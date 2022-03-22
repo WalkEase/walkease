@@ -2,8 +2,10 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
+
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
-import SignupScreen from './screens/SignupScreen';
+import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
+
 import { StatusBar } from 'expo-status-bar';
 import UserContext from './contexts/UserContext';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -16,6 +18,7 @@ import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScre
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   const [user, setUser] = useState('');
 
   return (
@@ -30,24 +33,24 @@ export default function App() {
           <Stack.Screen
             name="Sign-up"
             options={{ headerShown: false }}
-            component={SignupScreen}
+            component={SignUpScreen}
           />
           <Stack.Screen
             name="OwnerLandingScreen"
             options={{ headerShown: false }}
             component={OwnerLandingScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="MyDogsScreen"
             options={{ headerShown: false }}
             component={MyDogsScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="ListAWalkScreen"
             options={{ headerShown: false }}
             component={ListAWalkScreen}
           />
-           <Stack.Screen
+          <Stack.Screen
             name="MyDetailsScreen"
             options={{ headerShown: false }}
             component={MyDetailsScreen}
@@ -60,5 +63,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
+
   );
 }

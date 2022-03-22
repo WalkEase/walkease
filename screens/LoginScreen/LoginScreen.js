@@ -60,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
           Login
         </Button>
 
-        <Text>If you dont have an account, sign up here</Text>
+        <Text onPress={() => { navigation.navigate('Sign-up') }}>If you dont have an account, sign up here</Text>
       </KeyboardAvoidingView>
     </View>
   );

@@ -1,14 +1,12 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React from 'react';
+import { Text, View } from 'react-native';
 
-const MyDetailsScreen = ({navigation}) => {
-    return (
-        <View>
-            <Text>My Details</Text>
-        </View>
-    )
+function MyDetailsScreen({ navigation }) {
+  return (
+    <View>
+      <Text>My Details</Text>
+    </View>
+  );
 }
 
-export default MyDetailsScreen
-
-
+export default MyDetailsScreen;

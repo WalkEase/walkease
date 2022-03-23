@@ -1,20 +1,12 @@
-import {
-    KeyboardAvoidingView,
-    Text,
-    TextInput,
-    View,
-    Picker,
-    ScrollView
-} from 'react-native';
-
+import { KeyboardAvoidingView, Text, TextInput, View, Picker, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
-import { auth, database } from '../../firebase';
-
 import Button from 'react-native-button';
 import { set, ref, get } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, database } from '../../firebase';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
+
 
 
 const SignUpScreen = ({ navigation }) => {
@@ -191,3 +183,4 @@ const SignUpScreen = ({ navigation }) => {
 };
 
 export default SignUpScreen;
+

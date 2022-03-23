@@ -1,7 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState } from 'react';
-
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
@@ -23,8 +22,20 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
-          <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
+
+
+          <Stack.Screen
+            name="Login"
+            options={{ headerShown: false }}
+            component={LoginScreen}
+          />
+          <Stack.Screen
+            name="Sign-up"
+            options={{ headerShown: false }}
+            component={SignUpScreen}
+          />
+
+
           <Stack.Screen
             name="OwnerLandingScreen"
             options={{ headerShown: false }}

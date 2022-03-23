@@ -6,7 +6,10 @@ import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import styles from './styles';
 
-function OwnerLandingScreen({ navigation }) {
+
+const OwnerLandingScreen = ({ navigation }) => {
+
+
   const { user } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +20,8 @@ function OwnerLandingScreen({ navigation }) {
       setIsLoading(false);
     });
   }, []);
+
+  console.log(userDetails.avatarUrl);
 
   if (isLoading)
     return (
@@ -36,6 +41,7 @@ function OwnerLandingScreen({ navigation }) {
       />
       <Text>{`Good Morning ${userDetails.firstName}!`}</Text>
       <View style={styles.owner_list}>
+
         <Text
           style={styles.owner_list_item}
           onPress={() => {
@@ -68,6 +74,7 @@ function OwnerLandingScreen({ navigation }) {
         >
           Listed Walks
         </Text>
+
       </View>
     </View>
   );

@@ -1,16 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
-
-import LoginScreen from './screens/LoginScreen/LoginScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState } from 'react';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
 
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
 
-import { StatusBar } from 'expo-status-bar';
 import UserContext from './contexts/UserContext';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WalkerWalkMap from './screens/WalkerScreens/WalkerHomePage/WalkerWalkMapCard';
-import { useState } from 'react';
 import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
 import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
 import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
@@ -19,24 +16,14 @@ import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScre
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   const [user, setUser] = useState('');
 
   return (
-        <UserContext.Provider value={{ user, setUser }}>
-    <NavigationContainer>
-      <Stack.Navigator>
-      
-          <Stack.Screen
-            name="Login"
-            options={{ headerShown: false }}
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            name="Sign-up"
-            options={{ headerShown: false }}
-            component={SignUpScreen}
-          />
+    <UserContext.Provider value={{ user, setUser }}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+          <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
           <Stack.Screen
             name="OwnerLandingScreen"
             options={{ headerShown: false }}
@@ -62,10 +49,9 @@ export default function App() {
             options={{ headerShown: false }}
             component={MyListedWalksScreen}
           />
-            <Stack.Screen name="Walker" component={WalkerWalkMap} />
+          <Stack.Screen name="Walker" component={WalkerWalkMap} />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
-
   );
 }

@@ -1,20 +1,13 @@
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
-import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
-import UserContext from '../../contexts/UserContext';
-import { set } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import UserContext from '../../contexts/UserContext';
+import { auth } from '../../firebase';
 import styles from './styles';
 
-const LoginScreen = ({ navigation }) => {
+function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,18 +45,20 @@ const LoginScreen = ({ navigation }) => {
             }}
           />
         </View>
-        <Button
-          style={styles.login_button}
-          accessibilityLabel="login-button"
-          onPress={handleLogin}
-        >
+        <Button style={styles.login_button} accessibilityLabel="login-button" onPress={handleLogin}>
           Login
         </Button>
 
-        <Text onPress={() => { navigation.navigate('Sign-up') }}>If you dont have an account, sign up here</Text>
+        <Text
+          onPress={() => {
+            navigation.navigate('Sign-up');
+          }}
+        >
+          If you dont have an account, sign up here
+        </Text>
       </KeyboardAvoidingView>
     </View>
   );
-};
+}
 
 export default LoginScreen;

@@ -1,17 +1,18 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import LoginScreen from './screens/LoginScreen/LoginScreen';
 
+import LoginScreen from './screens/LoginScreen/LoginScreen';
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
-
 import UserContext from './contexts/UserContext';
-import WalkerWalkMap from './screens/WalkerScreens/WalkerHomePage/WalkerWalkMapCard';
+import WalksMapScreen from './screens/WalkerScreens/WalksMapScreen/WalksMapScreen';
+import WalksListScreen from './screens/WalkerScreens/WalksListScreen/WalksListScreen';
 import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
 import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
 import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
+import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,16 +41,30 @@ export default function App() {
             component={ListAWalkScreen}
           />
           <Stack.Screen
+            name="MyListedWalksScreen"
+            options={{ headerShown: false }}
+            component={MyListedWalksScreen}
+          />
+          <Stack.Screen
             name="MyDetailsScreen"
             options={{ headerShown: false }}
             component={MyDetailsScreen}
           />
           <Stack.Screen
-            name="MyListedWalksScreen"
+            name="WalkerLandingScreen"
             options={{ headerShown: false }}
-            component={MyListedWalksScreen}
+            component={WalkerLandingScreen}
           />
-          <Stack.Screen name="Walker" component={WalkerWalkMap} />
+          <Stack.Screen
+            name="WalksListScreen"
+            options={{ headerShown: false }}
+            component={WalksListScreen}
+          />
+          <Stack.Screen
+            name="WalksMapScreen"
+            options={{ headerShown: true }}
+            component={WalksMapScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

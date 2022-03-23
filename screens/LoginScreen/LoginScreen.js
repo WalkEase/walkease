@@ -1,10 +1,11 @@
 import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
+import { get, ref } from 'firebase/database';
 
 import Button from 'react-native-button';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
-import { auth } from '../../firebase';
+import { auth, database } from '../../firebase';
 import styles from './styles';
 
 function LoginScreen({ navigation }) {
@@ -13,11 +14,15 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log(`${email}`, `${password}`);
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setUser(res.user.uid);
-        navigation.navigate('OwnerLandingScreen');
+
+        return res.user.uid;
+      })
+      .then((uid) => get(ref(database, `data/users/${uid}`)))
+      .then((user) => {
+        navigation.navigate(`${user.val().userType}LandingScreen`);
       })
       .catch(console.log);
   };

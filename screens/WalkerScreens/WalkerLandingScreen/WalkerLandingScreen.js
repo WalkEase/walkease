@@ -1,12 +1,13 @@
 import { Image, Text, View } from 'react-native';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { onValue, ref } from 'firebase/database';
+import { useContext, useEffect } from 'react';
 
-import UserContext from '../../contexts/UserContext';
-import { database } from '../../firebase';
+import UserContext from '../../../contexts/UserContext';
+import { database } from '../../../firebase';
 import styles from './styles';
 
-function OwnerLandingScreen({ navigation }) {
+const WalkerLandingScreen = ({ navigation }) => {
   const { user } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -27,50 +28,42 @@ function OwnerLandingScreen({ navigation }) {
 
   return (
     <View style={styles.main_container}>
-      <Text>OwnerLandingScreen</Text>
+      <Text>WalkerLandingScreen</Text>
       <Image
         style={styles.avatar}
         source={{
           uri: userDetails.avatarUrl,
         }}
       />
-      <Text>{`Good Morning ${userDetails.firstName}!`}</Text>
-      <View style={styles.owner_list}>
+      <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
+      <View style={styles.walker_list}>
         <Text
-          style={styles.owner_list_item}
+          style={styles.walker_list_item}
           onPress={() => {
-            navigation.navigate('MyDogsScreen');
+            navigation.navigate('WalksListScreen');
           }}
         >
-          My Dogs
+          Walks List
         </Text>
         <Text
-          style={styles.owner_list_item}
+          style={styles.walker_list_item}
           onPress={() => {
-            navigation.navigate('ListAWalkScreen');
+            navigation.navigate('WalksMapScreen');
           }}
         >
-          List a walk
+          Walks Map
         </Text>
         <Text
-          style={styles.owner_list_item}
+          style={styles.walker_list_item}
           onPress={() => {
             navigation.navigate('MyDetailsScreen');
           }}
         >
           My Details
         </Text>
-        <Text
-          style={styles.owner_list_item}
-          onPress={() => {
-            navigation.navigate('MyListedWalksScreen');
-          }}
-        >
-          Listed Walks
-        </Text>
       </View>
     </View>
   );
-}
+};
 
-export default OwnerLandingScreen;
+export default WalkerLandingScreen;

@@ -19,7 +19,7 @@ import UserContext from '../../contexts/UserContext';
 
 const SignUpScreen = ({ navigation }) => {
 
-    const { user, setUser } = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -115,7 +115,6 @@ const SignUpScreen = ({ navigation }) => {
                             >
                                 <Picker.Item label="Owner" value="Owner" />
                                 <Picker.Item label="Walker" value="Walker" />
-                                <Picker.Item label="Both" value="Both" />
 
                             </Picker>
 

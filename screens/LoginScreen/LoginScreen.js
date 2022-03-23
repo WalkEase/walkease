@@ -10,7 +10,7 @@ import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
-import { set } from 'firebase/database';
+import { set, ref, get } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import styles from './styles';
 
@@ -20,11 +20,15 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log(`${email}`, `${password}`);
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setUser(res.user.uid);
-        navigation.navigate('OwnerLandingScreen');
+
+        return res.user.uid;
+      })
+      .then((uid) => get(ref(database, `data/users/${uid}`)))
+      .then((user) => {
+        navigation.navigate(`${user.val().userType}LandingScreen`);
       })
       .catch(console.log);
   };

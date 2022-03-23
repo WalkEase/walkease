@@ -1,26 +1,19 @@
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
-import { auth, database } from '../../firebase';
-import { get, ref, set } from 'firebase/database';
+import { get, ref } from 'firebase/database';
 
 import Button from 'react-native-button';
-import UserContext from '../../contexts/UserContext';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import UserContext from '../../contexts/UserContext';
+import { auth, database } from '../../firebase';
 import styles from './styles';
 
-const LoginScreen = ({ navigation }) => {
+function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    console.log(`${email}`, `${password}`);
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         setUser(res.user.uid);
@@ -57,11 +50,7 @@ const LoginScreen = ({ navigation }) => {
             }}
           />
         </View>
-        <Button
-          style={styles.login_button}
-          accessibilityLabel="login-button"
-          onPress={handleLogin}
-        >
+        <Button style={styles.login_button} accessibilityLabel="login-button" onPress={handleLogin}>
           Login
         </Button>
 
@@ -75,6 +64,6 @@ const LoginScreen = ({ navigation }) => {
       </KeyboardAvoidingView>
     </View>
   );
-};
+}
 
 export default LoginScreen;

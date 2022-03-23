@@ -1,176 +1,152 @@
-import {
-    KeyboardAvoidingView,
-    Text,
-    TextInput,
-    View,
-    Picker,
-    ScrollView
-} from 'react-native';
+import { KeyboardAvoidingView, Text, TextInput, View, Picker, ScrollView } from 'react-native';
 
 import React, { useState } from 'react';
-import { auth, database } from '../../firebase';
 
 import Button from 'react-native-button';
 import { set, ref } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, database } from '../../firebase';
 import styles from './styles';
 
+function SignUpScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userType, setUserType] = useState('');
+  const [postCode, setPostCode] = useState('');
+  const [DoB, setDoB] = useState('');
+  const [avatarURL, setAvatarURL] = useState('');
 
-const SignUpScreen = () => {
+  const handleSignUp = () => {
+    if (password === confirmPassword) {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((res) => {
+          console.log(res.user);
+          set(ref(database, `data/users/${res.user.uid}`), {
+            uid: res.user.uid,
+            createdAt: Date.now(),
+            email: `${email}`,
+            userType,
+            firstName,
+            lastName,
+            postCode,
+            dateOfBirth: DoB,
+            avatarURL,
+          });
+        })
+        .then((res) => {})
+        .catch((error) => alert(error.message));
+    } else {
+      alert('Passwords must match');
+    }
+  };
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [userType, setUserType] = useState("");
-    const [postCode, setPostCode] = useState("");
-    const [DoB, setDoB] = useState("");
-    const [avatarURL, setAvatarURL] = useState("");
+  return (
+    <View style={styles.main_contain}>
+      <ScrollView>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <View style={styles.login_inputs_container}>
+            <Text style={styles.header}>WalkEase</Text>
 
+            <TextInput
+              style={styles.login_input}
+              defaultValue={email}
+              placeholder="Email"
+              onChangeText={(newText) => {
+                setEmail(newText);
+              }}
+            />
 
-    const handleSignUp = () => {
+            <TextInput
+              style={styles.login_input}
+              defaultValue={password}
+              placeholder="Password"
+              onChangeText={(newText) => {
+                setPassword(newText);
+              }}
+              secureTextEntry
+            />
 
-        if (password === confirmPassword) {
+            <TextInput
+              style={styles.login_input}
+              defaultValue={confirmPassword}
+              placeholder="Confirm password"
+              onChangeText={(newText) => {
+                setConfirmPassword(newText);
+              }}
+              secureTextEntry
+            />
 
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((res) => {
+            <View style={styles.picker}>
+              <Picker
+                selectedValue={userType}
+                onValueChange={(itemValue) => setUserType(itemValue)}
+              >
+                <Picker.Item label="Owner" value="Owner" />
+                <Picker.Item label="Walker" value="Walker" />
+                <Picker.Item label="Both" value="Both" />
+              </Picker>
+            </View>
 
-                    const dbRef = ref(database);
-                    console.log(res.user);
-                    set(ref(database, `data/users/${res.user.uid}`), {
-                        uid: res.user.uid,
-                        createdAt: Date.now(),
-                        email: `${email}`,
-                        userType: userType,
-                        firstName: firstName,
-                        lastName: lastName,
-                        postCode: postCode,
-                        dateOfBirth: DoB,
-                        avatarURL: avatarURL,
-                    });
+            <TextInput
+              style={styles.login_input}
+              defaultValue={firstName}
+              placeholder="First Name"
+              onChangeText={(newText) => {
+                setFirstName(newText);
+              }}
+            />
 
-                })
-                .then((res) => {
+            <TextInput
+              style={styles.login_input}
+              defaultValue={lastName}
+              placeholder="Last Name"
+              onChangeText={(newText) => {
+                setLastName(newText);
+              }}
+            />
 
-                })
-                .catch(error => alert(error.message));
-        } else {
-            alert("Passwords must match");
-        }
-    };
+            <TextInput
+              style={styles.login_input}
+              defaultValue={postCode}
+              placeholder="Post Code"
+              onChangeText={(newText) => {
+                setPostCode(newText);
+              }}
+            />
 
-    return (
+            <TextInput
+              style={styles.login_input}
+              defaultValue={DoB}
+              placeholder="DD/MM/YYYY"
+              onChangeText={(newText) => {
+                setDoB(newText);
+              }}
+            />
 
-        <View style={styles.main_contain}>
-            <ScrollView>
-                <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <TextInput
+              style={styles.login_input}
+              defaultValue={avatarURL}
+              placeholder="Web link to image"
+              onChangeText={(newText) => {
+                setAvatarURL(newText);
+              }}
+            />
+          </View>
 
-                    <View style={styles.login_inputs_container}>
-                        <Text style={styles.header}>WalkEase</Text>
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={email}
-                            placeholder="Email"
-                            onChangeText={(newText) => {
-                                setEmail(newText);
-                            }}
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={password}
-                            placeholder="Password"
-                            onChangeText={(newText) => {
-                                setPassword(newText);
-                            }}
-                            secureTextEntry
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={confirmPassword}
-                            placeholder="Confirm password"
-                            onChangeText={(newText) => {
-                                setConfirmPassword(newText);
-                            }}
-                            secureTextEntry
-                        />
-
-                        <View style={styles.picker}>
-                            <Picker
-                                selectedValue={userType}
-                                onValueChange={(itemValue, itemIndex) => setUserType(itemValue)}
-                            >
-                                <Picker.Item label="Owner" value="Owner" />
-                                <Picker.Item label="Walker" value="Walker" />
-                                <Picker.Item label="Both" value="Both" />
-
-                            </Picker>
-
-                        </View>
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={firstName}
-                            placeholder="First Name"
-                            onChangeText={(newText) => {
-                                setFirstName(newText);
-                            }}
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={lastName}
-                            placeholder="Last Name"
-                            onChangeText={(newText) => {
-                                setLastName(newText);
-                            }}
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={postCode}
-                            placeholder="Post Code"
-                            onChangeText={newText => {
-                                setPostCode(newText);
-                            }}
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={DoB}
-                            placeholder="DD/MM/YYYY"
-                            onChangeText={newText => {
-                                setDoB(newText);
-                            }}
-                        />
-
-                        <TextInput
-                            style={styles.login_input}
-                            defaultValue={avatarURL}
-                            placeholder="Web link to image"
-                            onChangeText={newText => {
-                                setAvatarURL(newText);
-                            }}
-                        />
-
-
-
-                    </View>
-
-                    <Button
-                        style={styles.login_button}
-                        accessibilityLabel="login-button"
-                        onPress={handleSignUp}>
-                        Sign Up
-                    </Button>
-
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
-    );
-};
+          <Button
+            style={styles.login_button}
+            accessibilityLabel="login-button"
+            onPress={handleSignUp}
+          >
+            Sign Up
+          </Button>
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </View>
+  );
+}
 
 export default SignUpScreen;

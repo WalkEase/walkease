@@ -1,17 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState } from 'react';
 
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-import { NavigationContainer } from '@react-navigation/native';
-
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
-
-import { StatusBar } from 'expo-status-bar';
 import UserContext from './contexts/UserContext';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WalksMapScreen from './screens/WalkerScreens/WalksMapScreen/WalksMapScreen';
 import WalksListScreen from './screens/WalkerScreens/WalksListScreen/WalksListScreen';
-import { useState } from 'react';
 import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
 import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
 import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
@@ -27,16 +23,8 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            options={{ headerShown: false }}
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            name="Sign-up"
-            options={{ headerShown: false }}
-            component={SignUpScreen}
-          />
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+          <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
           <Stack.Screen
             name="OwnerLandingScreen"
             options={{ headerShown: false }}
@@ -53,16 +41,15 @@ export default function App() {
             component={ListAWalkScreen}
           />
           <Stack.Screen
-            name="MyDetailsScreen"
-            options={{ headerShown: false }}
-            component={MyDetailsScreen}
-          />
-          <Stack.Screen
             name="MyListedWalksScreen"
             options={{ headerShown: false }}
             component={MyListedWalksScreen}
           />
-
+          <Stack.Screen
+            name="MyDetailsScreen"
+            options={{ headerShown: false }}
+            component={MyDetailsScreen}
+          />
           <Stack.Screen
             name="WalkerLandingScreen"
             options={{ headerShown: false }}

@@ -1,13 +1,12 @@
 import { Image, Text, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { onValue, ref } from 'firebase/database';
-import { useContext, useEffect } from 'react';
 
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import styles from './styles';
 
-const OwnerLandingScreen = ({ navigation }) => {
+function OwnerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +34,7 @@ const OwnerLandingScreen = ({ navigation }) => {
           uri: userDetails.avatarUrl,
         }}
       />
-      <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
+      <Text>{`Good Morning ${userDetails.firstName}!`}</Text>
       <View style={styles.owner_list}>
         <Text
           style={styles.owner_list_item}
@@ -72,6 +71,6 @@ const OwnerLandingScreen = ({ navigation }) => {
       </View>
     </View>
   );
-};
+}
 
 export default OwnerLandingScreen;

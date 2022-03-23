@@ -4,6 +4,8 @@ import UserContext from '../../contexts/UserContext';
 import styles from './styles';
 import { database } from '../../firebase';
 import { onValue, ref } from 'firebase/database';
+import Header from '../../components/Header/Header';
+import Nav from '../../components/Nav/Nav';
 
 const MyDetailsScreen = ({ navigation }) => {
   const { user } = useContext(UserContext);
@@ -26,24 +28,28 @@ const MyDetailsScreen = ({ navigation }) => {
     );
 
   return (
-    <View style={styles.main_container}>
-      <Text>My Details</Text>
+    <>
+      <Header />
+      <View style={styles.main_container}>
+        <Text>My Details</Text>
 
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: userDetails.avatarUrl,
-        }}
-      />
-      <View style={styles.details_list}>
-        <Text style={styles.details_list_item}>
-          Name: {`${userDetails.firstName} ${userDetails.lastName}`}
-        </Text>
-        <Text style={styles.details_list_item}>Location: {userDetails.postCode}</Text>
-        <Text style={styles.details_list_item}>DoB: {userDetails.dateOfBirth}</Text>
-        <Text style={styles.details_list_item}>Bio: {userDetails.userBio}</Text>
+        <Image
+          style={styles.avatar}
+          source={{
+            uri: userDetails.avatarUrl,
+          }}
+        />
+        <View style={styles.details_list}>
+          <Text style={styles.details_list_item}>
+            Name: {`${userDetails.firstName} ${userDetails.lastName}`}
+          </Text>
+          <Text style={styles.details_list_item}>Location: {userDetails.postCode}</Text>
+          <Text style={styles.details_list_item}>DoB: {userDetails.dateOfBirth}</Text>
+          <Text style={styles.details_list_item}>Bio: {userDetails.userBio}</Text>
+        </View>
       </View>
-    </View>
+      <Nav navigation={navigation} />
+    </>
   );
 };
 

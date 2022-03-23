@@ -72,7 +72,7 @@ function MyDogsScreen({ navigation }) {
             <ScrollView>
               <Text style={styles.item}>{item.title + " - " + item.data[0]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
-              <Button style={styles.edit} onPress={() => { navigation.navigate('SingleDogScreen'); }}>
+              <Button style={styles.edit} onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title }); }}>
                 Edit
               </Button>
             </ScrollView>
@@ -81,12 +81,12 @@ function MyDogsScreen({ navigation }) {
         }
       />
 
-      <Button
-        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
+      < Button
+        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog} >
         Add Dog
-      </Button>
+      </Button >
 
-    </View>
+    </View >
   );
 }
 

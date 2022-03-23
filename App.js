@@ -1,16 +1,22 @@
-import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
+import { StyleSheet, Text, View } from 'react-native';
+
 import LoginScreen from './screens/LoginScreen/LoginScreen';
-import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
-import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
-import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import { NavigationContainer } from '@react-navigation/native';
+
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
+
+import { StatusBar } from 'expo-status-bar';
 import UserContext from './contexts/UserContext';
-import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
-import WalkerWalksMapScreen from './screens/WalkerScreens/WalkerWalksMapScreen/WalkerWalksMapScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import WalksMapScreen from './screens/WalkerScreens/WalksMapScreen/WalksMapScreen';
+import WalksListScreen from './screens/WalkerScreens/WalksListScreen/WalksListScreen';
 import { useState } from 'react';
+import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
+import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
+import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
+import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
+import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,15 +62,21 @@ export default function App() {
             options={{ headerShown: false }}
             component={MyListedWalksScreen}
           />
-          <Stack.Screen
-            name="WalkerWalksMapScreen"
-            options={{ headerShown: false }}
-            component={WalkerWalksMapScreen}
-          />
+
           <Stack.Screen
             name="WalkerLandingScreen"
             options={{ headerShown: false }}
             component={WalkerLandingScreen}
+          />
+          <Stack.Screen
+            name="WalksListScreen"
+            options={{ headerShown: false }}
+            component={WalksListScreen}
+          />
+          <Stack.Screen
+            name="WalksMapScreen"
+            options={{ headerShown: true }}
+            component={WalksMapScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

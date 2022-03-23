@@ -40,7 +40,7 @@ const WalkerLandingScreen = ({ navigation }) => {
         <Text
           style={styles.walker_list_item}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('WalksListScreen');
           }}
         >
           Walks List
@@ -48,7 +48,7 @@ const WalkerLandingScreen = ({ navigation }) => {
         <Text
           style={styles.walker_list_item}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('WalksMapScreen');
           }}
         >
           Walks Map
@@ -56,7 +56,7 @@ const WalkerLandingScreen = ({ navigation }) => {
         <Text
           style={styles.walker_list_item}
           onPress={() => {
-            navigation.navigate('');
+            navigation.navigate('MyDetailsScreen');
           }}
         >
           My Details

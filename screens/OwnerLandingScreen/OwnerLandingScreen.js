@@ -64,7 +64,7 @@ const OwnerLandingScreen = ({ navigation }) => {
             navigation.navigate('MyDetailsScreen');
           }}
         >
-          My details
+          My Details
         </Text>
         <Text
           style={styles.owner_list_item}

@@ -55,7 +55,9 @@ const SingleDogScreen = ({ navigation, route }) => {
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
 
                     <View style={styles.login_inputs_container}>
-                        <Text style={styles.header}>Your Dog</Text>
+                        <Text style={styles.header}>Your Lovely Dog</Text>
+                        <Text style={styles.header}> {name} </Text>
+
 
                         <TextInput
                             style={styles.login_input}

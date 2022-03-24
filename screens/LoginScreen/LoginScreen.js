@@ -25,7 +25,7 @@ function LoginScreen({ navigation }) {
       .then((user) => {
         navigation.navigate(`${user.val().userType}LandingScreen`);
       })
-      .catch(console.log);
+      .catch(error => alert(error.message));
   };
 
   return (

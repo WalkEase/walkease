@@ -1,19 +1,20 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   main_container: {
-    height: '83%',
+    height: '75%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#718355',
+    backgroundColor: 'white',
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 100,
+    height: 100,
+    borderRadius: 80,
   },
   details_list: {
     margin: 10,
     padding: 5,
-    height: '45%',
+    height: '70%',
     width: '80%',
     justifyContent: 'space-between',
   },
@@ -21,7 +22,49 @@ export default StyleSheet.create({
     fontSize: 20,
     paddingVertical: 5,
     backgroundColor: 'white',
+    color: '#386641',
+    fontWeight: '500',
     padding: 5,
     borderRadius: 10,
+  },
+  details_list_name: {
+    fontSize: 25,
+    paddingVertical: 5,
+
+    color: '#386641',
+    fontWeight: '700',
+    padding: 5,
+    borderRadius: 10,
+  },
+  details_list_header: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#bc474995',
+    paddingLeft: 5,
+  },
+  details_list_item_bio: {
+    fontSize: 20,
+    paddingVertical: 5,
+    backgroundColor: 'white',
+    color: '#386641',
+    fontWeight: '500',
+    padding: 5,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  bio_scrollview: {
+    backgroundColor: 'white',
+  },
+  header_info: {
+    marginVertical: 5,
+  },
+  header_info_map: {
+    marginVertical: 5,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  map_img: {
+    width: 35,
+    height: 35,
   },
 });

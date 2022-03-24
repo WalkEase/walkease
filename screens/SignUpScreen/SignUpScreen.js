@@ -1,46 +1,59 @@
 import { KeyboardAvoidingView, Text, TextInput, View, Picker, ScrollView } from 'react-native';
-
-import React, { useState } from 'react';
-
+import React, { useState, useContext } from 'react';
 import Button from 'react-native-button';
-import { set, ref } from 'firebase/database';
+import { set, ref, get, onValue } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../../firebase';
 import styles from './styles';
+import UserContext from '../../contexts/UserContext';
 
-function SignUpScreen() {
+function SignUpScreen({ navigation }) {
+  const { setUser } = useContext(UserContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState('Owner');
   const [postCode, setPostCode] = useState('');
   const [DoB, setDoB] = useState('');
-  const [avatarURL, setAvatarURL] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [userBio, setUserBio] = useState('');
 
   const handleSignUp = () => {
-    if (password === confirmPassword) {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((res) => {
-          console.log(res.user);
-          set(ref(database, `data/users/${res.user.uid}`), {
-            uid: res.user.uid,
-            createdAt: Date.now(),
-            email: `${email}`,
-            userType,
-            firstName,
-            lastName,
-            postCode,
-            dateOfBirth: DoB,
-            avatarURL,
-          });
-        })
-        .then((res) => {})
-        .catch((error) => alert(error.message));
-    } else {
-      alert('Passwords must match');
-    }
+    if (password !== confirmPassword) return alert('Passwords must match');
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((res) => {
+        set(ref(database, `data/users/${res.user.uid}`), {
+          uid: res.user.uid,
+          createdAt: Date.now(),
+          email: `${email}`,
+          userType,
+          firstName,
+          lastName,
+          postCode,
+          dateOfBirth: DoB,
+          avatarUrl,
+          userBio,
+        });
+
+        return res.user.uid;
+      })
+      .then((uid) => {
+        onValue(ref(database, `data/users/${uid}`), (dbUser) => {
+          setUser(dbUser.val());
+        });
+
+        return get(ref(database, `data/users/${uid}`));
+      })
+      .then((user) => {
+        const userTypeIn = user.val().userType;
+
+        navigation.navigate(`${userTypeIn}LandingScreen`);
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
@@ -82,11 +95,10 @@ function SignUpScreen() {
             <View style={styles.picker}>
               <Picker
                 selectedValue={userType}
-                onValueChange={(itemValue) => setUserType(itemValue)}
+                onValueChange={(itemValue, itemIndex) => setUserType(itemValue)}
               >
                 <Picker.Item label="Owner" value="Owner" />
                 <Picker.Item label="Walker" value="Walker" />
-                <Picker.Item label="Both" value="Both" />
               </Picker>
             </View>
 
@@ -128,10 +140,20 @@ function SignUpScreen() {
 
             <TextInput
               style={styles.login_input}
-              defaultValue={avatarURL}
+              defaultValue={avatarUrl}
               placeholder="Web link to image"
               onChangeText={(newText) => {
-                setAvatarURL(newText);
+                setAvatarUrl(newText);
+              }}
+            />
+
+            <TextInput
+              style={styles.login_input}
+              multiline
+              defaultValue={userBio}
+              placeholder="Tell me about yourself"
+              onChangeText={(newText) => {
+                setUserBio(newText);
               }}
             />
           </View>

@@ -1,18 +1,18 @@
 import { Image, Text, View } from 'react-native';
 import React, { useContext } from 'react';
 
-import UserContext from '../../contexts/UserContext';
+import UserContext from '../../../contexts/UserContext';
 import styles from './styles';
-import Header from '../../components/Header/Header';
+import Header from '../../../components/Header/Header';
 
-function OwnerLandingScreen({ navigation }) {
+function WalkerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
 
   return (
     <>
       <Header />
       <View style={styles.main_container}>
-        <Text>OwnerLandingScreen</Text>
+        <Text>WalkerLandingScreen</Text>
         <Image
           style={styles.avatar}
           source={{
@@ -20,38 +20,30 @@ function OwnerLandingScreen({ navigation }) {
           }}
         />
         <Text>{`Good Morning ${user.firstName}!`}</Text>
-        <View style={styles.owner_list}>
+        <View style={styles.walker_list}>
           <Text
-            style={styles.owner_list_item}
+            style={styles.walker_list_item}
             onPress={() => {
-              navigation.navigate('MyDogsScreen');
+              navigation.navigate('WalksListScreen');
             }}
           >
-            My Dogs
+            Walks List
           </Text>
           <Text
-            style={styles.owner_list_item}
+            style={styles.walker_list_item}
             onPress={() => {
-              navigation.navigate('ListAWalkScreen');
+              navigation.navigate('WalksMapScreen');
             }}
           >
-            List a walk
+            Walks Map
           </Text>
           <Text
-            style={styles.owner_list_item}
+            style={styles.walker_list_item}
             onPress={() => {
               navigation.navigate('MyDetailsScreen');
             }}
           >
             My Details
-          </Text>
-          <Text
-            style={styles.owner_list_item}
-            onPress={() => {
-              navigation.navigate('MyListedWalksScreen');
-            }}
-          >
-            Listed Walks
           </Text>
         </View>
       </View>
@@ -59,4 +51,4 @@ function OwnerLandingScreen({ navigation }) {
   );
 }
 
-export default OwnerLandingScreen;
+export default WalkerLandingScreen;

@@ -19,7 +19,7 @@ function MyDogsScreen({ navigation }) {
 
 
   useEffect(() => {
-    onValue(ref(database, `data/dogs/${user}`), (res) => {
+    onValue(ref(database, `data/dogs/${user.uid}`), (res) => {
       setMyDogs(res.val());
       setIsLoading(false);
     });
@@ -30,8 +30,8 @@ function MyDogsScreen({ navigation }) {
   const dogSections = dogsArray.map((dog) => {
     return {
       title: dog,
-      data: [myDogs[dog].size],
-      image: 'https://dogtime.com/assets/uploads/gallery/german-shepherd-dog-breed-pictures/standing-7.jpg'
+      data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode],
+      image: myDogs[dog].imageUrl
     }
   })
 
@@ -72,7 +72,9 @@ function MyDogsScreen({ navigation }) {
             <ScrollView>
               <Text style={styles.item}>{item.title + " - " + item.data[0]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
-              <Button style={styles.edit} onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title }); }}>
+              <Button
+                style={styles.edit}
+                onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title, image: item.image, info: item.data }); }}>
                 Edit
               </Button>
             </ScrollView>

@@ -21,6 +21,7 @@ export default StyleSheet.create({
         width: '60%',
         padding: 5,
         borderRadius: 5,
+
     },
 
     login_input: {
@@ -54,5 +55,15 @@ export default StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: 'black',
+    },
+    text: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'black',
+    },
+
+    img: {
+        width: 193,
+        height: 110,
     },
 });

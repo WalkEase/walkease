@@ -75,4 +75,15 @@ export default StyleSheet.create({
     color: '#bc474995',
     paddingLeft: 5,
   },
+  input: {
+    backgroundColor: 'blue',
+    width: '50%',
+    paddingVertical: 5,
+  },
+  save_cancel: {
+    marginTop: 5,
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });

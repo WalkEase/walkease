@@ -36,9 +36,16 @@ function MyDetailsScreen({ navigation }) {
 
               <Text style={styles.details_list_item_bio}>{user.userBio}</Text>
               {/* </ScrollView> */}
+              <Text
+                style={styles.details_list_edit}
+                onPress={() => {
+                  navigation.navigate('EditMyDetailsScreen');
+                }}
+              >
+                Edit
+              </Text>
             </View>
           </View>
-          <Text style={styles.details_list_header}>Edit</Text>
         </View>
       </ScrollView>
       <Nav navigation={navigation} />

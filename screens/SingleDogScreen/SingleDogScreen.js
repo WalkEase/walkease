@@ -1,10 +1,7 @@
 import { Text, TextInput, View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import React, { useState } from 'react';
 import { onValue, ref } from 'firebase/database';
-import { useContext, useEffect } from 'react';
-
+import { useContext, useEffect, useState } from 'react';
 import Button from 'react-native-button';
-
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import styles from './styles';

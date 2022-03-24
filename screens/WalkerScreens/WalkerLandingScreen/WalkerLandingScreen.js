@@ -6,64 +6,68 @@ import { useContext, useEffect } from 'react';
 import UserContext from '../../../contexts/UserContext';
 import { database } from '../../../firebase';
 import styles from './styles';
+import Header from '../../../components/Header/Header';
 
 const WalkerLandingScreen = ({ navigation }) => {
-    const { user } = useContext(UserContext);
-    const [userDetails, setUserDetails] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+  const { user } = useContext(UserContext);
+  const [userDetails, setUserDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        onValue(ref(database, `data/users/${user}`), (res) => {
-            setUserDetails(res.val());
-            setIsLoading(false);
-        });
-    }, []);
+  useEffect(() => {
+    onValue(ref(database, `data/users/${user}`), (res) => {
+      setUserDetails(res.val());
+      setIsLoading(false);
+    });
+  }, []);
 
-    if (isLoading)
-        return (
-            <View>
-                <Text>Loading...</Text>
-            </View>
-        );
-
+  if (isLoading)
     return (
-        <View style={styles.main_container}>
-            <Text>WalkerLandingScreen</Text>
-            <Image
-                style={styles.avatar}
-                source={{
-                    uri: userDetails.avatarUrl,
-                }}
-            />
-            <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
-            <View style={styles.walker_list}>
-                <Text
-                    style={styles.walker_list_item}
-                    onPress={() => {
-                        navigation.navigate('WalksListScreen');
-                    }}
-                >
-                    Walks List
-                </Text>
-                <Text
-                    style={styles.walker_list_item}
-                    onPress={() => {
-                        navigation.navigate('WalksMapScreen');
-                    }}
-                >
-                    Walks Map
-                </Text>
-                <Text
-                    style={styles.walker_list_item}
-                    onPress={() => {
-                        navigation.navigate('MyDetailsScreen');
-                    }}
-                >
-                    My Details
-                </Text>
-            </View>
-        </View>
+      <View>
+        <Text>Loading...</Text>
+      </View>
     );
+
+  return (
+    <>
+      <Header />
+      <View style={styles.main_container}>
+        <Text>WalkerLandingScreen</Text>
+        <Image
+          style={styles.avatar}
+          source={{
+            uri: userDetails.avatarUrl,
+          }}
+        />
+        <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
+        <View style={styles.walker_list}>
+          <Text
+            style={styles.walker_list_item}
+            onPress={() => {
+              navigation.navigate('WalksListScreen');
+            }}
+          >
+            Walks List
+          </Text>
+          <Text
+            style={styles.walker_list_item}
+            onPress={() => {
+              navigation.navigate('WalksMapScreen');
+            }}
+          >
+            Walks Map
+          </Text>
+          <Text
+            style={styles.walker_list_item}
+            onPress={() => {
+              navigation.navigate('MyDetailsScreen');
+            }}
+          >
+            My Details
+          </Text>
+        </View>
+      </View>
+    </>
+  );
 };
 
 export default WalkerLandingScreen;

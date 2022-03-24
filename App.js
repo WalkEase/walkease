@@ -10,6 +10,7 @@ import WalksListScreen from './screens/WalkerScreens/WalksListScreen/WalksListSc
 import MyDogsScreen from './screens/MyDogsScreen/MyDogsScreen';
 import ListAWalkScreen from './screens/ListAWalkScreen/ListAWalkScreen';
 import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
+import EditMyDetailsScreen from './screens/EditMyDetailsScreen/EditMyDetailsScreen';
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 
@@ -22,19 +23,8 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
         <Stack.Navigator>
-
-
-          <Stack.Screen
-            name="Login"
-            options={{ headerShown: false }}
-            component={LoginScreen}
-          />
-          <Stack.Screen
-            name="Sign-up"
-            options={{ headerShown: false }}
-            component={SignUpScreen}
-          />
-
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+          <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
 
           <Stack.Screen
             name="OwnerLandingScreen"
@@ -60,6 +50,11 @@ export default function App() {
             name="MyDetailsScreen"
             options={{ headerShown: false }}
             component={MyDetailsScreen}
+          />
+          <Stack.Screen
+            name="EditMyDetailsScreen"
+            options={{ headerShown: false }}
+            component={EditMyDetailsScreen}
           />
           <Stack.Screen
             name="WalkerLandingScreen"

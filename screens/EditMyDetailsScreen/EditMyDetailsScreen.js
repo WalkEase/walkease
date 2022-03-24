@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Image, ScrollView, Text, TextInput, View } from 'react-native';
+import { set, ref } from 'firebase/database';
+import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
 import Header from '../../components/Header/Header';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
 
-const EditMyDetailsScreen = () => {
+function EditMyDetailsScreen({ navigation }) {
   const { user } = useContext(UserContext);
   const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl);
   const [firstName, setFirstName] = useState(user.firstName);
@@ -13,6 +15,21 @@ const EditMyDetailsScreen = () => {
   const [postCode, setPostCode] = useState(user.postCode);
   const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
   const [userBio, setUserBio] = useState(user.userBio);
+
+  function handleSave() {
+    const newObj = { ...user };
+
+    newObj.avatarUrl = avatarUrl;
+    newObj.firstName = firstName;
+    newObj.lastName = lastName;
+    newObj.postCode = postCode;
+    newObj.dateOfBirth = dateOfBirth;
+    newObj.userBio = userBio;
+
+    set(ref(database, `data/users/${user.uid}`), newObj)
+      .then(() => navigation.navigate('MyDetailsScreen'))
+      .catch((error) => alert(error.message));
+  }
 
   return (
     <>
@@ -65,13 +82,19 @@ const EditMyDetailsScreen = () => {
           />
         </View>
         <View style={styles.save_cancel}>
-          <Text>Save</Text>
-          <Text>Cancel</Text>
+          <Text onPress={handleSave}>Save</Text>
+          <Text
+            onPress={() => {
+              navigation.navigate('MyDetailsScreen');
+            }}
+          >
+            Cancel
+          </Text>
         </View>
       </ScrollView>
       <Nav />
     </>
   );
-};
+}
 
 export default EditMyDetailsScreen;

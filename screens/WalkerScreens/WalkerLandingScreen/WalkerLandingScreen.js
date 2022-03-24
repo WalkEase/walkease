@@ -1,31 +1,12 @@
 import { Image, Text, View } from 'react-native';
-import React, { useState } from 'react';
-import { onValue, ref } from 'firebase/database';
-import { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 
 import UserContext from '../../../contexts/UserContext';
-import { database } from '../../../firebase';
 import styles from './styles';
 import Header from '../../../components/Header/Header';
 
-const WalkerLandingScreen = ({ navigation }) => {
+function WalkerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
-  const [userDetails, setUserDetails] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    onValue(ref(database, `data/users/${user}`), (res) => {
-      setUserDetails(res.val());
-      setIsLoading(false);
-    });
-  }, []);
-
-  if (isLoading)
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
 
   return (
     <>
@@ -35,10 +16,10 @@ const WalkerLandingScreen = ({ navigation }) => {
         <Image
           style={styles.avatar}
           source={{
-            uri: userDetails.avatarUrl,
+            uri: user.avatarUrl,
           }}
         />
-        <Text>{`Good Morning ${userDetails['firstName']}!`}</Text>
+        <Text>{`Good Morning ${user.firstName}!`}</Text>
         <View style={styles.walker_list}>
           <Text
             style={styles.walker_list_item}
@@ -68,6 +49,6 @@ const WalkerLandingScreen = ({ navigation }) => {
       </View>
     </>
   );
-};
+}
 
 export default WalkerLandingScreen;

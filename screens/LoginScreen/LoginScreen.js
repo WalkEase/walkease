@@ -2,7 +2,7 @@ import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
 
 import Button from 'react-native-button';
-import { set, ref, get, onValue } from 'firebase/database';
+import { ref, get, onValue } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
@@ -25,7 +25,7 @@ function LoginScreen({ navigation }) {
       .then((res) => {
         navigation.navigate(`${res.val().userType}LandingScreen`);
       })
-      .catch(console.log);
+      .catch((error) => alert(error.message));
   };
 
   return (

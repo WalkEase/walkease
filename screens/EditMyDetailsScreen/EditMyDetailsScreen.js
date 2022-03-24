@@ -36,63 +36,99 @@ function EditMyDetailsScreen({ navigation }) {
       <Header />
       <ScrollView style={styles.bio_scrollview}>
         <View style={styles.main_container}>
-          <Text>Edit your details</Text>
           <Image
             style={styles.avatar}
             source={{
               uri: avatarUrl,
             }}
           />
-          <TextInput
-            value={avatarUrl}
-            onChangeText={(newText) => {
-              setAvatarUrl(newText);
-            }}
-            style={styles.input}
-          />
-          <TextInput
-            value={firstName}
-            onChangeText={(newText) => {
-              setFirstName(newText);
-            }}
-          />
-          <TextInput
-            value={lastName}
-            onChangeText={(newText) => {
-              setLastName(newText);
-            }}
-          />
-          <TextInput
-            value={postCode}
-            onChangeText={(newText) => {
-              setPostCode(newText);
-            }}
-          />
-          <TextInput
-            value={dateOfBirth}
-            onChangeText={(newText) => {
-              setDateOfBirth(newText);
-            }}
-          />
-          <TextInput
-            value={userBio}
-            onChangeText={(newText) => {
-              setUserBio(newText);
-            }}
-          />
-        </View>
-        <View style={styles.save_cancel}>
-          <Text onPress={handleSave}>Save</Text>
-          <Text
-            onPress={() => {
-              navigation.navigate('MyDetailsScreen');
-            }}
-          >
-            Cancel
-          </Text>
+          <Text style={styles.edit_text}>Edit your details below</Text>
+          <View style={styles.input_contain}>
+            <TextInput
+              multiline
+              value={avatarUrl}
+              onChangeText={(newText) => {
+                setAvatarUrl(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.input_contain}>
+            <TextInput
+              value={firstName}
+              onChangeText={(newText) => {
+                setFirstName(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.input_contain}>
+            <TextInput
+              value={lastName}
+              onChangeText={(newText) => {
+                setLastName(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.input_contain}>
+            <TextInput
+              value={postCode}
+              onChangeText={(newText) => {
+                setPostCode(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <View style={styles.input_contain}>
+            <TextInput
+              value={dateOfBirth}
+              onChangeText={(newText) => {
+                setDateOfBirth(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+          <ScrollView style={[styles.input_contain, styles.input_contain_bio]}>
+            <TextInput
+              multiline
+              value={userBio}
+              onChangeText={(newText) => {
+                setUserBio(newText);
+              }}
+              style={styles.input}
+            />
+            <View style={styles.save_cancel}>
+              <Text onPress={handleSave}>Save</Text>
+              <Text
+                onPress={() => {
+                  navigation.navigate('MyDetailsScreen');
+                }}
+              >
+                Cancel
+              </Text>
+            </View>
+          </ScrollView>
+          <View style={styles.save_cancel}>
+            <View style={styles.save_press}>
+              <Text onPress={handleSave} style={styles.cancel_save_text}>
+                Save
+              </Text>
+            </View>
+            <View style={styles.cancel_press}>
+              <Text
+                style={styles.cancel_save_text}
+                onPress={() => {
+                  navigation.navigate('MyDetailsScreen');
+                }}
+              >
+                Cancel
+              </Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
-      <Nav />
+      <Nav navigation={navigation} />
     </>
   );
 }

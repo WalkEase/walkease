@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
 import { database } from '../../firebase';
@@ -30,24 +30,38 @@ const MyDetailsScreen = ({ navigation }) => {
   return (
     <>
       <Header />
-      <View style={styles.main_container}>
-        <Text>My Details</Text>
+      <ScrollView style={styles.bio_scrollview}>
+        <View style={styles.main_container}>
+          <Image
+            style={styles.avatar}
+            source={{
+              uri: userDetails.avatarUrl,
+            }}
+          />
+          <View style={styles.details_list}>
+            <View style={styles.header_info}>
+              <Text style={styles.details_list_name}>
+                {`${userDetails.firstName} ${userDetails.lastName}`}
+              </Text>
+            </View>
+            <View style={styles.header_info_map}>
+              <Image style={styles.map_img} source={require('../../assets/map_icon.png')} />
+              <Text style={styles.details_list_item}>{userDetails.postCode}</Text>
+            </View>
+            <View style={styles.header_info}>
+              <Text style={styles.details_list_header}>DoB</Text>
+              <Text style={styles.details_list_item}>{userDetails.dateOfBirth}</Text>
+            </View>
+            <View style={styles.header_info}>
+              <Text style={styles.details_list_header}>About you</Text>
 
-        <Image
-          style={styles.avatar}
-          source={{
-            uri: userDetails.avatarUrl,
-          }}
-        />
-        <View style={styles.details_list}>
-          <Text style={styles.details_list_item}>
-            Name: {`${userDetails.firstName} ${userDetails.lastName}`}
-          </Text>
-          <Text style={styles.details_list_item}>Location: {userDetails.postCode}</Text>
-          <Text style={styles.details_list_item}>DoB: {userDetails.dateOfBirth}</Text>
-          <Text style={styles.details_list_item}>Bio: {userDetails.userBio}</Text>
+              <Text style={styles.details_list_item_bio}>{userDetails.userBio}</Text>
+              {/* </ScrollView> */}
+            </View>
+          </View>
+          <Text style={styles.details_list_header}>Edit</Text>
         </View>
-      </View>
+      </ScrollView>
       <Nav navigation={navigation} />
     </>
   );

@@ -3,7 +3,7 @@ export default StyleSheet.create({
   header_container: {
     width: '100%',
     height: '12%',
-    backgroundColor: 'white',
+    backgroundColor: '#386641',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -11,7 +11,7 @@ export default StyleSheet.create({
     paddingTop: 20,
 
     fontSize: 40,
-    color: '#718355',
+    color: 'white',
     fontWeight: 'bold',
   },
 });

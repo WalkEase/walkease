@@ -5,11 +5,9 @@ import { onValue, ref } from 'firebase/database';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import styles from './styles';
-
+import Header from '../../components/Header/Header';
 
 const OwnerLandingScreen = ({ navigation }) => {
-
-
   const { user } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -31,53 +29,54 @@ const OwnerLandingScreen = ({ navigation }) => {
     );
 
   return (
-    <View style={styles.main_container}>
-      <Text>OwnerLandingScreen</Text>
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: userDetails.avatarUrl,
-        }}
-      />
-      <Text>{`Good Morning ${userDetails.firstName}!`}</Text>
-      <View style={styles.owner_list}>
-
-        <Text
-          style={styles.owner_list_item}
-          onPress={() => {
-            navigation.navigate('MyDogsScreen');
+    <>
+      <Header />
+      <View style={styles.main_container}>
+        <Text>OwnerLandingScreen</Text>
+        <Image
+          style={styles.avatar}
+          source={{
+            uri: userDetails.avatarUrl,
           }}
-        >
-          My Dogs
-        </Text>
-        <Text
-          style={styles.owner_list_item}
-          onPress={() => {
-            navigation.navigate('ListAWalkScreen');
-          }}
-        >
-          List a walk
-        </Text>
-        <Text
-          style={styles.owner_list_item}
-          onPress={() => {
-            navigation.navigate('MyDetailsScreen');
-          }}
-        >
-          My Details
-        </Text>
-        <Text
-          style={styles.owner_list_item}
-          onPress={() => {
-            navigation.navigate('MyListedWalksScreen');
-          }}
-        >
-          Listed Walks
-        </Text>
-
+        />
+        <Text>{`Good Morning ${userDetails.firstName}!`}</Text>
+        <View style={styles.owner_list}>
+          <Text
+            style={styles.owner_list_item}
+            onPress={() => {
+              navigation.navigate('MyDogsScreen');
+            }}
+          >
+            My Dogs
+          </Text>
+          <Text
+            style={styles.owner_list_item}
+            onPress={() => {
+              navigation.navigate('ListAWalkScreen');
+            }}
+          >
+            List a walk
+          </Text>
+          <Text
+            style={styles.owner_list_item}
+            onPress={() => {
+              navigation.navigate('MyDetailsScreen');
+            }}
+          >
+            My Details
+          </Text>
+          <Text
+            style={styles.owner_list_item}
+            onPress={() => {
+              navigation.navigate('MyListedWalksScreen');
+            }}
+          >
+            Listed Walks
+          </Text>
+        </View>
       </View>
-    </View>
+    </>
   );
-}
+};
 
 export default OwnerLandingScreen;

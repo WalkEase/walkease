@@ -1,13 +1,13 @@
 import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
 
-
 import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
 import { set, ref, get } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../../firebase';
 import styles from './styles';
+import Header from '../../components/Header/Header';
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -29,41 +29,46 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.main_contain}>
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <Text style={styles.header}>WalkEase</Text>
+    <>
+      <Header />
+      <View style={styles.main_contain}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <View style={styles.login_inputs_container}>
+            <TextInput
+              style={styles.login_input}
+              defaultValue={email}
+              placeholder="email"
+              onChangeText={(newText) => {
+                setEmail(newText);
+              }}
+            />
+            <TextInput
+              style={styles.login_input}
+              defaultValue={password}
+              placeholder="password"
+              onChangeText={(newText) => {
+                setPassword(newText);
+              }}
+            />
+          </View>
+          <Button
+            style={styles.login_button}
+            accessibilityLabel="login-button"
+            onPress={handleLogin}
+          >
+            Login
+          </Button>
 
-        <View style={styles.login_inputs_container}>
-          <TextInput
-            style={styles.login_input}
-            defaultValue={email}
-            placeholder="email"
-            onChangeText={(newText) => {
-              setEmail(newText);
+          <Text
+            onPress={() => {
+              navigation.navigate('Sign-up');
             }}
-          />
-          <TextInput
-            style={styles.login_input}
-            defaultValue={password}
-            placeholder="password"
-            onChangeText={(newText) => {
-              setPassword(newText);
-            }}
-          />
-        </View>
-        <Button style={styles.login_button} accessibilityLabel="login-button" onPress={handleLogin}>
-          Login
-        </Button>
-
-        <Text
-          onPress={() => {
-            navigation.navigate('Sign-up');
-          }}
-        >
-          If you dont have an account, sign up here
-        </Text>
-      </KeyboardAvoidingView>
-    </View>
+          >
+            If you dont have an account, sign up here
+          </Text>
+        </KeyboardAvoidingView>
+      </View>
+    </>
   );
 }
 

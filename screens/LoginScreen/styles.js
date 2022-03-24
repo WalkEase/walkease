@@ -8,6 +8,7 @@ export default StyleSheet.create({
     backgroundColor: '#718355',
     maxHeight: '50%',
   },
+
   main_contain: {
     height: '100%',
     flex: 1,

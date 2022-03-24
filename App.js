@@ -13,6 +13,7 @@ import MyDetailsScreen from './screens/MyDetailsScreen/MyDetailsScreen';
 import EditMyDetailsScreen from './screens/EditMyDetailsScreen/EditMyDetailsScreen';
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
+import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,12 @@ export default function App() {
             name="WalksMapScreen"
             options={{ headerShown: true }}
             component={WalksMapScreen}
+          />
+
+          <Stack.Screen
+            name="SingleDogScreen"
+            options={{ headerShown: true }}
+            component={SingleDogScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

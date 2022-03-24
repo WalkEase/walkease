@@ -22,7 +22,23 @@ function SignUpScreen({ navigation }) {
   const [userBio, setUserBio] = useState('');
 
   const handleSignUp = () => {
+    if (password === '' || confirmPassword === '')
+      return alert('Please enter passwords in both fields');
+
     if (password !== confirmPassword) return alert('Passwords must match');
+
+    if (!/^.+@.+.[.].+$/.test(email)) return alert('Invalid email format');
+
+    if (!/^[a-zA-Z]+$/.test(firstName))
+      return alert('First Name must be UPPERCASE and lowercase letters only');
+
+    if (!/^[a-zA-Z]+$/.test(lastName))
+      return alert('Last Name must be UPPERCASE and lowercase letters only');
+
+    if (userBio.length < 100 || userBio.length > 200)
+      return alert(
+        `Bio must be between 100 - 200 chars... Current length: ${userBio.length} chars`
+      );
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
@@ -156,6 +172,7 @@ function SignUpScreen({ navigation }) {
                 setUserBio(newText);
               }}
             />
+            <Text>{userBio.length} chars</Text>
           </View>
 
           <Button

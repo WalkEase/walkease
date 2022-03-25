@@ -98,16 +98,6 @@ function EditMyDetailsScreen({ navigation }) {
               }}
               style={styles.input}
             />
-            <View style={styles.save_cancel}>
-              <Text onPress={handleSave}>Save</Text>
-              <Text
-                onPress={() => {
-                  navigation.navigate('MyDetailsScreen');
-                }}
-              >
-                Cancel
-              </Text>
-            </View>
           </ScrollView>
           <View style={styles.save_cancel}>
             <View style={styles.save_press}>

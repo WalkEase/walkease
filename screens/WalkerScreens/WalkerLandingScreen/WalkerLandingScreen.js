@@ -12,41 +12,50 @@ function WalkerLandingScreen({ navigation }) {
     <>
       <Header />
       <View style={styles.main_container}>
-        <Text>WalkerLandingScreen</Text>
+        <View style={styles.welcome_contain}></View>
         <Image
           style={styles.avatar}
           source={{
             uri: user.avatarUrl,
           }}
         />
-        <Text>{`Good Morning ${user.firstName}!`}</Text>
+        <View style={styles.welcome_contain}>
+          <Text style={styles.welcome_name}>{`Welcome ${user.firstName}`}</Text>
+        </View>
         <View style={styles.walker_list}>
-          <Text
-            style={styles.walker_list_item}
-            onPress={() => {
-              navigation.navigate('WalksListScreen');
-            }}
-          >
-            Walks List
-          </Text>
-          <Text
-            style={styles.walker_list_item}
-            onPress={() => {
-              navigation.navigate('WalksMapScreen');
-            }}
-          >
-            Walks Map
-          </Text>
-          <Text
-            style={styles.walker_list_item}
-            onPress={() => {
-              navigation.navigate('MyDetailsScreen');
-            }}
-          >
-            My Details
-          </Text>
+          <View style={styles.walker_list_link_bottom_border}>
+            <Text
+              style={styles.walker_list_item}
+              onPress={() => {
+                navigation.navigate('WalksListScreen');
+              }}
+            >
+              Walks List
+            </Text>
+          </View>
+          <View style={styles.walker_list_link_bottom_border}>
+            <Text
+              style={styles.walker_list_item}
+              onPress={() => {
+                navigation.navigate('WalksMapScreen');
+              }}
+            >
+              Walks Map
+            </Text>
+          </View>
+          <View style={styles.walker_list_link_bottom_border}>
+            <Text
+              style={styles.walker_list_item}
+              onPress={() => {
+                navigation.navigate('MyDetailsScreen');
+              }}
+            >
+              My Details
+            </Text>
+          </View>
         </View>
       </View>
+      <View style={styles.nav_container}></View>
     </>
   );
 }

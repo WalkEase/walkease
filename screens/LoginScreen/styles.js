@@ -3,18 +3,18 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // maxHeight: '50%',
+    maxHeight: '100%',
   },
 
   main_contain: {
     height: '100%',
     flex: 1,
-    alignContent: 'space-around',
     justifyContent: 'center',
-    backgroundColor: 'white',
+    alignContent: 'space-around',
+    backgroundColor: 'blue',
   },
 
   login_inputs_container: {

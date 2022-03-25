@@ -25,18 +25,23 @@ function MyDogsScreen({ navigation, route }) {
   }, []);
 
 
-  const dogsArray = (myDogs !== null) ? Object.keys(myDogs) : [];
+  const dogsArray = (myDogs !== null) ? Object.keys(myDogs).slice(0, -1) : [];
   const dogSections = dogsArray.map((dog) => {
+    const listId = dog;
     return {
-      title: dog,
-      data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode],
-      image: myDogs[dog].imageUrl
+      title: myDogs[dog].name,
+      data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode, myDogs[dog].dateOfBirth],
+      image: myDogs[dog].imageUrl,
+      nameId: listId
     }
   })
 
-
   const handleAddDog = () => {
     alert("Page currently not available")
+  }
+
+  const handleGoToListWalk = () => {
+    navigation.navigate('ListAWalkScreen');
   }
 
   if (isLoading)
@@ -61,22 +66,33 @@ function MyDogsScreen({ navigation, route }) {
 
   return (
     <View style={styles.main_container}>
-
+      <Header />
       <Text style={styles.header}>My Lovely Dogs  </Text>
-
       <FlatList
+        style={styles.sectionHeader}
         data={dogSections}
         renderItem={({ item }) =>
-          <View>
+          <View >
             <ScrollView>
-              <Text style={styles.item}>{item.title + " - " + item.data[0]}</Text>
+
+              <Text style={styles.item_name}>{item.title}</Text>
+
+              <View style={styles.header_info_map}>
+                <Image style={styles.map_img} source={require('../../assets/map_icon.png')} />
+                <Text style={styles.details_list_item}>{item.data[2]}</Text>
+
+              </View>
+              <Text style={styles.item_born}>Born: {item.data[3]}</Text>
+              <Text style={styles.item_size}>Size :{item.data[0]}</Text>
+              <Text style={styles.item_size}>Info: {item.data[1]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
-              <Text style={styles.item}>{item.data[1]}</Text>
+
               <Button
                 style={styles.edit}
-                onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title, image: item.image, info: item.data }); }}>
+                onPress={() => { navigation.navigate('SingleDogScreen', { dog: item.nameId, name: item.title, image: item.image, info: item.data }); }}>
                 Edit
               </Button>
+
             </ScrollView>
           </View>
 
@@ -87,6 +103,12 @@ function MyDogsScreen({ navigation, route }) {
         style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog} >
         Add Dog
       </Button >
+
+      < Button
+        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleGoToListWalk} >
+        Go to List Walk Page
+      </Button >
+
       <Nav navigation={navigation} />
     </View >
   );

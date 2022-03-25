@@ -10,7 +10,7 @@ import styles from './styles';
 const SingleDogScreen = ({ navigation, route }) => {
 
     const { user } = useContext(UserContext);
-    const { name, image, info } = route.params;
+    const { dog, name, image, info } = route.params;
 
     const [dogToEdit, setDogToEdit] = useState({});
     const [changes, setChanges] = useState({});
@@ -20,21 +20,21 @@ const SingleDogScreen = ({ navigation, route }) => {
     const [dogSize, setDogSize] = useState(info[0]);
     const [dogBio, setDogBio] = useState(info[1]);
     const [dogPostCode, setDogPostCode] = useState(info[2]);
+    const [dogDateOfBirth, setDogDateOfBirth] = useState(info[3]);
 
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        onValue(ref(database, `data/dogs/${user.uid}/${name}`), (res) => {
+        onValue(ref(database, `data/dogs/${user.uid}/${dog}`), (res) => {
             setDogToEdit(res.val());
             setChanges(dogToEdit);
-
             setIsLoading(false);
         });
     }, []);
 
-    console.log(info, "info");
     console.log(user.uid, "user");
     console.log(name, "name");
+    console.log(dog, "id");
     console.log(dogToEdit, "dog to edit");
     console.log(changes, "changes 1");
 
@@ -45,10 +45,17 @@ const SingleDogScreen = ({ navigation, route }) => {
         changes.size = dogSize;
         changes.name = dogName;
         changes.imageUrl = dogUrl;
+        changes.dateOfBirth = dogDateOfBirth;
+        changes.postCode = dogPostCode;
+        changes.createdAt = dogToEdit.createdAt;
 
-        console.log(changes, "before set")
+        set(ref(database, `data/dogs/${user.uid}/${dog}`), changes).then((res) => {
+            navigation.navigate('MyDogsScreen');
+        })
+    }
 
-        set(ref(database, `data/dogs/${user.uid}/${name}`), changes);
+    const handleCancel = () => {
+        navigation.navigate('MyDogsScreen');
     }
 
     if (isLoading)
@@ -60,7 +67,9 @@ const SingleDogScreen = ({ navigation, route }) => {
 
     return (
         <View style={styles.main_contain}>
+            <Header />
             <ScrollView>
+
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
 
                     <View style={styles.login_inputs_container}>
@@ -105,6 +114,20 @@ const SingleDogScreen = ({ navigation, route }) => {
                         </View>
 
                         <View>
+                            <Text style={styles.header}>Date of Birth</Text>
+                            <Text style={styles.text}>{dogDateOfBirth}</Text>
+                            <TextInput
+                                style={styles.login_input}
+                                multiline
+                                defaultValue={dogDateOfBirth}
+                                placeholder="Change your dog description"
+                                onChangeText={(newText) => {
+                                    setDogDateOfBirth(newText);
+                                }}
+                            />
+                        </View>
+
+                        <View>
                             <Text style={styles.header}>Size: {dogSize} </Text>
                             <TextInput
                                 style={styles.login_input}
@@ -136,11 +159,20 @@ const SingleDogScreen = ({ navigation, route }) => {
                         Submit changes
                     </Button>
 
+                    <Button
+                        style={styles.login_button}
+                        accessibilityLabel="login-button"
+                        onPress={handleCancel}>
+                        Cancel
+                    </Button>
+
+
+
                 </KeyboardAvoidingView>
 
             </ScrollView>
-
             <Nav navigation={navigation} />
+
         </View>
     )
 

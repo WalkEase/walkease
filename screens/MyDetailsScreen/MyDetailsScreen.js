@@ -10,7 +10,6 @@ function MyDetailsScreen({ navigation }) {
 
   return (
     <>
-      <Header />
       <ScrollView style={styles.bio_scrollview}>
         <View style={styles.main_container}>
           <Image

@@ -33,7 +33,7 @@ function SignUpScreen({ navigation }) {
 
   // avatarUrl state
   const [avatarUrl, setAvatarUrl] = useState('');
-  // const [avatarUrlValid, setAvatarUrlValid] = useState(true); // add this later
+  const [avatarUrlValid, setAvatarUrlValid] = useState(true);
 
   // userBio state
   const [userBio, setUserBio] = useState('');
@@ -43,6 +43,7 @@ function SignUpScreen({ navigation }) {
 
   const handleSignUp = () => {
     // form validation
+
     setValidSignUp(true);
 
     if (!/^.+@.+.[.].+$/.test(email)) {
@@ -67,6 +68,11 @@ function SignUpScreen({ navigation }) {
 
     if (!/^[a-zA-Z]+$/.test(lastName)) {
       setLastNameValid(false);
+      setValidSignUp(false);
+    }
+
+    if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
+      setAvatarUrlValid(false);
       setValidSignUp(false);
     }
 
@@ -253,7 +259,19 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setAvatarUrl(newText);
               }}
+              onFocus={() => {
+                setAvatarUrlValid(true);
+              }}
+              onBlur={() => {
+                setAvatarUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+              }}
             />
+
+            {!avatarUrlValid ? (
+              <Text style={styles.invalid_input}>* Invalid avatar URL, must be PNG/JPG</Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}

@@ -10,19 +10,76 @@ import UserContext from '../../contexts/UserContext';
 function SignUpScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
 
+  // email state
   const [email, setEmail] = useState('');
+  const [emailValid, setEmailValid] = useState(true);
+
+  // password state
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordValid, setPasswordValid] = useState(true);
+
+  // name state
   const [firstName, setFirstName] = useState('');
+  const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastName, setLastName] = useState('');
+  const [lastNameValid, setLastNameValid] = useState(true);
+
   const [userType, setUserType] = useState('Owner');
   const [postCode, setPostCode] = useState('');
+
+  // date of birth
   const [DoB, setDoB] = useState('');
+
+  // avatarUrl state
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [avatarUrlValid, setAvatarUrlValid] = useState(true);
+
+  // userBio state
   const [userBio, setUserBio] = useState('');
+  const [userBioValid, setUserBioValid] = useState(true);
 
   const handleSignUp = () => {
-    if (password !== confirmPassword) return alert('Passwords must match');
+    // form validation
+
+    let validSignUp = true;
+
+    if (!/^.+@.+.[.].+$/.test(email)) {
+      setEmailValid(false);
+      validSignUp = false;
+    }
+
+    if (password === '' || confirmPassword === '') {
+      setPasswordValid(false);
+      validSignUp = false;
+    }
+
+    if (password !== confirmPassword) {
+      setPasswordValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^[a-zA-Z]+$/.test(firstName)) {
+      setFirstNameValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      setLastNameValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
+      setAvatarUrlValid(false);
+      validSignUp = false;
+    }
+
+    if (userBio.length < 100 || userBio.length > 200) {
+      setUserBioValid(false);
+      validSignUp = false;
+    }
+
+    if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
@@ -70,7 +127,12 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setEmail(newText);
               }}
+              onFocus={() => {
+                setEmailValid(true);
+              }}
+              onBlur={() => setEmailValid(/^.+@.+.[.].+$/.test(email))}
             />
+            {!emailValid ? <Text style={styles.invalid_input}>* Invalid email format</Text> : false}
 
             <TextInput
               style={styles.login_input}
@@ -78,6 +140,12 @@ function SignUpScreen({ navigation }) {
               placeholder="Password"
               onChangeText={(newText) => {
                 setPassword(newText);
+              }}
+              onFocus={() => setPasswordValid(true)}
+              onBlur={() => {
+                if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                  setPasswordValid(false);
+                }
               }}
               secureTextEntry
             />
@@ -89,13 +157,27 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setConfirmPassword(newText);
               }}
+              onFocus={() => setPasswordValid(true)}
+              onBlur={() => {
+                if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                  setPasswordValid(false);
+                }
+              }}
               secureTextEntry
             />
+
+            {!passwordValid ? (
+              <Text style={styles.invalid_input}>
+                * Please enter matching passwords in both fields
+              </Text>
+            ) : (
+              false
+            )}
 
             <View style={styles.picker}>
               <Picker
                 selectedValue={userType}
-                onValueChange={(itemValue, itemIndex) => setUserType(itemValue)}
+                onValueChange={(itemValue) => setUserType(itemValue)}
               >
                 <Picker.Item label="Owner" value="Owner" />
                 <Picker.Item label="Walker" value="Walker" />
@@ -109,7 +191,21 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setFirstName(newText);
               }}
+              onFocus={() => {
+                setFirstNameValid(true);
+              }}
+              onBlur={() => {
+                setFirstNameValid(/^[a-zA-Z]+$/.test(firstName));
+              }}
             />
+
+            {!firstNameValid ? (
+              <Text style={styles.invalid_input}>
+                * First Name must be UPPERCASE and lowercase letters only
+              </Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -118,7 +214,21 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setLastName(newText);
               }}
+              onFocus={() => {
+                setLastNameValid(true);
+              }}
+              onBlur={() => {
+                setLastNameValid(/^[a-zA-Z]+$/.test(lastName));
+              }}
             />
+
+            {!lastNameValid ? (
+              <Text style={styles.invalid_input}>
+                * Last Name must be UPPERCASE and lowercase letters only
+              </Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -145,7 +255,19 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setAvatarUrl(newText);
               }}
+              onFocus={() => {
+                setAvatarUrlValid(true);
+              }}
+              onBlur={() => {
+                setAvatarUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+              }}
             />
+
+            {!avatarUrlValid ? (
+              <Text style={styles.invalid_input}>* Invalid avatar URL, must be PNG/JPG</Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -155,13 +277,28 @@ function SignUpScreen({ navigation }) {
               onChangeText={(newText) => {
                 setUserBio(newText);
               }}
+              onFocus={() => {
+                setUserBioValid(true);
+              }}
+              onBlur={() => {
+                if (userBio.length < 100 || userBio.length > 200) setUserBioValid(false);
+              }}
             />
+            <Text>{userBio.length} chars</Text>
+
+            {!userBioValid ? (
+              <Text style={styles.invalid_input}>
+                {`Bio must be between 100 - 200 chars... Current length: ${userBio.length} chars`}
+              </Text>
+            ) : (
+              false
+            )}
           </View>
 
           <Button
             style={styles.login_button}
             accessibilityLabel="login-button"
-            onPress={handleSignUp}
+            onPress={() => handleSignUp()}
           >
             Sign Up
           </Button>

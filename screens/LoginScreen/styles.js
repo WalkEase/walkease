@@ -43,4 +43,11 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  nav_container: {
+    width: '100%',
+    height: '5%',
+    backgroundColor: '#386641',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

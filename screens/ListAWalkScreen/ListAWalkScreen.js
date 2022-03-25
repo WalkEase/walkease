@@ -1,6 +1,6 @@
-import { KeyboardAvoidingView, Text, TextInput, View, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
-import { set, ref, onValue, push } from 'firebase/database';
+import { set, ref, onValue, push, ServerValue } from 'firebase/database';
 import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
@@ -11,11 +11,39 @@ function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
   const [walkRequirements, setWalkRequirements] = useState('');
   const [walkMinutes, setWalkMinutes] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [postCode, setPostCode] = useState('');
-  const { user } = useContext(UserContext);
+  const { user, dogs } = useContext(UserContext);
+  const [dogObject, setDogsObject] = useState('');
+  const [pickDog, setPickDog] = useState('');
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
 
+  useEffect(() => {
+    console.log('useEffect');
+    onValue(
+      ref(database, `data/dogs/${user.uid}`),
+      (res) => {
+        setDogsObject(res.val());
+        setIsLoading(false);
+      },
+      {
+        onlyOnce: true,
+      }
+    );
+  }, []);
+  if (isLoading)
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+
+  const dogArray = Object.keys(dogObject);
+
+  const dog3 = [];
+  const dogArray2 = dogArray.map((dog) => dog3.push(dogObject[dog].name));
+  console.log(dogArray2);
   function HandleSubmit() {
     // checking if post code valid before sending to Api
     if (postCode.match(postCodeRegex) != null) {
@@ -28,6 +56,7 @@ function ListAWalkScreen({ navigation }) {
             alert('Please provide valid post Code API');
           } else {
             push(ref(database, `data/walks/${user.uid}`), {
+              // walkId: ServerValue.TIMESTAMP,
               createdAt: Date.now(),
               walkDesc,
               walkRequirements,
@@ -55,7 +84,7 @@ function ListAWalkScreen({ navigation }) {
             <TextInput
               style={styles.login_input}
               defaultValue={walkDesc}
-              placeholder="walkDesc"
+              placeholder="Walk Description"
               onChangeText={(newText) => {
                 setWalkDesc(newText);
               }}
@@ -64,7 +93,7 @@ function ListAWalkScreen({ navigation }) {
             <TextInput
               style={styles.login_input}
               defaultValue={walkRequirements}
-              placeholder="walkRequirements"
+              placeholder="Walk Requirements"
               onChangeText={(newText) => {
                 setWalkRequirements(newText);
               }}
@@ -82,11 +111,21 @@ function ListAWalkScreen({ navigation }) {
             <TextInput
               style={styles.login_input}
               defaultValue={postCode}
-              placeholder="postCode"
+              placeholder="Post Code"
               onChangeText={(newText) => {
                 setPostCode(newText);
               }}
             />
+          </View>
+          <View style={styles.picker}>
+            <Picker
+              style={{ height: 50, width: 150 }}
+              onValueChange={(itemValue) => setPickDog(itemValue)}
+            >
+              {dogArray.map((dog) => (
+                <Picker.Item label={dog} value={dog} />
+              ))}
+            </Picker>
           </View>
 
           <Button

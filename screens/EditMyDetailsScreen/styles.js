@@ -35,7 +35,7 @@ export default StyleSheet.create({
   },
   input_contain: {
     borderColor: '#386641',
-    borderWidth: 3,
+    borderWidth: 2,
     width: '60%',
     marginVertical: 10,
     borderRadius: 5,
@@ -63,13 +63,13 @@ export default StyleSheet.create({
     marginTop: 10,
     fontSize: 15,
     fontWeight: '600',
-    color: '#bc474995',
+    color: '#bc4749',
   },
   save_press: {
     display: 'flex',
     alignItems: 'center',
     borderColor: '#38664195',
-    backgroundColor: '#38664195',
+    backgroundColor: '#386641',
     borderWidth: 2,
     padding: 2,
     width: 80,
@@ -77,7 +77,7 @@ export default StyleSheet.create({
   cancel_press: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: '#bc474995',
+    backgroundColor: '#bc4749',
     borderColor: '#bc474995',
     borderWidth: 2,
     width: 80,

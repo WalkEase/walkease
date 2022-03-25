@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, Text, TextInput, View, ScrollView } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
-import { set, ref, onValue } from 'firebase/database';
+import { set, ref, onValue, push } from 'firebase/database';
 import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
@@ -13,23 +13,8 @@ function ListAWalkScreen({ navigation }) {
   const [walkMinutes, setWalkMinutes] = useState('');
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
-  const [walkNumberFromApi, setWalkNumberFromApi] = useState([]);
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
-
-  useEffect(() => {
-    console.log('useEffect');
-    onValue(
-      ref(database, `data/walks/${user.uid}`),
-      (res) => {
-        setWalkNumberFromApi(Object.keys(res.val()).length);
-      },
-      {
-        onlyOnce: true,
-      }
-    );
-  }, []);
-  console.log(walkNumberFromApi);
 
   function HandleSubmit() {
     // checking if post code valid before sending to Api
@@ -42,7 +27,7 @@ function ListAWalkScreen({ navigation }) {
           if (data.status === 'ZERO_RESULTS') {
             alert('Please provide valid post Code API');
           } else {
-            set(ref(database, `data/walks/${user.uid}/walk${walkNumberFromApi + 1}`), {
+            push(ref(database, `data/walks/${user.uid}`), {
               createdAt: Date.now(),
               walkDesc,
               walkRequirements,

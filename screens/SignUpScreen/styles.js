@@ -56,4 +56,7 @@ export default StyleSheet.create({
     color: 'black',
   },
 
+  invalid_input: {
+    color: '#ff0000',
+  },
 });

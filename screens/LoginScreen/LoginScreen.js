@@ -15,6 +15,10 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
+    if (!/^.+@.+.[.].+$/.test(email)) return alert('Invalid email format');
+
+    if (password === '') return alert('Please enter a valid password');
+
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {
         onValue(ref(database, `data/users/${res.user.uid}`), (dbUser) => {
@@ -50,23 +54,27 @@ function LoginScreen({ navigation }) {
               onChangeText={(newText) => {
                 setPassword(newText);
               }}
+              secureTextEntry
             />
           </View>
-          <Button
-            style={styles.login_button}
-            accessibilityLabel="login-button"
-            onPress={handleLogin}
-          >
-            Login
-          </Button>
-
-          <Text
-            onPress={() => {
-              navigation.navigate('Sign-up');
-            }}
-          >
-            If you dont have an account, sign up here
-          </Text>
+          <View>
+            <Button
+              style={styles.login_button}
+              accessibilityLabel="login-button"
+              onPress={handleLogin}
+            >
+              Login
+            </Button>
+            <Button
+              style={styles.login_button}
+              accessibilityLabel="login-button"
+              onPress={() => {
+                navigation.navigate('Sign-up');
+              }}
+            >
+              Sign Up
+            </Button>
+          </View>
         </KeyboardAvoidingView>
       </View>
     </>

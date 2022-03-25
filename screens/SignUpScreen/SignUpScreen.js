@@ -39,49 +39,47 @@ function SignUpScreen({ navigation }) {
   const [userBio, setUserBio] = useState('');
   const [userBioValid, setUserBioValid] = useState(true);
 
-  const [validSignUp, setValidSignUp] = useState(true);
-
   const handleSignUp = () => {
     // form validation
 
-    setValidSignUp(true);
+    let validSignUp = true;
 
     if (!/^.+@.+.[.].+$/.test(email)) {
       setEmailValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (password === '' || confirmPassword === '') {
       setPasswordValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (password !== confirmPassword) {
       setPasswordValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (!/^[a-zA-Z]+$/.test(firstName)) {
       setFirstNameValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (!/^[a-zA-Z]+$/.test(lastName)) {
       setLastNameValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
       setAvatarUrlValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
     if (userBio.length < 100 || userBio.length > 200) {
       setUserBioValid(false);
-      setValidSignUp(false);
+      validSignUp = false;
     }
 
-    if (!validSignUp) return undefined;
+    if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((res) => {
@@ -113,8 +111,6 @@ function SignUpScreen({ navigation }) {
         navigation.navigate(`${userTypeIn}LandingScreen`);
       })
       .catch((error) => alert(error.message));
-
-    return undefined;
   };
 
   return (
@@ -302,7 +298,7 @@ function SignUpScreen({ navigation }) {
           <Button
             style={styles.login_button}
             accessibilityLabel="login-button"
-            onPress={handleSignUp}
+            onPress={() => handleSignUp()}
           >
             Sign Up
           </Button>

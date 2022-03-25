@@ -4,12 +4,14 @@ import { useContext, useEffect, useState } from 'react';
 import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
+import Nav from '../../components/Nav/Nav';
 import styles from './styles';
 
 
-function MyDogsScreen({ navigation }) {
+function MyDogsScreen({ navigation, route }) {
 
   const { user } = useContext(UserContext);
+
 
   const [myDogs, setMyDogs] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -69,6 +71,7 @@ function MyDogsScreen({ navigation }) {
             <ScrollView>
               <Text style={styles.item}>{item.title + " - " + item.data[0]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
+              <Text style={styles.item}>{item.data[1]}</Text>
               <Button
                 style={styles.edit}
                 onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title, image: item.image, info: item.data }); }}>
@@ -84,7 +87,7 @@ function MyDogsScreen({ navigation }) {
         style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog} >
         Add Dog
       </Button >
-
+      <Nav navigation={navigation} />
     </View >
   );
 }

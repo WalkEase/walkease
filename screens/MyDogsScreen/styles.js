@@ -5,7 +5,7 @@ export default StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         backgroundColor: '#718355',
-        maxHeight: '90%'
+        maxHeight: '100%'
     },
 
     no_dog_container: {

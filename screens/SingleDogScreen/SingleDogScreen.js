@@ -1,9 +1,10 @@
 import { Text, TextInput, View, ScrollView, KeyboardAvoidingView, Image } from 'react-native';
-import { onValue, ref } from 'firebase/database';
+import { onValue, ref, set } from 'firebase/database';
 import { useContext, useEffect, useState } from 'react';
 import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
+import Nav from '../../components/Nav/Nav';
 import styles from './styles';
 
 const SingleDogScreen = ({ navigation, route }) => {
@@ -20,10 +21,6 @@ const SingleDogScreen = ({ navigation, route }) => {
     const [dogBio, setDogBio] = useState(info[1]);
     const [dogPostCode, setDogPostCode] = useState(info[2]);
 
-
-    const [dogAge, setDogAge] = useState("");
-
-
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -35,19 +32,23 @@ const SingleDogScreen = ({ navigation, route }) => {
         });
     }, []);
 
-    console.log(info, "info")
-
+    console.log(info, "info");
+    console.log(user.uid, "user");
     console.log(name, "name");
     console.log(dogToEdit, "dog to edit");
-    console.log(changes, "changes");
+    console.log(changes, "changes 1");
 
     const handleSubmitChanges = () => {
+
+
         changes.dogBio = dogBio;
         changes.size = dogSize;
         changes.name = dogName;
+        changes.imageUrl = dogUrl;
 
-        console.log(changes, "after submit");
-        alert("Still in building proccess");
+        console.log(changes, "before set")
+
+        set(ref(database, `data/dogs/${user.uid}/${name}`), changes);
     }
 
     if (isLoading)
@@ -102,6 +103,7 @@ const SingleDogScreen = ({ navigation, route }) => {
                                 }}
                             />
                         </View>
+
                         <View>
                             <Text style={styles.header}>Size: {dogSize} </Text>
                             <TextInput
@@ -112,7 +114,6 @@ const SingleDogScreen = ({ navigation, route }) => {
                                     setDogSize(newText);
                                 }}
                             />
-
                         </View>
 
                         <View>
@@ -125,12 +126,7 @@ const SingleDogScreen = ({ navigation, route }) => {
                                     setDogPostCode(newText);
                                 }}
                             />
-
                         </View>
-
-
-
-
                     </View>
 
                     <Button
@@ -141,7 +137,10 @@ const SingleDogScreen = ({ navigation, route }) => {
                     </Button>
 
                 </KeyboardAvoidingView>
+
             </ScrollView>
+
+            <Nav navigation={navigation} />
         </View>
     )
 

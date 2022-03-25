@@ -52,7 +52,7 @@ export default StyleSheet.create({
     },
 
     header: {
-        fontSize: 30,
+        fontSize: 24,
         fontWeight: 'bold',
         color: 'black',
     },

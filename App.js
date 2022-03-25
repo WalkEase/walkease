@@ -34,7 +34,7 @@ export default function App() {
           />
           <Stack.Screen
             name="MyDogsScreen"
-            options={{ headerShown: false }}
+            options={{ headerShown: true }}
             component={MyDogsScreen}
           />
           <Stack.Screen
@@ -78,6 +78,7 @@ export default function App() {
             options={{ headerShown: true }}
             component={SingleDogScreen}
           />
+
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

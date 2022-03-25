@@ -5,7 +5,7 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#718355',
+    backgroundColor: 'white',
   },
 
   main_contain: {
@@ -17,10 +17,10 @@ export default StyleSheet.create({
 
   login_inputs_container: {
     color: 'black',
-    backgroundColor: '#718355',
     width: '60%',
     padding: 5,
     borderRadius: 5,
+    marginTop: 20,
   },
 
   login_input: {
@@ -29,7 +29,9 @@ export default StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
-    borderWidth: 1,
+    borderBottomWidth: 2,
+    borderBottomColor: '#386641',
+    marginVertical: 5,
   },
 
   login_button: {
@@ -45,14 +47,27 @@ export default StyleSheet.create({
 
   picker: {
     backgroundColor: 'white',
-    marginTop: 5,
-    borderWidth: 1,
+    marginTop: 0,
+
     borderRadius: 10,
+    borderColor: '#386641',
   },
 
   header: {
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
+  },
+
+  invalid_input: {
+    opacity: 0.85,
+    color: '#bc4749',
+  },
+  nav_container: {
+    width: '100%',
+    height: '5%',
+    backgroundColor: '#386641',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

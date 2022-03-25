@@ -22,7 +22,6 @@ function ListAWalkScreen({ navigation }) {
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
 
   useEffect(() => {
-    console.log('useEffect');
     onValue(
       ref(database, `data/dogs/${user.uid}`),
       (res) => {
@@ -132,16 +131,16 @@ function ListAWalkScreen({ navigation }) {
               }}
             />
           </View>
-          <View style={styles.picker}>
+          <View style={styles.login_input}>
             <Picker
-              style={{ height: 50, width: 150 }}
+              style={{ height: 17, width: 180 }}
               selectedValue={dogData}
               onValueChange={(itemValue) => {
                 setDogData(itemValue);
               }}
             >
               {dogDataArray.map((dog) => (
-                <Picker.Item label={dog.name} value={dog} />
+                <Picker.Item label={dog.name} value={dog.name} />
               ))}
             </Picker>
           </View>

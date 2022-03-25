@@ -1,51 +1,40 @@
 import { KeyboardAvoidingView, Text, TextInput, View, ScrollView } from 'react-native';
 
-import React, { useState, useContext, useEffect } from 'react';
+import { useState } from 'react';
 
 import Button from 'react-native-button';
-import { set, ref, onValue } from 'firebase/database';
-import dogContext from '../../contexts/DogsContext';
+import { set, ref } from 'firebase/database';
+// import DogsContext from '../../contexts/DogsContext';
 import { database } from '../../firebase';
-import styles from './styles';
+import styles from './Styles';
 
 function AddDogScreen() {
   const [name, setName] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [DoB, setDoB] = useState('');
   const [size, setSize] = useState('');
   const [bio, setBio] = useState('');
-  const [postCode, setPostCode] = useState('');  
+  const [postCode, setPostCode] = useState('');
 
-    console.log(database);   
-
-    const handleAddDog = () => {
-    // If ( dog does not currently exist on owner's 'My Dogs' page ) {
-        // console.log(database);
-        if ()
-        createDogWithName(name)
-            .then((res) => {
-                console.log(res)
-            })
-    }
-        //then 
-        .then((res) => {
-          console.log(res.user);
-          set(ref(database, `data/users/${res.user.uid}`), {
-            uid: res.user.uid,
-            createdAt: Date.now(),
-            email: `${email}`,
-            userType,
-            firstName,
-            lastName,
-            postCode,
-            dateOfBirth: DoB,
-            avatarURL,
-          });
-        })
-        .then((res) => {})
-        .catch((error) => alert(error.message));
-    } else {
-      alert('Passwords must match');
-    }
+  // Following Bryn's advice, checking whether an owner already has a dog with the same name,
+  // before adding a new one, has been added as an Extra Feature Ticket (#28)
+  const handleAddDog = (name, imageUrl, DoB, size, bio, postCode) => {
+    // function addDogWithProps(name, imageUrl, DoB, size, bio, postCode) => {
+    set(ref(database, 'data/dogs/' + `data/users/${res.user.uid}` + `dog${dogCounter++}`), {
+      createdAt: Date.now(),
+      name,
+      imageUrl,
+      dateOfBirth: DoB,
+      size,
+      dogBio: bio,
+      postCode,
+    })
+      .then(() => {
+        alert('Dog successfully added');
+      })
+      .catch((err) => alert(err.message));
   };
+  // }
 
   return (
     <View style={styles.main_contain}>
@@ -60,6 +49,27 @@ function AddDogScreen() {
               placeholder="Name"
               onChangeText={(newText) => {
                 setName(newText);
+              }}
+            />
+
+            <TextInput
+              style={styles.login_input}
+              defaultValue={imageUrl}
+              placeholder="Add Image URL here..."
+              // Still need to check this input is an URL
+              onChangeText={(newText) => {
+                setImageUrl(newText);
+              }}
+            />
+
+            <TextInput
+              style={styles.login_input}
+              defaultValue={DoB}
+              placeholder="Date of Birth"
+              // Still need to get this input to only accept dates,
+              // as onChangeText favours strings
+              onChangeText={(newNumber) => {
+                setDoB(newNumber);
               }}
             />
 
@@ -90,13 +100,14 @@ function AddDogScreen() {
               }}
             />
 
-          <Button
-            style={styles.login_button}
-            accessibilityLabel="add-a-dog-button"
-            onPress={handleAddDog}
-          >
-            Add Dog
-          </Button>
+            <Button
+              style={styles.login_button}
+              accessibilityLabel="add-a-dog-button"
+              onPress={handleAddDog}
+            >
+              Add Dog
+            </Button>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>

@@ -6,14 +6,11 @@ import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import styles from './styles';
 
-
 function MyDogsScreen({ navigation }) {
-
   const { user } = useContext(UserContext);
 
   const [myDogs, setMyDogs] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     onValue(ref(database, `data/dogs/${user.uid}`), (res) => {
@@ -22,20 +19,16 @@ function MyDogsScreen({ navigation }) {
     });
   }, []);
 
-
-  const dogsArray = (myDogs !== null) ? Object.keys(myDogs) : [];
-  const dogSections = dogsArray.map((dog) => {
-    return {
-      title: dog,
-      data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode],
-      image: myDogs[dog].imageUrl
-    }
-  })
-
+  const dogsArray = myDogs !== null ? Object.keys(myDogs) : [];
+  const dogSections = dogsArray.map((dog) => ({
+    title: dog,
+    data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode],
+    image: myDogs[dog].imageUrl,
+  }));
 
   const handleAddDog = () => {
-    alert("Page currently not available")
-  }
+    alert('Page currently not available');
+  };
 
   if (isLoading)
     return (
@@ -49,43 +42,51 @@ function MyDogsScreen({ navigation }) {
       <View style={styles.no_dog_container}>
         <Text> You have no dogs added</Text>
 
-        <Button
-          style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
+        <Button style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
           Add Dog
         </Button>
-
       </View>
     );
 
   return (
     <View style={styles.main_container}>
-
-      <Text style={styles.header}>My Lovely Dogs  </Text>
+      <Text style={styles.header}>My Lovely Dogs </Text>
 
       <FlatList
         data={dogSections}
-        renderItem={({ item }) =>
+        renderItem={({ item }) => (
           <View>
             <ScrollView>
-              <Text style={styles.item}>{item.title + " - " + item.data[0]}</Text>
+              <Text style={styles.item}>{`${item.title} - ${item.data[0]}`}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
               <Button
                 style={styles.edit}
-                onPress={() => { navigation.navigate('SingleDogScreen', { name: item.title, image: item.image, info: item.data }); }}>
+                onPress={() => {
+                  navigation.navigate('SingleDogScreen', {
+                    name: item.title,
+                    image: item.image,
+                    info: item.data,
+                  });
+                }}
+              >
                 Edit
               </Button>
             </ScrollView>
           </View>
-
-        }
+        )}
       />
 
-      < Button
-        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog} >
+      <Button
+        style={styles.addDog}
+        accessibilityLabel="add-dog-button"
+        // onPress={handleAddDog}>
+        onPress={() => {
+          navigation.navigate('AddDogScreen');
+        }}
+      >
         Add Dog
-      </Button >
-
-    </View >
+      </Button>
+    </View>
   );
 }
 

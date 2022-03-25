@@ -6,7 +6,7 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    maxHeight: '50%',
+    // maxHeight: '50%',
   },
 
   main_contain: {

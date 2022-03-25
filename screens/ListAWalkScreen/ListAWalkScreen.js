@@ -1,6 +1,6 @@
 import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
-import { set, ref, onValue, push, update, ServerValue, firebase, postRef } from 'firebase/database';
+import { ref, onValue, push, update } from 'firebase/database';
 import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
@@ -15,7 +15,6 @@ function ListAWalkScreen({ navigation }) {
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
   const [dogObject, setDogsObject] = useState('');
-  const [pickDog, setPickDog] = useState('');
   const [dogData, setDogData] = useState('');
   const [dateTime, setDateTime] = useState('');
 
@@ -58,9 +57,9 @@ function ListAWalkScreen({ navigation }) {
           if (data.status === 'ZERO_RESULTS') {
             alert('Please provide valid post Code API');
           } else {
-            const test = push(ref(database, `data/walks/${user.uid}`), {
+            const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
               createdAt: Date.now(),
-              dogId: dogData.dogId,
+              // dogId: dogData.dogId,
               dogName: dogData.name,
               walkDesc,
               walkRequirements,
@@ -69,8 +68,8 @@ function ListAWalkScreen({ navigation }) {
               postCode,
               coordinates: data.results[0].geometry.location,
             });
-            update(ref(database, `data/walks/${user.uid}/${test.key}`), {
-              walkId: test.key,
+            update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
+              walkId: updateWalk.key,
             });
           }
         })
@@ -82,7 +81,6 @@ function ListAWalkScreen({ navigation }) {
       return alert('Please provide valid post Code regex');
     }
   }
-  console.log(dogData);
   return (
     <View style={styles.main_contain}>
       <ScrollView>

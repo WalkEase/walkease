@@ -114,197 +114,202 @@ function SignUpScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.main_contain}>
-      <ScrollView>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <View style={styles.login_inputs_container}>
-            <Text style={styles.header}>WalkEase</Text>
+    <>
+      <View style={styles.main_contain}>
+        <ScrollView>
+          <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <View style={styles.login_inputs_container}>
+              <TextInput
+                style={styles.login_input}
+                defaultValue={email}
+                placeholder="Email"
+                onChangeText={(newText) => {
+                  setEmail(newText);
+                }}
+                onFocus={() => {
+                  setEmailValid(true);
+                }}
+                onBlur={() => setEmailValid(/^.+@.+.[.].+$/.test(email))}
+              />
+              {!emailValid ? (
+                <Text style={styles.invalid_input}>* Invalid email format</Text>
+              ) : (
+                false
+              )}
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={email}
-              placeholder="Email"
-              onChangeText={(newText) => {
-                setEmail(newText);
-              }}
-              onFocus={() => {
-                setEmailValid(true);
-              }}
-              onBlur={() => setEmailValid(/^.+@.+.[.].+$/.test(email))}
-            />
-            {!emailValid ? <Text style={styles.invalid_input}>* Invalid email format</Text> : false}
+              <TextInput
+                style={styles.login_input}
+                defaultValue={password}
+                placeholder="Password"
+                onChangeText={(newText) => {
+                  setPassword(newText);
+                }}
+                onFocus={() => setPasswordValid(true)}
+                onBlur={() => {
+                  if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                    setPasswordValid(false);
+                  }
+                }}
+                secureTextEntry
+              />
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={password}
-              placeholder="Password"
-              onChangeText={(newText) => {
-                setPassword(newText);
-              }}
-              onFocus={() => setPasswordValid(true)}
-              onBlur={() => {
-                if (password === '' || confirmPassword === '' || password !== confirmPassword) {
-                  setPasswordValid(false);
-                }
-              }}
-              secureTextEntry
-            />
+              <TextInput
+                style={styles.login_input}
+                defaultValue={confirmPassword}
+                placeholder="Confirm password"
+                onChangeText={(newText) => {
+                  setConfirmPassword(newText);
+                }}
+                onFocus={() => setPasswordValid(true)}
+                onBlur={() => {
+                  if (password === '' || confirmPassword === '' || password !== confirmPassword) {
+                    setPasswordValid(false);
+                  }
+                }}
+                secureTextEntry
+              />
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={confirmPassword}
-              placeholder="Confirm password"
-              onChangeText={(newText) => {
-                setConfirmPassword(newText);
-              }}
-              onFocus={() => setPasswordValid(true)}
-              onBlur={() => {
-                if (password === '' || confirmPassword === '' || password !== confirmPassword) {
-                  setPasswordValid(false);
-                }
-              }}
-              secureTextEntry
-            />
+              {!passwordValid ? (
+                <Text style={styles.invalid_input}>
+                  * Please enter matching passwords in both fields
+                </Text>
+              ) : (
+                false
+              )}
 
-            {!passwordValid ? (
-              <Text style={styles.invalid_input}>
-                * Please enter matching passwords in both fields
-              </Text>
-            ) : (
-              false
-            )}
+              <View style={styles.picker}>
+                <Picker
+                  selectedValue={userType}
+                  onValueChange={(itemValue) => setUserType(itemValue)}
+                >
+                  <Picker.Item label="Owner" value="Owner" />
+                  <Picker.Item label="Walker" value="Walker" />
+                </Picker>
+              </View>
 
-            <View style={styles.picker}>
-              <Picker
-                selectedValue={userType}
-                onValueChange={(itemValue) => setUserType(itemValue)}
-              >
-                <Picker.Item label="Owner" value="Owner" />
-                <Picker.Item label="Walker" value="Walker" />
-              </Picker>
+              <TextInput
+                style={styles.login_input}
+                defaultValue={firstName}
+                placeholder="First Name"
+                onChangeText={(newText) => {
+                  setFirstName(newText);
+                }}
+                onFocus={() => {
+                  setFirstNameValid(true);
+                }}
+                onBlur={() => {
+                  setFirstNameValid(/^[a-zA-Z]+$/.test(firstName));
+                }}
+              />
+
+              {!firstNameValid ? (
+                <Text style={styles.invalid_input}>
+                  * First Name must be UPPERCASE and lowercase letters only
+                </Text>
+              ) : (
+                false
+              )}
+
+              <TextInput
+                style={styles.login_input}
+                defaultValue={lastName}
+                placeholder="Last Name"
+                onChangeText={(newText) => {
+                  setLastName(newText);
+                }}
+                onFocus={() => {
+                  setLastNameValid(true);
+                }}
+                onBlur={() => {
+                  setLastNameValid(/^[a-zA-Z]+$/.test(lastName));
+                }}
+              />
+
+              {!lastNameValid ? (
+                <Text style={styles.invalid_input}>
+                  * Last Name must be UPPERCASE and lowercase letters only
+                </Text>
+              ) : (
+                false
+              )}
+
+              <TextInput
+                style={styles.login_input}
+                defaultValue={postCode}
+                placeholder="Post Code"
+                onChangeText={(newText) => {
+                  setPostCode(newText);
+                }}
+              />
+
+              <TextInput
+                style={styles.login_input}
+                defaultValue={DoB}
+                placeholder="DD/MM/YYYY"
+                onChangeText={(newText) => {
+                  setDoB(newText);
+                }}
+              />
+
+              <TextInput
+                style={styles.login_input}
+                defaultValue={avatarUrl}
+                placeholder="Web link to image"
+                onChangeText={(newText) => {
+                  setAvatarUrl(newText);
+                }}
+                onFocus={() => {
+                  setAvatarUrlValid(true);
+                }}
+                onBlur={() => {
+                  setAvatarUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+                }}
+              />
+
+              {!avatarUrlValid ? (
+                <Text style={styles.invalid_input}>* Invalid avatar URL, must be PNG/JPG</Text>
+              ) : (
+                false
+              )}
+
+              <TextInput
+                style={styles.login_input}
+                multiline
+                defaultValue={userBio}
+                placeholder="Tell me about yourself"
+                onChangeText={(newText) => {
+                  setUserBio(newText);
+                }}
+                onFocus={() => {
+                  setUserBioValid(true);
+                }}
+                onBlur={() => {
+                  if (userBio.length < 100 || userBio.length > 200) setUserBioValid(false);
+                }}
+              />
+              <Text>{userBio.length} chars</Text>
+
+              {!userBioValid ? (
+                <Text style={styles.invalid_input}>
+                  {`Bio must be between 100 - 200 chars... Current length: ${userBio.length} chars`}
+                </Text>
+              ) : (
+                false
+              )}
             </View>
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={firstName}
-              placeholder="First Name"
-              onChangeText={(newText) => {
-                setFirstName(newText);
-              }}
-              onFocus={() => {
-                setFirstNameValid(true);
-              }}
-              onBlur={() => {
-                setFirstNameValid(/^[a-zA-Z]+$/.test(firstName));
-              }}
-            />
-
-            {!firstNameValid ? (
-              <Text style={styles.invalid_input}>
-                * First Name must be UPPERCASE and lowercase letters only
-              </Text>
-            ) : (
-              false
-            )}
-
-            <TextInput
-              style={styles.login_input}
-              defaultValue={lastName}
-              placeholder="Last Name"
-              onChangeText={(newText) => {
-                setLastName(newText);
-              }}
-              onFocus={() => {
-                setLastNameValid(true);
-              }}
-              onBlur={() => {
-                setLastNameValid(/^[a-zA-Z]+$/.test(lastName));
-              }}
-            />
-
-            {!lastNameValid ? (
-              <Text style={styles.invalid_input}>
-                * Last Name must be UPPERCASE and lowercase letters only
-              </Text>
-            ) : (
-              false
-            )}
-
-            <TextInput
-              style={styles.login_input}
-              defaultValue={postCode}
-              placeholder="Post Code"
-              onChangeText={(newText) => {
-                setPostCode(newText);
-              }}
-            />
-
-            <TextInput
-              style={styles.login_input}
-              defaultValue={DoB}
-              placeholder="DD/MM/YYYY"
-              onChangeText={(newText) => {
-                setDoB(newText);
-              }}
-            />
-
-            <TextInput
-              style={styles.login_input}
-              defaultValue={avatarUrl}
-              placeholder="Web link to image"
-              onChangeText={(newText) => {
-                setAvatarUrl(newText);
-              }}
-              onFocus={() => {
-                setAvatarUrlValid(true);
-              }}
-              onBlur={() => {
-                setAvatarUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
-              }}
-            />
-
-            {!avatarUrlValid ? (
-              <Text style={styles.invalid_input}>* Invalid avatar URL, must be PNG/JPG</Text>
-            ) : (
-              false
-            )}
-
-            <TextInput
-              style={styles.login_input}
-              multiline
-              defaultValue={userBio}
-              placeholder="Tell me about yourself"
-              onChangeText={(newText) => {
-                setUserBio(newText);
-              }}
-              onFocus={() => {
-                setUserBioValid(true);
-              }}
-              onBlur={() => {
-                if (userBio.length < 100 || userBio.length > 200) setUserBioValid(false);
-              }}
-            />
-            <Text>{userBio.length} chars</Text>
-
-            {!userBioValid ? (
-              <Text style={styles.invalid_input}>
-                {`Bio must be between 100 - 200 chars... Current length: ${userBio.length} chars`}
-              </Text>
-            ) : (
-              false
-            )}
-          </View>
-
-          <Button
-            style={styles.login_button}
-            accessibilityLabel="login-button"
-            onPress={() => handleSignUp()}
-          >
-            Sign Up
-          </Button>
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+            <Button
+              style={styles.login_button}
+              accessibilityLabel="login-button"
+              onPress={() => handleSignUp()}
+            >
+              Sign Up
+            </Button>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
+      <View style={styles.nav_container}></View>
+    </>
   );
 }
 

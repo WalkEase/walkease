@@ -25,7 +25,7 @@ function MyDogsScreen({ navigation, route }) {
   }, []);
 
 
-  const dogsArray = (myDogs !== null) ? Object.keys(myDogs).slice(0, -1) : [];
+  const dogsArray = (myDogs !== null) ? Object.keys(myDogs) : [];
   const dogSections = dogsArray.map((dog) => {
     const listId = dog;
     return {
@@ -37,7 +37,7 @@ function MyDogsScreen({ navigation, route }) {
   })
 
   const handleAddDog = () => {
-    alert("Page currently not available")
+    navigation.navigate('AddDogScreen');
   }
 
   const handleGoToListWalk = () => {
@@ -83,8 +83,8 @@ function MyDogsScreen({ navigation, route }) {
 
               </View>
               <Text style={styles.item_born}>Born: {item.data[3]}</Text>
-              <Text style={styles.item_size}>Size :{item.data[0]}</Text>
-              <Text style={styles.item_size}>Info: {item.data[1]}</Text>
+              <Text style={styles.item_size}>{item.data[0]}</Text>
+              <Text style={styles.item}>{item.data[1]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
 
               <Button

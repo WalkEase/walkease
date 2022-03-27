@@ -1,51 +1,60 @@
-import { KeyboardAvoidingView, Text, TextInput, View, ScrollView } from 'react-native';
-
-import React, { useState, useContext, useEffect } from 'react';
-
+import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker } from 'react-native';
+import { useState, useContext } from 'react';
 import Button from 'react-native-button';
-import { set, ref, onValue } from 'firebase/database';
-import dogContext from '../../contexts/DogsContext';
+import { set, ref, push } from 'firebase/database';
 import { database } from '../../firebase';
-import styles from './styles';
+import UserContext from '../../contexts/UserContext';
+import styles from './Styles';
 
 function AddDogScreen() {
+
+
+  const { user } = useContext(UserContext);
+
   const [name, setName] = useState('');
-  const [size, setSize] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [DoB, setDoB] = useState('');
+  const [size, setSize] = useState('Medium');
+
+  // Dog Bio states
   const [bio, setBio] = useState('');
-  const [postCode, setPostCode] = useState('');  
+  const [bioValid, setBioValid] = useState(true);
 
-    console.log(database);   
 
-    const handleAddDog = () => {
-    // If ( dog does not currently exist on owner's 'My Dogs' page ) {
-        // console.log(database);
-        if ()
-        createDogWithName(name)
-            .then((res) => {
-                console.log(res)
-            })
+  const [postCode, setPostCode] = useState(user.postCode);
+
+
+  const handleAddDog = () => {
+
+    let validDogAdd = true;
+
+    if (bio.length < 100 || bio.length > 200) {
+      setBioValid(false);
+      validDogAdd = false;
     }
-        //then 
-        .then((res) => {
-          console.log(res.user);
-          set(ref(database, `data/users/${res.user.uid}`), {
-            uid: res.user.uid,
-            createdAt: Date.now(),
-            email: `${email}`,
-            userType,
-            firstName,
-            lastName,
-            postCode,
-            dateOfBirth: DoB,
-            avatarURL,
-          });
-        })
-        .then((res) => {})
-        .catch((error) => alert(error.message));
-    } else {
-      alert('Passwords must match');
-    }
+
+    if (!validDogAdd) return alert("Please check you've entered all information correctly");
+
+    push(ref(database, `data/dogs/${user.uid}`), {
+
+      createdAt: Date.now(),
+      name,
+      imageUrl,
+      dateOfBirth: DoB,
+      size,
+      dogBio: bio,
+      postCode,
+
+    }).then((res) => {
+      console.log(res);
+      alert("Dog added successfully");
+    }).catch((err) => {
+      alert(err.message);
+    })
+
+
   };
+
 
   return (
     <View style={styles.main_contain}>
@@ -65,21 +74,59 @@ function AddDogScreen() {
 
             <TextInput
               style={styles.login_input}
-              defaultValue={size}
-              placeholder="Size"
+              defaultValue={imageUrl}
+              placeholder="Add Image URL here..."
               onChangeText={(newText) => {
-                setSize(newText);
+                setImageUrl(newText);
               }}
             />
 
             <TextInput
               style={styles.login_input}
+              defaultValue={DoB}
+              placeholder="Date of Birth"
+              onChangeText={(newNumber) => {
+                setDoB(newNumber);
+              }}
+            />
+
+            <View style={styles.picker}>
+              <Picker
+                selectedValue={size}
+                onValueChange={(itemValue) => setSize(itemValue)}
+              >
+                <Picker.Item label="Very Small" value="Very Small" />
+                <Picker.Item label="Small" value="Small" />
+                <Picker.Item label="Medium" value="Medium" />
+                <Picker.Item label="Large" value="Large" />
+                <Picker.Item label="Very Large" value="Very Large" />
+              </Picker>
+            </View>
+
+            <TextInput
+              style={styles.login_input}
+              multiline
               defaultValue={bio}
               placeholder="Tell me more about your dog..."
               onChangeText={(newText) => {
                 setBio(newText);
               }}
+              onFocus={() => {
+                setBioValid(true);
+              }}
+              onBlur={() => {
+                if (bio.length < 100 || bio.length > 200) setBioValid(false);
+              }}
             />
+            <Text>{bio.length} chars</Text>
+
+            {!bioValid ? (
+              <Text style={styles.invalid_input}>
+                {`Dog info must be between 100 - 200 chars... Current length: ${bio.length} chars`}
+              </Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -90,13 +137,14 @@ function AddDogScreen() {
               }}
             />
 
-          <Button
-            style={styles.login_button}
-            accessibilityLabel="add-a-dog-button"
-            onPress={handleAddDog}
-          >
-            Add Dog
-          </Button>
+            <Button
+              style={styles.login_button}
+              accessibilityLabel="add-a-dog-button"
+              onPress={handleAddDog}
+            >
+              Add Dog
+            </Button>
+          </View>
         </KeyboardAvoidingView>
       </ScrollView>
     </View>

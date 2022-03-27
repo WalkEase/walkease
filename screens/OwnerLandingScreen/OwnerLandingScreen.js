@@ -10,7 +10,6 @@ function OwnerLandingScreen({ navigation }) {
 
   return (
     <>
-      <Header />
       <View style={styles.main_container}>
         <Image
           style={styles.avatar}

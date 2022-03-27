@@ -16,6 +16,9 @@ import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/Wal
 import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
 import AddDogScreen from './screens/AddDogScreen/AddDogScreen';
 
+import { StatusBar } from 'react-native';
+import Header from './components/Header/Header';
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -24,6 +27,8 @@ export default function App() {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
+        <StatusBar barStyle="light-content" />
+        <Header />
         <Stack.Navigator>
           <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
           <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />

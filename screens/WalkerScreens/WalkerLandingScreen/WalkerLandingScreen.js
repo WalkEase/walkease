@@ -10,7 +10,6 @@ function WalkerLandingScreen({ navigation }) {
 
   return (
     <>
-      <Header />
       <View style={styles.main_container}>
         <View style={styles.welcome_contain}></View>
         <Image

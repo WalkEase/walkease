@@ -35,7 +35,6 @@ function LoginScreen({ navigation }) {
 
   return (
     <>
-      <Header />
       <View style={styles.main_contain}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={styles.login_inputs_container}>
@@ -77,6 +76,7 @@ function LoginScreen({ navigation }) {
           </View>
         </KeyboardAvoidingView>
       </View>
+      <View style={styles.nav_container}></View>
     </>
   );
 }

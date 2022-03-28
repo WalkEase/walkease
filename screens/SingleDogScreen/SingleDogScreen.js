@@ -5,6 +5,7 @@ import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
+import { config } from '../../.api';
 import styles from './styles';
 
 const SingleDogScreen = ({ navigation, route }) => {
@@ -34,15 +35,20 @@ const SingleDogScreen = ({ navigation, route }) => {
 
     // postCode state
     const [dogPostCode, setDogPostCode] = useState(info[2]);
+    const [dogValidPostCode, setDogValidPostCode] = useState(true);
+
 
     //date of birthstate
     const [dogDateOfBirth, setDogDateOfBirth] = useState(info[3]);
     const [dogDateOfBirthValid, setDogDateOfBirthValid] = useState(true);
 
-
-
+    // loading state
     const [isLoading, setIsLoading] = useState(true);
 
+    const DateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
+    const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
+
+    const regexDateSecond = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/;
     useEffect(() => {
         onValue(ref(database, `data/dogs/${user.uid}/${dog}`), (res) => {
             setDogToEdit(res.val());
@@ -51,38 +57,50 @@ const SingleDogScreen = ({ navigation, route }) => {
         });
     }, []);
 
-    console.log(user.uid, "user");
-    console.log(name, "name");
-    console.log(dog, "id");
-    console.log(dogToEdit, "dog to edit");
-    console.log(changes, "changes 1");
-
     const handleSubmitChanges = () => {
+        setIsLoading(true);
 
         let validChanges = true;
+        let postCodeRegexPass = false;
 
         if (!/^[a-zA-Z]+$/.test(dogName)) {
             setDogNameValid(false);
+            console.log("name")
             validChanges = false;
         }
 
         if (!/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl)) {
             setDogUrlValid(false);
+            console.log("url")
             validChanges = false;
         }
 
         if (dogBio.length < 100 || dogBio.length > 200) {
             setDogBioValid(false);
+            console.log("bio")
             validChanges = false;
         }
 
-        if (!/^[0-3]?[0-9][/](?:0[1-9]|1[012])[/](?:[0-9]{2})?[0-9]{2}$/.test(dogDateOfBirth)) {
+        if (!regexDateSecond.test(dogDateOfBirth)) {
             setDogDateOfBirthValid(false);
             validChanges = false;
+            console.log("data")
+        }
+
+        if (!postCodeRegex.test(dogPostCode)) {
+            setDogDateOfBirthValid(false);
+            validChanges = false;
+            postCodeRegexPass = true;
+            console.log("postcode")
         }
 
 
-        if (!validChanges) return alert("Please check you've entered all information correctly");
+        if (!validChanges) {
+            setIsLoading(false);
+            console.log("passed not valid")
+            const alertString = (postCodeRegexPass === true) ? "Please provide valid post code" : "Please check you've entered all information correctly"
+            return alert(alertString);
+        }
 
         changes.dogBio = dogBio;
         changes.size = dogSize;
@@ -93,13 +111,39 @@ const SingleDogScreen = ({ navigation, route }) => {
         changes.createdAt = dogToEdit.createdAt;
         changes.dogId = dogToEdit.dogId;
 
-        set(ref(database, `data/dogs/${user.uid}/${dog}`), changes).then((res) => {
-            navigation.navigate('MyDogsScreen');
-        }).then(() => {
-            alert("Dog updated successfully");
-        }).catch((err) => {
-            alert(err.message);
-        })
+
+        fetch
+            (
+                `https://maps.googleapis.com/maps/api/geocode/json?address=${changes.postCode}&key=${config.MY_API_KEY}`
+            )
+            .then((response) => response.json())
+            .then((data) => {
+
+
+                console.log("---------------------------");
+                console.log(data);
+
+
+                if (data.status === 'ZERO_RESULTS') {
+
+                    console.log("wrong post code")
+                    throw 'Please provide valid Post Code Error: API 2';
+                } else {
+                    console.log(data);
+                    set(ref(database, `data/dogs/${user.uid}/${dog}`), changes)
+                }
+            })
+            .then((res) => {
+                navigation.navigate('MyDogsScreen');
+            }).then(() => {
+                setIsLoading(false);
+                alert("Dog updated successfully");
+            }).catch((err) => {
+                setIsLoading(false);
+                console.log(err);
+                if (err === "Please provide valid Post Code Error: API 2") alert(err);
+                else alert(err.message);
+            })
     }
 
 
@@ -216,7 +260,7 @@ const SingleDogScreen = ({ navigation, route }) => {
                                         setDogDateOfBirthValid(true);
                                     }}
                                     onBlur={() => {
-                                        setDogDateOfBirthValid(/^[0-3]?[0-9][/](?:0[1-9]|1[012])[/](?:[0-9]{2})?[0-9]{2}$/.test(dogDateOfBirth));
+                                        setDogDateOfBirthValid(regexDateSecond.test(dogDateOfBirth));
                                     }}
                                 />
 
@@ -253,7 +297,21 @@ const SingleDogScreen = ({ navigation, route }) => {
                                     onChangeText={(newText) => {
                                         setDogPostCode(newText);
                                     }}
+
+                                    onFocus={() => {
+                                        setDogValidPostCode(true);
+                                    }}
+                                    onBlur={() => {
+                                        setDogValidPostCode(postCodeRegex.test(dogPostCode));
+                                    }}
                                 />
+
+                                {!dogValidPostCode ? (
+                                    <Text style={styles.invalid_input}>* Invalid Post Code </Text>
+                                ) : (
+                                    false
+                                )}
+
                             </View>
                         </View>
 

@@ -71,6 +71,7 @@ function MyDogsScreen({ navigation, route }) {
       <FlatList
         style={styles.sectionHeader}
         data={dogSections}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) =>
           <View >
             <ScrollView>

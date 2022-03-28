@@ -5,22 +5,25 @@ import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
-//import { config } from '../../.api';
+import { config } from '../../.api';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
   const [walkRequirements, setWalkRequirements] = useState('');
   const [walkMinutes, setWalkMinutes] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [dogObject, setDogsObject] = useState('');
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
-  const [dogObject, setDogsObject] = useState('');
   const [dogData, setDogData] = useState('');
   const [dateTime, setDateTime] = useState('');
+
+  console.log(dogData);
 
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
 
+  // fetching owners dogs data:
   useEffect(() => {
     onValue(
       ref(database, `data/dogs/${user.uid}`),
@@ -40,11 +43,12 @@ function ListAWalkScreen({ navigation }) {
       </View>
     );
 
+  // push dogs data to array
   const dogsIdsArray = Object.keys(dogObject);
-
   const dogDataArray = [];
   dogsIdsArray.map((dog) => dogDataArray.push(dogObject[dog]));
 
+  // handle submit button
   function HandleSubmit() {
     // checking if post code valid before sending to Api
     if (postCode.match(postCodeRegex) != null) {
@@ -54,17 +58,17 @@ function ListAWalkScreen({ navigation }) {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === 'ZERO_RESULTS') {
-            alert('Please provide valid post Code API');
+            alert('Please provide valid Post Code Error: API');
           } else {
             const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
               createdAt: Date.now(),
               dogId: dogData.dogId,
-              dogName: dogData.name,
+              name: dogData.name,
               walkDesc,
               walkRequirements,
               walkMinutes,
-              'date and time': dateTime,
-              postCode,
+              dateTime,
+              postCode: data.results[0].address_components[0].long_name,
               coordinates: data.results[0].geometry.location,
             });
             update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
@@ -77,7 +81,7 @@ function ListAWalkScreen({ navigation }) {
         })
         .catch((error) => alert(error.message));
     } else {
-      return alert('Please provide valid post Code regex');
+      return alert('Please provide valid Post Code Error: regex');
     }
   }
   return (
@@ -119,7 +123,7 @@ function ListAWalkScreen({ navigation }) {
               defaultValue={postCode}
               placeholder="Post Code"
               onChangeText={(newText) => {
-                setPostCode(newText);
+                setPostCode(newText.toUpperCase());
               }}
             />
             <TextInput
@@ -140,7 +144,7 @@ function ListAWalkScreen({ navigation }) {
               }}
             >
               {dogDataArray.map((dog) => (
-                <Picker.Item label={dog.name} value={dog.name} />
+                <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}
             </Picker>
           </View>

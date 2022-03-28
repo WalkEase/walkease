@@ -48,37 +48,35 @@ export default StyleSheet.create({
     item_born: {
 
         fontSize: 14,
-        paddingVertical: 20,
+        paddingVertical: 10,
         paddingHorizontal: 40,
         backgroundColor: 'white',
         color: '#386641',
         fontWeight: '500',
+        textAlign: "center",
     },
 
-    item_size: {
 
-        fontSize: 14,
-        paddingVertical: 20,
-        paddingHorizontal: 40,
-        backgroundColor: 'white',
-        color: '#386641',
-        fontWeight: '500',
-    },
 
     item_info: {
+
         fontSize: 14,
         paddingVertical: 20,
         paddingHorizontal: 40,
         backgroundColor: 'white',
         color: '#386641',
         fontWeight: '500',
+        textAlign: "justify",
     },
+
     header_info_map: {
         marginVertical: 10,
         marginHorizontal: 20,
         display: 'flex',
         flexDirection: 'row',
+        backgroundColor: "white",
     },
+
     map_img: {
         width: 35,
         height: 35,
@@ -111,5 +109,6 @@ export default StyleSheet.create({
         color: 'black',
         backgroundColor: 'white',
         borderRadius: 10,
+        marginBottom: 20,
     }
 });

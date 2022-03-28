@@ -66,7 +66,7 @@ function MyDogsScreen({ navigation, route }) {
 
   return (
     <View style={styles.main_container}>
-      <Header />
+
       <Text style={styles.header}>My Lovely Dogs  </Text>
       <FlatList
         style={styles.sectionHeader}
@@ -82,9 +82,8 @@ function MyDogsScreen({ navigation, route }) {
                 <Text style={styles.details_list_item}>{item.data[2]}</Text>
 
               </View>
-              <Text style={styles.item_born}>Born: {item.data[3]}</Text>
-              <Text style={styles.item_size}>{item.data[0]}</Text>
-              <Text style={styles.item}>{item.data[1]}</Text>
+              <Text style={styles.item_born}>Born: {item.data[3]}       Size: {item.data[0]} </Text>
+              <Text style={styles.item_info}>{item.data[1]}</Text>
               <Image source={{ uri: item.image }} style={styles.img} />
 
               <Button

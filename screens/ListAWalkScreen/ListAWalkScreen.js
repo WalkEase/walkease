@@ -5,7 +5,7 @@ import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
-import { config } from '../../.api';
+//import { config } from '../../.api';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
@@ -58,7 +58,7 @@ function ListAWalkScreen({ navigation }) {
           } else {
             const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
               createdAt: Date.now(),
-              // dogId: dogData.dogId,
+              dogId: dogData.dogId,
               dogName: dogData.name,
               walkDesc,
               walkRequirements,

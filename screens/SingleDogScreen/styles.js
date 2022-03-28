@@ -5,10 +5,12 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#718355',
+        backgroundColor: 'white',
+
     },
 
     main_contain: {
+        backgroundColor: "green",
         height: '100%',
         flex: 1,
         alignContent: 'space-around',
@@ -17,10 +19,10 @@ export default StyleSheet.create({
 
     login_inputs_container: {
         color: 'black',
-        backgroundColor: '#718355',
         width: '60%',
         padding: 5,
         borderRadius: 5,
+        marginTop: 20,
 
     },
 
@@ -30,7 +32,9 @@ export default StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 10,
         marginTop: 5,
-        borderWidth: 1,
+        borderBottomWidth: 2,
+        borderBottomColor: '#386641',
+        marginVertical: 5,
     },
 
     login_button: {
@@ -46,24 +50,77 @@ export default StyleSheet.create({
 
     picker: {
         backgroundColor: 'white',
-        marginTop: 5,
-        borderWidth: 1,
+        marginTop: 0,
+
         borderRadius: 10,
+        borderColor: '#386641',
     },
 
     header: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'black',
-    },
-    text: {
-        fontSize: 16,
+        fontSize: 30,
         fontWeight: 'bold',
         color: 'black',
     },
 
+    invalid_input: {
+        opacity: 0.85,
+        color: '#bc4749',
+    },
+
+
+    text: {
+        marginTop: 5,
+        color: "#bc4749",
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5,
+    },
+
     img: {
-        width: 193,
+        width: "100%",
         height: 110,
+    },
+
+    nav_container: {
+        width: '100%',
+        height: '5%',
+        backgroundColor: '#386641',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    save_cancel: {
+        marginTop: 10,
+        justifyContent: 'space-evenly',
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        paddingVertical: 10,
+        marginBottom: 10,
+    },
+
+    save_press: {
+        display: 'flex',
+        alignItems: 'center',
+        borderColor: '#38664195',
+        backgroundColor: '#386641',
+        borderWidth: 2,
+        padding: 2,
+        width: 80,
+    },
+
+    cancel_press: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: '#bc4749',
+        borderColor: '#bc474995',
+        borderWidth: 2,
+        width: 80,
+        padding: 2,
+    },
+    cancel_save_text: {
+        color: 'white',
+        fontWeight: '700',
     },
 });

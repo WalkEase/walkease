@@ -1,7 +1,7 @@
 import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker } from 'react-native';
 import { useState, useContext } from 'react';
 import Button from 'react-native-button';
-import { set, ref, push } from 'firebase/database';
+import { set, ref, push, update } from 'firebase/database';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './Styles';
@@ -35,7 +35,7 @@ function AddDogScreen() {
 
     if (!validDogAdd) return alert("Please check you've entered all information correctly");
 
-    push(ref(database, `data/dogs/${user.uid}`), {
+    const updateDog = push(ref(database, `data/dogs/${user.uid}`), {
 
       createdAt: Date.now(),
       name,
@@ -45,12 +45,17 @@ function AddDogScreen() {
       dogBio: bio,
       postCode,
 
-    }).then((res) => {
-      console.log(res);
-      alert("Dog added successfully");
-    }).catch((err) => {
-      alert(err.message);
+    });
+
+    update(ref(database, `data/dogs/${user.uid}/${updateDog.key}`), {
+      dogId: updateDog.key
     })
+      .then(() => {
+        alert("Dog added successfully");
+      })
+      .catch((err) => {
+        alert(err.message);
+      })
 
 
   };

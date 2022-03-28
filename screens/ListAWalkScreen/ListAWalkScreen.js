@@ -18,8 +18,6 @@ function ListAWalkScreen({ navigation }) {
   const [dogData, setDogData] = useState('');
   const [dateTime, setDateTime] = useState('');
 
-  console.log(dogData);
-
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
 
@@ -50,38 +48,41 @@ function ListAWalkScreen({ navigation }) {
 
   // handle submit button
   function HandleSubmit() {
-    // checking if post code valid before sending to Api
-    if (postCode.match(postCodeRegex) != null) {
-      fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === 'ZERO_RESULTS') {
-            alert('Please provide valid Post Code Error: API');
-          } else {
-            const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
-              createdAt: Date.now(),
-              dogId: dogData.dogId,
-              name: dogData.name,
-              walkDesc,
-              walkRequirements,
-              walkMinutes,
-              dateTime,
-              postCode: data.results[0].address_components[0].long_name,
-              coordinates: data.results[0].geometry.location,
-            });
-            update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
-              walkId: updateWalk.key,
-            });
-          }
-        })
-        .then(() => {
-          navigation.navigate('MyListedWalksScreen');
-        })
-        .catch((error) => alert(error.message));
+    // checking if post code and dogID valid before sending to Api
+    if (dogData.dogId !== undefined) {
+      if (postCode.match(postCodeRegex) != null) {
+        fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === 'ZERO_RESULTS') {
+              alert('Please provide valid Post Code Error: API');
+            } else {
+              const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
+                createdAt: Date.now(),
+                dogId: dogData.dogId,
+                walkDesc,
+                walkRequirements,
+                walkMinutes,
+                dateTime,
+                postCode: data.results[0].address_components[0].long_name,
+                coordinates: data.results[0].geometry.location,
+              });
+              update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
+                walkId: updateWalk.key,
+              });
+            }
+          })
+          .then(() => {
+            navigation.navigate('MyListedWalksScreen');
+          })
+          .catch((error) => alert(error.message));
+      } else {
+        return alert('Please provide valid Post Code Error: regex');
+      }
     } else {
-      return alert('Please provide valid Post Code Error: regex');
+      return alert('Please choose the dog');
     }
   }
   return (
@@ -143,6 +144,7 @@ function ListAWalkScreen({ navigation }) {
                 setDogData(itemValue);
               }}
             >
+              <Picker.Item label="Please choose dog" />
               {dogDataArray.map((dog) => (
                 <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}

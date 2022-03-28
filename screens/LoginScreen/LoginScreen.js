@@ -55,15 +55,15 @@ function LoginScreen({ navigation }) {
               secureTextEntry
             />
           </View>
-          <View>
-            <Button
+          <View style={styles.buttons}>
+            <Text
               style={styles.login_button}
               accessibilityLabel="login-button"
               onPress={handleLogin}
             >
               Login
-            </Button>
-            <Button
+            </Text>
+            <Text
               style={styles.login_button}
               accessibilityLabel="login-button"
               onPress={() => {
@@ -71,7 +71,7 @@ function LoginScreen({ navigation }) {
               }}
             >
               Sign Up
-            </Button>
+            </Text>
           </View>
         </KeyboardAvoidingView>
       </View>

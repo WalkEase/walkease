@@ -37,7 +37,12 @@ export default StyleSheet.create({
     borderRadius: 15,
     color: '#386641',
     backgroundColor: 'white',
+    textAlign: 'center',
   },
+  buttons: {
+    marginTop: 40,
+  },
+
   header: {
     fontSize: 30,
     fontWeight: 'bold',

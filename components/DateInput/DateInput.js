@@ -21,9 +21,21 @@ function DateInput() {
   const [daysInPickedMonth, setDaysInPickedMonth] = useState([]);
   const [pickedDay, setPickedDay] = useState('Select Day');
 
+  function handlePickMonth(inputMonth) {
+    const days = [];
+
+    for (let i = 1; i <= months[inputMonth]; i += 1) {
+      days.push(i);
+    }
+
+    setDaysInPickedMonth(days);
+
+    console.log('days array = ', days);
+  }
+
   return (
     <View>
-      <Picker selectedValue={pickedMonth} onValueChange={(newValue) => setPickedMonth(newValue)}>
+      <Picker selectedValue={pickedMonth} onValueChange={handlePickMonth}>
         <Picker.Item label="Select Month" value="Select Month" />
         {Object.keys(months).map((month) => (
           <Picker.Item key={month} label={month} value={month} />

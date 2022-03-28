@@ -25,7 +25,7 @@ function SignUpScreen({ navigation }) {
   const [lastName, setLastName] = useState('');
   const [lastNameValid, setLastNameValid] = useState(true);
 
-  const [userType, setUserType] = useState('Owner');
+  const [userType, setUserType] = useState('Select account type');
   const [postCode, setPostCode] = useState('');
 
   // date of birth
@@ -38,6 +38,8 @@ function SignUpScreen({ navigation }) {
   // userBio state
   const [userBio, setUserBio] = useState('');
   const [userBioValid, setUserBioValid] = useState(true);
+
+  const [userTypeValid, setUserTypeValid] = useState(true);
 
   const handleSignUp = () => {
     // form validation
@@ -79,6 +81,11 @@ function SignUpScreen({ navigation }) {
       validSignUp = false;
     }
 
+    if (userType === 'Select account type') {
+      setUserTypeValid(false);
+      validSignUp = false;
+    }
+
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     createUserWithEmailAndPassword(auth, email, password)
@@ -116,7 +123,7 @@ function SignUpScreen({ navigation }) {
   return (
     <>
       <View style={styles.main_contain}>
-        <ScrollView>
+        <ScrollView style={styles.signup_scrollview}>
           <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.login_inputs_container}>
               <TextInput
@@ -182,9 +189,16 @@ function SignUpScreen({ navigation }) {
                   selectedValue={userType}
                   onValueChange={(itemValue) => setUserType(itemValue)}
                 >
+                  <Picker.Item label="Select account type" value="Select account type" />
                   <Picker.Item label="Owner" value="Owner" />
                   <Picker.Item label="Walker" value="Walker" />
                 </Picker>
+
+                {!userTypeValid ? (
+                  <Text style={styles.invalid_input}>{`* Please select Owner or Walker`}</Text>
+                ) : (
+                  false
+                )}
               </View>
 
               <TextInput
@@ -290,21 +304,28 @@ function SignUpScreen({ navigation }) {
               <Text>{userBio.length} chars</Text>
 
               {!userBioValid ? (
-                <Text style={styles.invalid_input}>
-                  {`Bio must be between 100 - 200 chars... Current length: ${userBio.length} chars`}
-                </Text>
+                <Text style={styles.invalid_input}>{`* Bio must be between 100 - 200 chars`}</Text>
               ) : (
                 false
               )}
             </View>
-
-            <Button
-              style={styles.login_button}
-              accessibilityLabel="login-button"
-              onPress={() => handleSignUp()}
-            >
-              Sign Up
-            </Button>
+            <View style={styles.save_cancel}>
+              <View style={styles.save_press}>
+                <Text onPress={() => handleSignUp()} style={styles.cancel_save_text}>
+                  Sign Up
+                </Text>
+              </View>
+              <View style={styles.cancel_press}>
+                <Text
+                  style={styles.cancel_save_text}
+                  onPress={() => {
+                    navigation.navigate('LoginScreen');
+                  }}
+                >
+                  Cancel
+                </Text>
+              </View>
+            </View>
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

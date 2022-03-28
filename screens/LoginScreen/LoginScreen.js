@@ -7,7 +7,6 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
-import Header from '../../components/Header/Header';
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);

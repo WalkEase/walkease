@@ -14,6 +14,7 @@ import EditMyDetailsScreen from './screens/EditMyDetailsScreen/EditMyDetailsScre
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
+import DateInput from './components/DateInput/DateInput';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ export default function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={DateInput} />
           <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
 
           <Stack.Screen

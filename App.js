@@ -14,6 +14,7 @@ import EditMyDetailsScreen from './screens/EditMyDetailsScreen/EditMyDetailsScre
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
+import DateInput from './components/DateInput/DateInput';
 
 import { StatusBar } from 'react-native';
 import Header from './components/Header/Header';

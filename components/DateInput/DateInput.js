@@ -57,7 +57,7 @@ function DateInput({ setGivenState }) {
         onValueChange={(newMonth) => {
           handlePickMonth(newMonth);
 
-          setGivenState(Date.parse(`${pickedDay} ${newMonth} ${pickedYear}`));
+          setGivenState(Date.parse(`${pickedDay} ${newMonth} ${pickedYear} 00:00:00 GMT`));
         }}
       >
         <Picker.Item label="Select Month" value="Select Month" />
@@ -71,7 +71,7 @@ function DateInput({ setGivenState }) {
         onValueChange={(newDay) => {
           setPickedDay(newDay);
 
-          setGivenState(Date.parse(`${newDay} ${pickedMonth} ${pickedYear}`));
+          setGivenState(Date.parse(`${newDay} ${pickedMonth} ${pickedYear} 00:00:00 GMT`));
         }}
       >
         <Picker.Item label="Select Day" value="Select Day" />
@@ -85,7 +85,7 @@ function DateInput({ setGivenState }) {
         onValueChange={(newYear) => {
           setPickedYear(newYear);
 
-          setGivenState(Date.parse(`${pickedDay} ${pickedMonth} ${newYear}`));
+          setGivenState(Date.parse(`${pickedDay} ${pickedMonth} ${newYear} 00:00:00 GMT`));
         }}
       >
         <Picker.Item label="Select Year" value="Select Year" />

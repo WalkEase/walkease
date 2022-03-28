@@ -62,7 +62,6 @@ function ListAWalkScreen({ navigation }) {
               const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
                 createdAt: Date.now(),
                 dogId: dogData.dogId,
-                name: dogData.name,
                 walkDesc,
                 walkRequirements,
                 walkMinutes,

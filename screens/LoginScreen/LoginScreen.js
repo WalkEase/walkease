@@ -7,7 +7,6 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
-import Header from '../../components/Header/Header';
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -35,7 +34,6 @@ function LoginScreen({ navigation }) {
 
   return (
     <>
-      <Header />
       <View style={styles.main_contain}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={styles.login_inputs_container}>
@@ -57,15 +55,15 @@ function LoginScreen({ navigation }) {
               secureTextEntry
             />
           </View>
-          <View>
-            <Button
+          <View style={styles.buttons}>
+            <Text
               style={styles.login_button}
               accessibilityLabel="login-button"
               onPress={handleLogin}
             >
               Login
-            </Button>
-            <Button
+            </Text>
+            <Text
               style={styles.login_button}
               accessibilityLabel="login-button"
               onPress={() => {
@@ -73,10 +71,11 @@ function LoginScreen({ navigation }) {
               }}
             >
               Sign Up
-            </Button>
+            </Text>
           </View>
         </KeyboardAvoidingView>
       </View>
+      <View style={styles.nav_container}></View>
     </>
   );
 }

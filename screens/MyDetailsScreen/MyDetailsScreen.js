@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
-import Header from '../../components/Header/Header';
+
 import Nav from '../../components/Nav/Nav';
 
 function MyDetailsScreen({ navigation }) {

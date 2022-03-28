@@ -12,11 +12,13 @@ function ListAWalkScreen({ navigation }) {
   const [walkRequirements, setWalkRequirements] = useState('');
   const [walkMinutes, setWalkMinutes] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [dogObject, setDogsObject] = useState('');
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
-  const [dogObject, setDogsObject] = useState('');
   const [dogData, setDogData] = useState('');
   const [dateTime, setDateTime] = useState('');
+
+  console.log(dogData);
 
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
@@ -60,13 +62,13 @@ function ListAWalkScreen({ navigation }) {
           } else {
             const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
               createdAt: Date.now(),
-              // dogId: dogData.dogId,
-              dogName: dogData.name,
+              dogId: dogData.dogId,
+              name: dogData.name,
               walkDesc,
               walkRequirements,
               walkMinutes,
               dateTime,
-              postCode: data.address_components,
+              postCode: data.results[0].address_components[0].long_name,
               coordinates: data.results[0].geometry.location,
             });
             update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
@@ -142,7 +144,7 @@ function ListAWalkScreen({ navigation }) {
               }}
             >
               {dogDataArray.map((dog) => (
-                <Picker.Item label={dog.name} value={dog} />
+                <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}
             </Picker>
           </View>

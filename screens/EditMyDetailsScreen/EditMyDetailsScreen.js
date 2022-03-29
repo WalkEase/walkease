@@ -9,7 +9,11 @@ import UserContext from '../../contexts/UserContext';
 
 function EditMyDetailsScreen({ navigation }) {
   const { user } = useContext(UserContext);
+
   const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl);
+  const [validAvatarUrl, setValidAvatarUrl] = useState(true);
+  const [avatarImage, setAvatarImage] = useState(true);
+
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [postCode, setPostCode] = useState(user.postCode);
@@ -31,6 +35,14 @@ function EditMyDetailsScreen({ navigation }) {
       .catch((error) => alert(error.message));
   }
 
+  const pickUpUri = (avatrUrl) => {
+
+    if (avatarImage)
+      return avatarUrl;
+    else
+      return "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
+  }
+
   return (
     <>
       <ScrollView style={styles.bio_scrollview}>
@@ -38,10 +50,12 @@ function EditMyDetailsScreen({ navigation }) {
           <Image
             style={styles.avatar}
             source={{
-              uri: avatarUrl,
+              uri: pickUpUri(avatarUrl),
             }}
+            resizeMode="contain"
           />
           <Text style={styles.edit_text}>Edit your details below</Text>
+
           <View style={styles.input_contain}>
             <TextInput
               multiline
@@ -49,9 +63,29 @@ function EditMyDetailsScreen({ navigation }) {
               onChangeText={(newText) => {
                 setAvatarUrl(newText);
               }}
+              onFocus={() => {
+                setValidAvatarUrl(true);
+              }}
+              onBlur={() => {
+                setValidAvatarUrl(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+
+                setAvatarImage(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+              }}
+
               style={styles.input}
             />
+
+            {!validAvatarUrl ? (
+              <View>
+                <Text style={styles.invalid_input}>* Invalid avatr URL, must be PNG/JPG</Text>
+              </View>
+            ) : (
+              false
+            )}
+
           </View>
+
+
           <View style={styles.input_contain}>
             <TextInput
               value={firstName}

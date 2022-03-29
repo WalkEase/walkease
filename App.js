@@ -79,7 +79,7 @@ export default function App() {
           />
           <Stack.Screen
             name="WalksMapScreen"
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
             component={WalksMapScreen}
           />
 
@@ -94,7 +94,6 @@ export default function App() {
             options={{ headerShown: false }}
             component={AddDogScreen}
           />
-
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

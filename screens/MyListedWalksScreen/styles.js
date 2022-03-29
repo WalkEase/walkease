@@ -31,7 +31,6 @@ export default StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 80,
-    backgroundColor: 'blue',
   },
   img_text: {
     display: 'flex',
@@ -110,7 +109,7 @@ export default StyleSheet.create({
     paddingVertical: 2,
   },
   more_info: {
-    fontSize: 10,
+    fontSize: 15,
     fontWeight: '500',
     opacity: 0.85,
     color: '#bc4749',

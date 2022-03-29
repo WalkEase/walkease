@@ -1,9 +1,10 @@
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { Text, View, Button, ScrollView, Image } from 'react-native';
+import { Text, View, Button, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { onValue, ref } from 'firebase/database';
 import { useState, useEffect } from 'react';
 import { database } from '../../../firebase';
 import styles from './styles';
+import Nav from '../../../components/Nav/Nav';
 
 function handleBluePinFromList(walk) {
   if (walk !== undefined) {
@@ -87,107 +88,115 @@ export default function WalkerWalkMap({ navigation }) {
     const walksFlatArray = walksNestedArray.flat();
 
     return (
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          showsUserLocation
-          initialRegion={{
-            latitude: 53.48093470818428,
-            longitude: -2.242502936136497,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          {/* display markers in map */}
+      <>
+        <View style={styles.container}>
+          <View style={styles.header_contain}>
+            <Text style={styles.header}>Dog walks available </Text>
+          </View>
+          <MapView
+            style={styles.map}
+            showsUserLocation
+            initialRegion={{
+              latitude: 53.48093470818428,
+              longitude: -2.242502936136497,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            {/* display markers in map */}
 
-          {walksFlatArray.map((walk) => (
-            <Marker
-              key={walk.walkId}
-              // pinColor={}
-              onPress={() => {}}
-              coordinate={{
-                latitude: walk.coordinates.lat,
-                longitude: walk.coordinates.lng,
-              }}
-            >
-              <Callout>
-                <Text>
-                  <Text style={styles.boldText}>Pick up time: </Text>
-                  {walk.dateTime}
-                  {'\n'}
-                  <Text style={styles.boldText}>Post Code: </Text>
-                  {walk.postCode}
-                  {'\n'}
-                  <Text style={styles.boldText}>Doggo name: </Text>
-                  {dogObject[walk.userId][walk.dogId].name}
-                  {'\n'}
-                  <Text style={styles.boldText}>Duration: </Text>
-                  {walk.walkMinutes} min
-                  {'\n'}
-                  <Text style={styles.boldText}>Size: </Text>
-                  {dogObject[walk.userId][walk.dogId].size}
-                  {'\n'}
-                  more info link {'\n'}
-                </Text>
-              </Callout>
-            </Marker>
-          ))}
-          {handleBluePinFromList(walkData)}
-        </MapView>
+            {walksFlatArray.map((walk) => (
+              <Marker
+                key={walk.walkId}
+                // pinColor={}
+                onPress={() => {}}
+                coordinate={{
+                  latitude: walk.coordinates.lat,
+                  longitude: walk.coordinates.lng,
+                }}
+              >
+                <Callout>
+                  <Text>
+                    <Text style={styles.boldText}>Pick up time: </Text>
+                    {walk.dateTime}
+                    {'\n'}
+                    <Text style={styles.boldText}>Post Code: </Text>
+                    {walk.postCode}
+                    {'\n'}
+                    <Text style={styles.boldText}>Doggo name: </Text>
+                    {dogObject[walk.userId][walk.dogId].name}
+                    {'\n'}
+                    <Text style={styles.boldText}>Duration: </Text>
+                    {walk.walkMinutes} min
+                    {'\n'}
+                    <Text style={styles.boldText}>Size: </Text>
+                    {dogObject[walk.userId][walk.dogId].size}
+                    {'\n'}
+                    more info link {'\n'}
+                  </Text>
+                </Callout>
+              </Marker>
+            ))}
+            {handleBluePinFromList(walkData)}
+          </MapView>
 
-        {/* display walks list */}
-        <Text style={styles.walkListTitle}>Dog walks available: </Text>
-        <ScrollView style={styles.scrollView}>
-          {walksFlatArray.map((walk) => (
-            <Text
-              key={walk.walkId}
-              style={
-                handleListColour === walk.walkId ? styles.walkListItems2 : styles.walkListItems
-              }
-              onPress={() => {
-                setWalkData(walk);
-                setHandleListColour(walk.walkId);
-              }}
-            >
-              <Text style={styles.boldText}>Pick up time: </Text>
-              {walk.dateTime}
-              {'\n'}
-              <Text style={styles.boldText}>Post Code: </Text>
-              {walk.postCode}
-              {'\n'}
-              <Text style={styles.boldText}>Doggo name: </Text>
-              {dogObject[walk.userId][walk.dogId].name}
-              {'\n'}
-              <Text style={styles.boldText}>Duration: </Text>
-              {walk.walkMinutes} min
-              {'\n'}
-              <Text style={styles.boldText}>Size: </Text>
-              {dogObject[walk.userId][walk.dogId].size}
-              {'\n'}
-              <Button title="more info" onPress={() => navigation.navigate('LoginScreen')}>
-                {/* landing page should be changed */}
-                more info
-              </Button>
-              {'\n'}
-              {/* display dog picture */}
-              <View>
-                <Image
-                  style={styles.tinyLogo}
-                  source={{
-                    uri: `${dogObject[walk.userId][walk.dogId].imageUrl}`,
-                  }}
-                />
+          {/* display walks list */}
+
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.main_container}>
+              <View style={styles.header_list_contain}>
+                <Text style={styles.header_list}>Dog walks list</Text>
               </View>
-            </Text>
-          ))}
-        </ScrollView>
-        <View style={styles.tempBottomNav}>
-          <Text>Temp Bottom nav bar</Text>
-          <Button title="Go to login screen" onPress={() => navigation.navigate('LoginScreen')}>
-            Back to Login
-          </Button>
+              {walksFlatArray.map((walk) => (
+                <View key={walk.walkId} style={styles.walk_card}>
+                  <TouchableOpacity
+                    style={styles.walk_card}
+                    style={
+                      handleListColour === walk.walkId
+                        ? styles.walkListItems2
+                        : styles.walkListItems
+                    }
+                    onPress={() => {
+                      setWalkData(walk);
+                      setHandleListColour(walk.walkId);
+                    }}
+                  >
+                    <View style={styles.walk_img_contain}>
+                      <Image
+                        style={styles.tinyLogo}
+                        source={{
+                          uri: `${dogObject[walk.userId][walk.dogId].imageUrl}`,
+                        }}
+                      />
+                    </View>
+                    <View style={styles.walk_text_contain}>
+                      <Text style={styles.dog_name}>{dogObject[walk.userId][walk.dogId].name}</Text>
+                      <Text style={styles.boldText}>{walk.dateTime}</Text>
+
+                      <Text style={styles.boldText}>{walk.postCode}</Text>
+
+                      <Text style={styles.boldText}>{walk.walkMinutes} minutes long</Text>
+
+                      <Text style={styles.boldText}>
+                        {dogObject[walk.userId][walk.dogId].size} size
+                      </Text>
+                      <Text
+                        style={styles.more_info}
+                        onPress={() => navigation.navigate('LoginScreen')}
+                      >
+                        More info...
+                      </Text>
+
+                      {/* display dog picture */}
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </View>
+          </ScrollView>
         </View>
-      </View>
+        <Nav navigation={navigation} />
+      </>
     );
   }
 }

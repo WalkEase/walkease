@@ -9,8 +9,14 @@ import { config } from '../../.api';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
+  const [walkDescValid, setWalkDescValid] = useState('');
+
   const [walkRequirements, setWalkRequirements] = useState('');
+  const [walkRequirementsValid, setWalkRequirementsValid] = useState('');
+
   const [walkMinutes, setWalkMinutes] = useState('');
+  const [walkMinutesValid, setWalkMinutesValid] = useState('');
+
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
   const [postCode, setPostCode] = useState('');
@@ -48,6 +54,25 @@ function ListAWalkScreen({ navigation }) {
 
   // handle submit button
   function HandleSubmit() {
+    let validSignUp = true;
+
+    if (!/^[a-zA-Z]+$/.test(walkDesc)) {
+      setWalkRequirementsValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^[a-zA-Z]+$/.test(walkRequirements)) {
+      setWalkMinutesValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^[0-9]+$/.test(walkMinutes)) {
+      setWalkMinutesValid(false);
+      validSignUp = false;
+    }
+
+    if (!validSignUp) return alert("Please check you've entered all information correctly");
+
     // checking if post code and dogID valid before sending to Api
     if (dogData.dogId !== undefined) {
       if (postCode.match(postCodeRegex) != null) {
@@ -102,7 +127,19 @@ function ListAWalkScreen({ navigation }) {
               onChangeText={(newText) => {
                 setWalkDesc(newText);
               }}
+              onFocus={() => {
+                setWalkDescValid(true);
+              }}
+              onBlur={() => {
+                setWalkDescValid(/^[a-zA-Z]+$/.test(walkDesc));
+              }}
             />
+
+            {!walkDescValid ? (
+              <Text style={styles.invalid_input}>* walk description required(letters only)</Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -111,7 +148,19 @@ function ListAWalkScreen({ navigation }) {
               onChangeText={(newText) => {
                 setWalkRequirements(newText);
               }}
+              onFocus={() => {
+                setWalkRequirementsValid(true);
+              }}
+              onBlur={() => {
+                setWalkRequirementsValid(/^[a-zA-Z]+$/.test(walkRequirements));
+              }}
             />
+
+            {!walkRequirementsValid ? (
+              <Text style={styles.invalid_input}>* walk requirements required (letters only)</Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}
@@ -120,7 +169,19 @@ function ListAWalkScreen({ navigation }) {
               onChangeText={(newText) => {
                 setWalkMinutes(newText);
               }}
+              onFocus={() => {
+                setWalkMinutesValid(true);
+              }}
+              onBlur={() => {
+                setWalkMinutesValid(/^[0-9]*$/.test(walkMinutes));
+              }}
             />
+
+            {!walkMinutesValid ? (
+              <Text style={styles.invalid_input}>* minutes required (numbers only)</Text>
+            ) : (
+              false
+            )}
 
             <TextInput
               style={styles.login_input}

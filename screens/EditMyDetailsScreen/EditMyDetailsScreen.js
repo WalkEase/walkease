@@ -47,6 +47,7 @@ function EditMyDetailsScreen({ navigation }) {
           <Text style={styles.edit_text}>Edit your details below</Text>
           <View style={styles.input_contain}>
             <TextInput
+              autoCapitalize="none"
               multiline
               value={avatarUrl}
               onChangeText={(newText) => {
@@ -75,6 +76,7 @@ function EditMyDetailsScreen({ navigation }) {
           </View>
           <View style={styles.input_contain}>
             <TextInput
+              autoCapitalize="characters"
               value={postCode}
               onChangeText={(newText) => {
                 setPostCode(newText);
@@ -82,16 +84,6 @@ function EditMyDetailsScreen({ navigation }) {
               style={styles.input}
             />
           </View>
-
-          {/* <View style={styles.input_contain}>
-            <TextInput
-              value={dateOfBirth}
-              onChangeText={(newText) => {
-                setDateOfBirth(newText);
-              }}
-              style={styles.input}
-            />
-          </View> */}
 
           <View>
             <Text>Date of Birth</Text>

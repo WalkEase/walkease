@@ -30,7 +30,11 @@ export default function App() {
         <StatusBar barStyle="light-content" />
         <Header />
         <Stack.Navigator>
-          <Stack.Screen name="Login" options={{ headerShown: false }} component={LoginScreen} />
+          <Stack.Screen
+            name="LoginScreen"
+            options={{ headerShown: false }}
+            component={LoginScreen}
+          />
           <Stack.Screen name="Sign-up" options={{ headerShown: false }} component={SignUpScreen} />
 
           <Stack.Screen

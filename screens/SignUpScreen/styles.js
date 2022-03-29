@@ -15,6 +15,10 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
 
+  signup_scrollview: {
+    flexGrow: 1,
+  },
+
   login_inputs_container: {
     color: 'black',
     width: '60%',
@@ -50,7 +54,6 @@ export default StyleSheet.create({
     marginTop: 0,
 
     borderRadius: 10,
-    borderColor: '#386641',
   },
 
   header: {
@@ -69,5 +72,36 @@ export default StyleSheet.create({
     backgroundColor: '#386641',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  save_press: {
+    display: 'flex',
+    alignItems: 'center',
+    borderColor: '#38664195',
+    backgroundColor: '#386641',
+    borderWidth: 2,
+    padding: 2,
+    width: 80,
+  },
+  cancel_press: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#bc4749',
+    borderColor: '#bc474995',
+    borderWidth: 2,
+    width: 80,
+    padding: 2,
+  },
+  cancel_save_text: {
+    color: 'white',
+    fontWeight: '700',
+  },
+  save_cancel: {
+    marginTop: 30,
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    paddingVertical: 10,
+    marginBottom: 10,
   },
 });

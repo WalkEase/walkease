@@ -11,8 +11,8 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#718355',
-        maxHeight: '50%'
+        backgroundColor: 'white',
+
     },
 
     header: {

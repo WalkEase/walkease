@@ -54,7 +54,7 @@ function MyDogsScreen({ navigation, route }) {
   if (dogSections.length === 0)
     return (
       <View style={styles.no_dog_container}>
-        <Text> You have no dogs added</Text>
+        <Text style={styles.header}> You have no dogs added</Text>
 
         <Button
           style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>

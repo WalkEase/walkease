@@ -1,7 +1,6 @@
 import { Text, TextInput, View, ScrollView, KeyboardAvoidingView, Image, Picker } from 'react-native';
 import { onValue, ref, set } from 'firebase/database';
 import { useContext, useEffect, useState } from 'react';
-import Button from 'react-native-button';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
@@ -46,18 +45,19 @@ const SingleDogScreen = ({ navigation, route }) => {
     const [isLoading, setIsLoading] = useState(true);
 
     const DateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-    const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
+    const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
 
-    const regexDateSecond = /^[0-3]?[0-9].[0-3]?[0-9].(?:[0-9]{2})?[0-9]{2}$/;
     useEffect(() => {
         onValue(ref(database, `data/dogs/${user.uid}/${dog}`), (res) => {
             setDogToEdit(res.val());
             setChanges(dogToEdit);
             setIsLoading(false);
         });
+        setDogDateOfBirthValid(true);
     }, []);
 
     const handleSubmitChanges = () => {
+
         setIsLoading(true);
 
         let validChanges = true;
@@ -65,39 +65,34 @@ const SingleDogScreen = ({ navigation, route }) => {
 
         if (!/^[a-zA-Z]+$/.test(dogName)) {
             setDogNameValid(false);
-            console.log("name")
             validChanges = false;
         }
 
         if (!/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl)) {
             setDogUrlValid(false);
-            console.log("url")
             validChanges = false;
         }
 
         if (dogBio.length < 100 || dogBio.length > 200) {
             setDogBioValid(false);
-            console.log("bio")
             validChanges = false;
         }
 
-        if (!regexDateSecond.test(dogDateOfBirth)) {
+        if (!DateRegex.test(dogDateOfBirth)) {
             setDogDateOfBirthValid(false);
             validChanges = false;
-            console.log("data")
         }
 
         if (!postCodeRegex.test(dogPostCode)) {
             setDogDateOfBirthValid(false);
             validChanges = false;
             postCodeRegexPass = true;
-            console.log("postcode")
         }
 
 
         if (!validChanges) {
             setIsLoading(false);
-            console.log("passed not valid")
+            setDogDateOfBirthValid(true);
             const alertString = (postCodeRegexPass === true) ? "Please provide valid post code" : "Please check you've entered all information correctly"
             return alert(alertString);
         }
@@ -111,7 +106,6 @@ const SingleDogScreen = ({ navigation, route }) => {
         changes.createdAt = dogToEdit.createdAt;
         changes.dogId = dogToEdit.dogId;
 
-
         fetch
             (
                 `https://maps.googleapis.com/maps/api/geocode/json?address=${changes.postCode}&key=${config.MY_API_KEY}`
@@ -119,17 +113,9 @@ const SingleDogScreen = ({ navigation, route }) => {
             .then((response) => response.json())
             .then((data) => {
 
-
-                console.log("---------------------------");
-                console.log(data);
-
-
                 if (data.status === 'ZERO_RESULTS') {
-
-                    console.log("wrong post code")
-                    throw 'Please provide valid Post Code Error: API 2';
+                    throw 'Post Code does not exist';
                 } else {
-                    console.log(data);
                     set(ref(database, `data/dogs/${user.uid}/${dog}`), changes)
                 }
             })
@@ -140,13 +126,10 @@ const SingleDogScreen = ({ navigation, route }) => {
                 alert("Dog updated successfully");
             }).catch((err) => {
                 setIsLoading(false);
-                console.log(err);
-                if (err === "Please provide valid Post Code Error: API 2") alert(err);
+                if (err === 'Post Code does not exist') alert(err);
                 else alert(err.message);
             })
     }
-
-
 
     if (isLoading)
         return (
@@ -158,9 +141,8 @@ const SingleDogScreen = ({ navigation, route }) => {
     return (
         <>
             <ScrollView>
+
                 <View style={styles.main_contain}>
-
-
 
                     <KeyboardAvoidingView style={styles.container} behavior="padding">
 
@@ -260,7 +242,7 @@ const SingleDogScreen = ({ navigation, route }) => {
                                         setDogDateOfBirthValid(true);
                                     }}
                                     onBlur={() => {
-                                        setDogDateOfBirthValid(regexDateSecond.test(dogDateOfBirth));
+                                        setDogDateOfBirthValid(DateRegex.test(dogDateOfBirth));
                                     }}
                                 />
 
@@ -285,8 +267,6 @@ const SingleDogScreen = ({ navigation, route }) => {
                                     <Picker.Item label="Very Large" value="Very Large" />
                                 </Picker>
                             </View>
-
-
 
                             <View>
 
@@ -314,7 +294,6 @@ const SingleDogScreen = ({ navigation, route }) => {
 
                             </View>
                         </View>
-
 
                         <View style={styles.save_cancel}>
                             <View style={styles.save_press}>

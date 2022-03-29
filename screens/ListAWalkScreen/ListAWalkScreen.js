@@ -72,6 +72,9 @@ function ListAWalkScreen({ navigation }) {
               update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
                 walkId: updateWalk.key,
               });
+              update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
+                userId: user.uid,
+              });
             }
           })
           .then(() => {

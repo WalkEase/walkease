@@ -1,4 +1,12 @@
-import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker, Image } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  Picker,
+  Image,
+} from 'react-native';
 import { useState, useContext } from 'react';
 import Button from 'react-native-button';
 import { set, ref, push, update } from 'firebase/database';
@@ -7,32 +15,27 @@ import UserContext from '../../contexts/UserContext';
 import styles from './Styles';
 
 function AddDogScreen() {
-
-
   const { user } = useContext(UserContext);
 
   const [DoB, setDoB] = useState('');
   const [size, setSize] = useState('Medium');
 
-  // name state 
-  const [dogName, setDogName] = useState("");
+  // name state
+  const [dogName, setDogName] = useState('');
   const [dogImage, setDogImage] = useState(false);
   const [dogNameValid, setDogNameValid] = useState(true);
 
   // URL state
-  const [dogUrl, setDogUrl] = useState("");
+  const [dogUrl, setDogUrl] = useState('');
   const [dogUrlValid, setDogUrlValid] = useState(true);
 
   // Dog Bio states
   const [bio, setBio] = useState('');
   const [bioValid, setBioValid] = useState(true);
 
-
   const [postCode, setPostCode] = useState(user.postCode);
 
-
   const handleAddDog = () => {
-
     let validDogAdd = true;
 
     if (!/^[a-zA-Z]+$/.test(dogName)) {
@@ -45,7 +48,7 @@ function AddDogScreen() {
       validDogAdd = false;
     }
 
-    if (!/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl)) {
+    if (!/^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)$/i.test(dogUrl)) {
       setDogUrlValid(false);
       validDogAdd = false;
     }
@@ -53,7 +56,6 @@ function AddDogScreen() {
     if (!validDogAdd) return alert("Please check you've entered all information correctly");
 
     const updateDog = push(ref(database, `data/dogs/${user.uid}`), {
-
       createdAt: Date.now(),
       name: dogName,
       imageUrl: dogUrl,
@@ -61,22 +63,18 @@ function AddDogScreen() {
       size,
       dogBio: bio,
       postCode,
-
     });
 
     update(ref(database, `data/dogs/${user.uid}/${updateDog.key}`), {
-      dogId: updateDog.key
+      dogId: updateDog.key,
     })
       .then(() => {
-        alert("Dog added successfully");
+        alert('Dog added successfully');
       })
       .catch((err) => {
         alert(err.message);
-      })
-
-
+      });
   };
-
 
   return (
     <View style={styles.main_contain}>
@@ -113,13 +111,18 @@ function AddDogScreen() {
             <View>
               {!dogImage ? (
                 <View>
-                  <Image source={{ uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png" }} style={styles.img} resizeMode="contain" />
+                  <Image
+                    source={{
+                      uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png',
+                    }}
+                    style={styles.img}
+                    resizeMode="contain"
+                  />
                   <Text style={styles.text}>Add your dog image url below </Text>
                 </View>
               ) : (
                 <Image source={{ uri: dogUrl }} style={styles.img} />
               )}
-
 
               <TextInput
                 style={styles.login_input}
@@ -127,13 +130,12 @@ function AddDogScreen() {
                 placeholder="Change your dog picture Url"
                 onChangeText={(newText) => {
                   setDogUrl(newText);
-
                 }}
                 onFocus={() => {
                   setDogUrlValid(true);
                 }}
                 onBlur={() => {
-                  setDogUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl));
+                  setDogUrlValid(/^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)$/i.test(dogUrl));
                   setDogImage(true);
                 }}
               />
@@ -155,10 +157,7 @@ function AddDogScreen() {
             />
 
             <View style={styles.picker}>
-              <Picker
-                selectedValue={size}
-                onValueChange={(itemValue) => setSize(itemValue)}
-              >
+              <Picker selectedValue={size} onValueChange={(itemValue) => setSize(itemValue)}>
                 <Picker.Item label="Very Small" value="Very Small" />
                 <Picker.Item label="Small" value="Small" />
                 <Picker.Item label="Medium" value="Medium" />

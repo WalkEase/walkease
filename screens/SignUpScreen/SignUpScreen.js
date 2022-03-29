@@ -78,7 +78,7 @@ function SignUpScreen({ navigation }) {
       validSignUp = false;
     }
 
-    if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
+    if (!/^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)$/i.test(avatarUrl)) {
       setAvatarUrlValid(false);
       validSignUp = false;
     }
@@ -287,7 +287,7 @@ function SignUpScreen({ navigation }) {
                   setAvatarUrlValid(true);
                 }}
                 onBlur={() => {
-                  setAvatarUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
+                  setAvatarUrlValid(/^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|png)$/i.test(avatarUrl));
                 }}
               />
 

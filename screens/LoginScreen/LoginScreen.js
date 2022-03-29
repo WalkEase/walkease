@@ -1,18 +1,16 @@
 import { KeyboardAvoidingView, Text, TextInput, View, LogBox } from 'react-native';
 import React, { useContext, useState } from 'react';
 
-import Button from 'react-native-button';
 import { ref, get, onValue } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
 
-LogBox.ignoreLogs(
-  [
-    'Setting a timer for a long period of time',
-    "navigation.navigate is not a function.",
-  ])
+LogBox.ignoreLogs([
+  'Setting a timer for a long period of time',
+  'navigation.navigate is not a function.',
+]);
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -39,50 +37,43 @@ function LoginScreen({ navigation }) {
   };
 
   return (
-    <>
-      <View style={styles.main_contain}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <View style={styles.login_inputs_container}>
-            <TextInput
-              style={styles.login_input}
-              defaultValue={email}
-              placeholder="email"
-              onChangeText={(newText) => {
-                setEmail(newText);
-              }}
-            />
-            <TextInput
-              style={styles.login_input}
-              defaultValue={password}
-              placeholder="password"
-              onChangeText={(newText) => {
-                setPassword(newText);
-              }}
-              secureTextEntry
-            />
-          </View>
-          <View style={styles.buttons}>
-            <Text
-              style={styles.login_button}
-              accessibilityLabel="login-button"
-              onPress={handleLogin}
-            >
-              Login
-            </Text>
-            <Text
-              style={styles.login_button}
-              accessibilityLabel="login-button"
-              onPress={() => {
-                navigation.navigate('Sign-up');
-              }}
-            >
-              Sign Up
-            </Text>
-          </View>
-        </KeyboardAvoidingView>
-      </View>
-      <View style={styles.nav_container}></View>
-    </>
+    <View style={styles.main_contain}>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <View style={styles.login_inputs_container}>
+          <TextInput
+            style={styles.login_input}
+            defaultValue={email}
+            placeholder="email"
+            onChangeText={(newText) => {
+              setEmail(newText);
+            }}
+          />
+          <TextInput
+            style={styles.login_input}
+            defaultValue={password}
+            placeholder="password"
+            onChangeText={(newText) => {
+              setPassword(newText);
+            }}
+            secureTextEntry
+          />
+        </View>
+        <View style={styles.buttons}>
+          <Text style={styles.login_button} accessibilityLabel="login-button" onPress={handleLogin}>
+            Login
+          </Text>
+          <Text
+            style={styles.login_button}
+            accessibilityLabel="login-button"
+            onPress={() => {
+              navigation.navigate('Sign-up');
+            }}
+          >
+            Sign Up
+          </Text>
+        </View>
+      </KeyboardAvoidingView>
+    </View>
   );
 }
 

@@ -17,7 +17,6 @@ function ListAWalkScreen({ navigation }) {
   const [walkMinutes, setWalkMinutes] = useState('');
   const [walkMinutesValid, setWalkMinutesValid] = useState(true);
   const [dogName, setDogName] = useState('');
-  // const [dogNameValid, setDogNameValid] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
@@ -72,10 +71,6 @@ function ListAWalkScreen({ navigation }) {
       setWalkMinutesValid(false);
       validSignUp = false;
     }
-    // if (dogNameValid === 'Please choose dog') {
-    //   setDogNameValid(false);
-    //   validSignUp = false;
-    // }
 
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
@@ -106,10 +101,12 @@ function ListAWalkScreen({ navigation }) {
               update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
                 userId: user.uid,
               });
+              return 'dataUpdated';
             }
           })
-          .then((data) => {
-            if (data !== undefined) navigation.navigate('MyListedWalksScreen');
+          .then((dataUpdated) => {
+            console.log(dataUpdated);
+            if (dataUpdated !== undefined) navigation.navigate('MyListedWalksScreen');
           })
           .catch((error) => alert(error.message));
       } else {
@@ -209,13 +206,6 @@ function ListAWalkScreen({ navigation }) {
           <View style={styles.login_input}>
             <Picker
               style={styles.picker}
-              // onFocus={() => {
-              //   setDogName(true);
-              // }}
-              // onBlur={() => {
-              //   setDogName(dogNameValid === 'Please choose dog');
-              // }}
-              // style={{ height: 17, width: 180 }}
               selectedValue={dogName}
               onValueChange={(itemValue) => {
                 setDogName(itemValue);
@@ -226,11 +216,6 @@ function ListAWalkScreen({ navigation }) {
                 <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}
             </Picker>
-            {/* {!dogNameValid ? (
-              <Text style={styles.invalid_input}>* Please select your Dog</Text>
-            ) : (
-              false
-            )} */}
           </View>
 
           <Button

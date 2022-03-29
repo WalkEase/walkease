@@ -9,15 +9,15 @@ import { config } from '../../.api';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
-  const [walkDescValid, setWalkDescValid] = useState('');
+  const [walkDescValid, setWalkDescValid] = useState(true);
 
   const [walkRequirements, setWalkRequirements] = useState('');
-  const [walkRequirementsValid, setWalkRequirementsValid] = useState('');
+  const [walkRequirementsValid, setWalkRequirementsValid] = useState(true);
 
   const [walkMinutes, setWalkMinutes] = useState('');
-  const [walkMinutesValid, setWalkMinutesValid] = useState('');
+  const [walkMinutesValid, setWalkMinutesValid] = useState(true);
   const [dogName, setDogName] = useState('');
-  const [dogNameValid, setDogNameValid] = useState('');
+  const [dogNameValid, setDogNameValid] = useState(true);
 
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
@@ -49,11 +49,13 @@ function ListAWalkScreen({ navigation }) {
       </View>
     );
 
+  let validSignUp = true;
+
   // push dogs data to array
   const dogsIdsArray = Object.keys(dogObject);
   const dogDataArray = [];
   dogsIdsArray.map((dog) => dogDataArray.push(dogObject[dog]));
-  let validSignUp = true;
+
   // handle submit button
   function HandleSubmit() {
     if (!/^[a-zA-Z]+$/.test(walkDesc)) {

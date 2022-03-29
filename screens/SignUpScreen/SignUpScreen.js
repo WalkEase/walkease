@@ -143,12 +143,15 @@ function SignUpScreen({ navigation }) {
       })
       .then((user) => {
         const userTypeIn = user.val().userType;
-        alert("SignUp process sucessfull")
+        alert("SignUp process successful")
         navigation.navigate(`${userTypeIn}LandingScreen`);
       })
       .catch((err) => {
-        if (err === 'Post Code does not exist') alert(err);
-        else alert(err.message);
+        if (err === 'Post Code does not exist') {
+          alert(err);
+          return setPostCodeValid(false)
+        };
+        return alert(err.message);
       })
   };
 
@@ -160,6 +163,7 @@ function SignUpScreen({ navigation }) {
             <View style={styles.login_inputs_container}>
               <Text style={styles.header}>Sign Up</Text>
               <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={email}
                 placeholder="Email"
@@ -317,6 +321,7 @@ function SignUpScreen({ navigation }) {
               </View>
 
               <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={avatarUrl}
                 placeholder="Web link to image"

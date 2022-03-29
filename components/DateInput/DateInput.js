@@ -1,9 +1,40 @@
-import { View, Picker } from 'react-native';
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 
+import { View, Picker } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import styles from './styles';
 
-function DateInput({ setGivenState, setStateValid }) {
+function DateInput({
+  setGivenState = () => {
+    console.warn("WARNING: No state setting function found for 'setGivenState' property");
+  },
+  setStateValid = () => {
+    console.warn("WARNING: No state setting function found for 'setStateValid' property");
+  },
+  defaultValues = {
+    defaultMonthToParse: 'Select Month',
+    defaultDay: 'Select Day',
+    defaultYear: 'Select Year',
+  },
+}) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const defaultMonth = monthNames[defaultValues.defaultMonth];
+  const { defaultDay, defaultYear } = defaultValues;
+
   const months = {
     January: 31,
     February: 29,
@@ -39,10 +70,10 @@ function DateInput({ setGivenState, setStateValid }) {
     return setStateValid(false);
   }
 
-  const [pickedMonth, setPickedMonth] = useState('Select Month');
+  const [pickedMonth, setPickedMonth] = useState(defaultMonth);
   const [daysInPickedMonth, setDaysInPickedMonth] = useState([]);
-  const [pickedDay, setPickedDay] = useState('Select Day');
-  const [pickedYear, setPickedYear] = useState('Select Year');
+  const [pickedDay, setPickedDay] = useState(defaultDay);
+  const [pickedYear, setPickedYear] = useState(defaultYear);
 
   function handlePickMonth(inputMonth) {
     const days = [];
@@ -55,6 +86,10 @@ function DateInput({ setGivenState, setStateValid }) {
 
     setDaysInPickedMonth(days);
   }
+
+  useEffect(() => {
+    if (defaultMonth !== 'Select Month') handlePickMonth(defaultMonth);
+  }, []);
 
   return (
     <View>
@@ -114,11 +149,3 @@ function DateInput({ setGivenState, setStateValid }) {
 }
 
 export default DateInput;
-
-// --== USAGE ==--
-
-// initialise state:
-// const [givenDate, setGivenDate] = useState();
-
-// invoke component, pass setState function on props:
-// <DateInput setGivenState={setGivenDate} />;

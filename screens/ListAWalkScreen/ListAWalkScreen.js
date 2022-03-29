@@ -16,12 +16,14 @@ function ListAWalkScreen({ navigation }) {
 
   const [walkMinutes, setWalkMinutes] = useState('');
   const [walkMinutesValid, setWalkMinutesValid] = useState('');
+  const [dogName, setDogName] = useState('');
+  const [dogNameValid, setDogNameValid] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
-  const [dogData, setDogData] = useState('');
+
   const [dateTime, setDateTime] = useState('');
 
   const postCodeRegex =
@@ -51,11 +53,9 @@ function ListAWalkScreen({ navigation }) {
   const dogsIdsArray = Object.keys(dogObject);
   const dogDataArray = [];
   dogsIdsArray.map((dog) => dogDataArray.push(dogObject[dog]));
-
+  let validSignUp = true;
   // handle submit button
   function HandleSubmit() {
-    let validSignUp = true;
-
     if (!/^[a-zA-Z]+$/.test(walkDesc)) {
       setWalkRequirementsValid(false);
       validSignUp = false;
@@ -70,11 +70,15 @@ function ListAWalkScreen({ navigation }) {
       setWalkMinutesValid(false);
       validSignUp = false;
     }
+    if (dogNameValid === 'Please choose dog') {
+      setDogNameValid(false);
+      validSignUp = false;
+    }
 
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     // checking if post code and dogID valid before sending to Api
-    if (dogData.dogId !== undefined) {
+    if (dogName.dogId !== undefined) {
       if (postCode.match(postCodeRegex) != null) {
         fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
@@ -86,7 +90,7 @@ function ListAWalkScreen({ navigation }) {
             } else {
               const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
                 createdAt: Date.now(),
-                dogId: dogData.dogId,
+                dogId: dogName.dogId,
                 walkDesc,
                 walkRequirements,
                 walkMinutes,
@@ -203,17 +207,22 @@ function ListAWalkScreen({ navigation }) {
           <View style={styles.login_input}>
             <Picker
               style={{ height: 17, width: 180 }}
-              selectedValue={dogData}
+              selectedValue={dogName}
               onValueChange={(itemValue) => {
-                setDogData(itemValue);
+                setDogName(itemValue);
               }}
             >
-              <Picker.Item label="Please choose dog" />
+              <Picker.Item label="Please choose dog" value="Please choose dog" />
               {dogDataArray.map((dog) => (
                 <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}
             </Picker>
           </View>
+          {!dogNameValid ? (
+            <Text style={styles.invalid_input}>* Please select your Dog</Text>
+          ) : (
+            false
+          )}
 
           <Button
             style={styles.login_button}

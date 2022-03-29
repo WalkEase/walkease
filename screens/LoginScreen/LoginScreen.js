@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Text, TextInput, View, LogBox } from 'react-native';
 import React, { useContext, useState } from 'react';
 
 import Button from 'react-native-button';
@@ -7,6 +7,12 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
+
+LogBox.ignoreLogs(
+  [
+    'Setting a timer for a long period of time',
+    "navigation.navigate is not a function.",
+  ])
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);

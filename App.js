@@ -15,6 +15,7 @@ import EditMyDetailsScreen from './screens/EditMyDetailsScreen/EditMyDetailsScre
 import MyListedWalksScreen from './screens/MyListedWalksScreen/MyListedWalksScreen';
 import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/WalkerLandingScreen';
 import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
+import AddDogScreen from './screens/AddDogScreen/AddDogScreen';
 
 import Header from './components/Header/Header';
 
@@ -84,9 +85,16 @@ export default function App() {
 
           <Stack.Screen
             name="SingleDogScreen"
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
             component={SingleDogScreen}
           />
+
+          <Stack.Screen
+            name="AddDogScreen"
+            options={{ headerShown: false }}
+            component={AddDogScreen}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>

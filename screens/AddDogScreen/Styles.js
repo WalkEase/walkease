@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+
 export default StyleSheet.create({
     container: {
         flex: 1,
@@ -10,7 +11,7 @@ export default StyleSheet.create({
     },
 
     main_contain: {
-        backgroundColor: "green",
+        backgroundColor: "white",
         height: '100%',
         flex: 1,
         alignContent: 'space-around',
@@ -79,7 +80,7 @@ export default StyleSheet.create({
 
     img: {
         width: "100%",
-        height: 110,
+        height: 110
     },
 
     nav_container: {

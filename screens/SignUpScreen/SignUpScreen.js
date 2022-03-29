@@ -135,6 +135,7 @@ function SignUpScreen({ navigation }) {
             <View style={styles.login_inputs_container}>
               <Text style={styles.header}>Sign Up</Text>
               <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={email}
                 placeholder="Email"
@@ -256,6 +257,7 @@ function SignUpScreen({ navigation }) {
               )}
 
               <TextInput
+                autoCapitalize="characters"
                 style={styles.login_input}
                 defaultValue={postCode}
                 placeholder="Post Code"
@@ -277,6 +279,7 @@ function SignUpScreen({ navigation }) {
               </View>
 
               <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={avatarUrl}
                 placeholder="Web link to image"

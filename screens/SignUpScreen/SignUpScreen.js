@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../../firebase';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
+import DateInput from '../../components/DateInput/DateInput';
 
 function SignUpScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -29,7 +30,8 @@ function SignUpScreen({ navigation }) {
   const [postCode, setPostCode] = useState('');
 
   // date of birth
-  const [DoB, setDoB] = useState('');
+  const [DoB, setDoB] = useState();
+  const [DoBValid, setDoBValid] = useState(true);
 
   // avatarUrl state
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -68,6 +70,11 @@ function SignUpScreen({ navigation }) {
 
     if (!/^[a-zA-Z]+$/.test(lastName)) {
       setLastNameValid(false);
+      validSignUp = false;
+    }
+
+    if (!DoB) {
+      setDoBValid(false);
       validSignUp = false;
     }
 
@@ -126,6 +133,7 @@ function SignUpScreen({ navigation }) {
         <ScrollView style={styles.signup_scrollview}>
           <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.login_inputs_container}>
+              <Text style={styles.header}>Sign Up</Text>
               <TextInput
                 style={styles.login_input}
                 defaultValue={email}
@@ -195,7 +203,7 @@ function SignUpScreen({ navigation }) {
                 </Picker>
 
                 {!userTypeValid ? (
-                  <Text style={styles.invalid_input}>{`* Please select Owner or Walker`}</Text>
+                  <Text style={styles.invalid_input}>* Please select Owner or Walker</Text>
                 ) : (
                   false
                 )}
@@ -256,14 +264,17 @@ function SignUpScreen({ navigation }) {
                 }}
               />
 
-              <TextInput
-                style={styles.login_input}
-                defaultValue={DoB}
-                placeholder="DD/MM/YYYY"
-                onChangeText={(newText) => {
-                  setDoB(newText);
-                }}
-              />
+              <View style={styles.DoBContainer}>
+                <Text style={styles.subHeader}>Date of Birth</Text>
+
+                <DateInput setGivenState={setDoB} setStateValid={setDoBValid} />
+
+                {!DoBValid ? (
+                  <Text style={styles.invalid_input}>* Please enter a valid date of birth</Text>
+                ) : (
+                  false
+                )}
+              </View>
 
               <TextInput
                 style={styles.login_input}
@@ -304,7 +315,7 @@ function SignUpScreen({ navigation }) {
               <Text>{userBio.length} chars</Text>
 
               {!userBioValid ? (
-                <Text style={styles.invalid_input}>{`* Bio must be between 100 - 200 chars`}</Text>
+                <Text style={styles.invalid_input}>* Bio must be between 100 - 200 chars</Text>
               ) : (
                 false
               )}
@@ -329,7 +340,7 @@ function SignUpScreen({ navigation }) {
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
-      <View style={styles.nav_container}></View>
+      <View style={styles.nav_container} />
     </>
   );
 }

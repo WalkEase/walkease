@@ -60,6 +60,13 @@ export default StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: 'black',
+    marginBottom: 20,
+  },
+
+  subHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
   },
 
   invalid_input: {
@@ -103,5 +110,8 @@ export default StyleSheet.create({
     width: '100%',
     paddingVertical: 10,
     marginBottom: 10,
+  },
+  DoBContainer: {
+    marginVertical: 20,
   },
 });

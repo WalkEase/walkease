@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState } from 'react';
+import { StatusBar } from 'react-native';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import OwnerLandingScreen from './screens/OwnerLandingScreen/OwnerLandingScreen';
 import SignUpScreen from './screens/SignUpScreen/SignUpScreen';
@@ -16,7 +17,6 @@ import WalkerLandingScreen from './screens/WalkerScreens/WalkerLandingScreen/Wal
 import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
 import AddDogScreen from './screens/AddDogScreen/AddDogScreen';
 
-import { StatusBar } from 'react-native';
 import Header from './components/Header/Header';
 
 const Stack = createNativeStackNavigator();

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import styles from './styles';
 
-function DateInput({ setGivenState }) {
+function DateInput({ setGivenState, setStateValid }) {
   const months = {
     January: 31,
     February: 29,
@@ -33,6 +33,12 @@ function DateInput({ setGivenState }) {
 
   const years = getYears();
 
+  function dateValidator(month, day, year) {
+    if (Date.parse(`${day} ${month} ${year} 00:00:00 GMT`)) return setStateValid(true);
+
+    return setStateValid(false);
+  }
+
   const [pickedMonth, setPickedMonth] = useState('Select Month');
   const [daysInPickedMonth, setDaysInPickedMonth] = useState([]);
   const [pickedDay, setPickedDay] = useState('Select Day');
@@ -51,11 +57,15 @@ function DateInput({ setGivenState }) {
   }
 
   return (
-    <View style={styles.datePicker}>
+    <View>
       <Picker
+        itemStyle={styles.dobPicker}
+        style={styles.dobPicker}
         selectedValue={pickedMonth}
         onValueChange={(newMonth) => {
           handlePickMonth(newMonth);
+
+          dateValidator(newMonth, pickedDay, pickedYear);
 
           setGivenState(Date.parse(`${pickedDay} ${newMonth} ${pickedYear} 00:00:00 GMT`));
         }}
@@ -67,9 +77,12 @@ function DateInput({ setGivenState }) {
       </Picker>
 
       <Picker
+        itemStyle={styles.dobPicker}
         selectedValue={pickedDay}
         onValueChange={(newDay) => {
           setPickedDay(newDay);
+
+          dateValidator(pickedMonth, newDay, pickedYear);
 
           setGivenState(Date.parse(`${newDay} ${pickedMonth} ${pickedYear} 00:00:00 GMT`));
         }}
@@ -81,9 +94,12 @@ function DateInput({ setGivenState }) {
       </Picker>
 
       <Picker
+        itemStyle={styles.dobPicker}
         selectedValue={pickedYear}
         onValueChange={(newYear) => {
           setPickedYear(newYear);
+
+          dateValidator(pickedMonth, pickedDay, newYear);
 
           setGivenState(Date.parse(`${pickedDay} ${pickedMonth} ${newYear} 00:00:00 GMT`));
         }}

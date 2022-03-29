@@ -1,11 +1,13 @@
 import { KeyboardAvoidingView, Text, TextInput, View, Picker, ScrollView } from 'react-native';
 import React, { useState, useContext } from 'react';
-import Button from 'react-native-button';
 import { set, ref, get, onValue } from 'firebase/database';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../../firebase';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
+import DateInput from '../../components/DateInput/DateInput';
+import { config } from '../../.api';
+
 
 function SignUpScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -26,10 +28,15 @@ function SignUpScreen({ navigation }) {
   const [lastNameValid, setLastNameValid] = useState(true);
 
   const [userType, setUserType] = useState('Select account type');
-  const [postCode, setPostCode] = useState('');
 
-  // date of birth
-  const [DoB, setDoB] = useState('');
+  // date of birth state
+  const [DoB, setDoB] = useState();
+  const [DoBValid, setDoBValid] = useState(true);
+
+  // post code state
+  const [postCode, setPostCode] = useState('');
+  const [postCodeValid, setPostCodeValid] = useState(true);
+  const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
 
   // avatarUrl state
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -71,6 +78,16 @@ function SignUpScreen({ navigation }) {
       validSignUp = false;
     }
 
+    if (!DoB) {
+      setDoBValid(false);
+      validSignUp = false;
+    }
+
+    if (!postCodeRegex.test(postCode)) {
+      setPostCodeValid(false);
+      validSignUp = false;
+    }
+
     if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
       setAvatarUrlValid(false);
       validSignUp = false;
@@ -88,8 +105,20 @@ function SignUpScreen({ navigation }) {
 
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
-    createUserWithEmailAndPassword(auth, email, password)
+    fetch
+      (
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
+      )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'ZERO_RESULTS') {
+          throw 'Post Code does not exist';
+        } else {
+          return createUserWithEmailAndPassword(auth, email, password)
+        }
+      })
       .then((res) => {
+        console.log('res', res)
         set(ref(database, `data/users/${res.user.uid}`), {
           uid: res.user.uid,
           createdAt: Date.now(),
@@ -114,10 +143,16 @@ function SignUpScreen({ navigation }) {
       })
       .then((user) => {
         const userTypeIn = user.val().userType;
-
+        alert("SignUp process successful")
         navigation.navigate(`${userTypeIn}LandingScreen`);
       })
-      .catch((error) => alert(error.message));
+      .catch((err) => {
+        if (err === 'Post Code does not exist') {
+          alert(err);
+          return setPostCodeValid(false)
+        };
+        return alert(err.message);
+      })
   };
 
   return (
@@ -126,7 +161,9 @@ function SignUpScreen({ navigation }) {
         <ScrollView style={styles.signup_scrollview}>
           <KeyboardAvoidingView style={styles.container} behavior="padding">
             <View style={styles.login_inputs_container}>
+              <Text style={styles.header}>Sign Up</Text>
               <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={email}
                 placeholder="Email"
@@ -195,7 +232,7 @@ function SignUpScreen({ navigation }) {
                 </Picker>
 
                 {!userTypeValid ? (
-                  <Text style={styles.invalid_input}>{`* Please select Owner or Walker`}</Text>
+                  <Text style={styles.invalid_input}>* Please select Owner or Walker</Text>
                 ) : (
                   false
                 )}
@@ -246,26 +283,45 @@ function SignUpScreen({ navigation }) {
               ) : (
                 false
               )}
+              <View>
+
+                <TextInput
+                  style={styles.login_input}
+                  defaultValue={postCode}
+                  placeholder="Post code"
+                  onChangeText={(newText) => {
+                    setPostCode(newText);
+                  }}
+
+                  onFocus={() => {
+                    setPostCodeValid(true);
+                  }}
+                  onBlur={() => {
+                    setPostCodeValid(postCodeRegex.test(postCode));
+                  }}
+                />
+
+                {!postCodeValid ? (
+                  <Text style={styles.invalid_input}>* Invalid Post Code </Text>
+                ) : (
+                  false
+                )}
+
+              </View>
+              <View style={styles.DoBContainer}>
+                <Text style={styles.subHeader}>Date of Birth</Text>
+
+                <DateInput setGivenState={setDoB} setStateValid={setDoBValid} />
+
+                {!DoBValid ? (
+                  <Text style={styles.invalid_input}>* Please enter a valid date of birth</Text>
+                ) : (
+                  false
+                )}
+              </View>
 
               <TextInput
-                style={styles.login_input}
-                defaultValue={postCode}
-                placeholder="Post Code"
-                onChangeText={(newText) => {
-                  setPostCode(newText);
-                }}
-              />
-
-              <TextInput
-                style={styles.login_input}
-                defaultValue={DoB}
-                placeholder="DD/MM/YYYY"
-                onChangeText={(newText) => {
-                  setDoB(newText);
-                }}
-              />
-
-              <TextInput
+                autoCapitalize="none"
                 style={styles.login_input}
                 defaultValue={avatarUrl}
                 placeholder="Web link to image"
@@ -304,7 +360,7 @@ function SignUpScreen({ navigation }) {
               <Text>{userBio.length} chars</Text>
 
               {!userBioValid ? (
-                <Text style={styles.invalid_input}>{`* Bio must be between 100 - 200 chars`}</Text>
+                <Text style={styles.invalid_input}>* Bio must be between 100 - 200 chars</Text>
               ) : (
                 false
               )}
@@ -329,7 +385,7 @@ function SignUpScreen({ navigation }) {
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
-      <View style={styles.nav_container}></View>
+      <View style={styles.nav_container} />
     </>
   );
 }

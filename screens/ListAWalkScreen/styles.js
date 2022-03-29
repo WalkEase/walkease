@@ -48,7 +48,7 @@ export default StyleSheet.create({
   picker: {
     backgroundColor: 'white',
     marginTop: 0,
-
+    width: 180,
     borderRadius: 10,
     borderColor: '#386641',
   },

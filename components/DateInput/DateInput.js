@@ -1,9 +1,40 @@
-import { View, Picker } from 'react-native';
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
 
+import { View, Picker } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import styles from './styles';
 
-function DateInput({ setGivenState }) {
+function DateInput({
+  setGivenState = () => {
+    console.warn("WARNING: No state setting function found for 'setGivenState' property");
+  },
+  setStateValid = () => {
+    console.warn("WARNING: No state setting function found for 'setStateValid' property");
+  },
+  defaultValues = {
+    defaultMonthToParse: 'Select Month',
+    defaultDay: 'Select Day',
+    defaultYear: 'Select Year',
+  },
+}) {
+  const monthNames = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+
+  const defaultMonth = monthNames[defaultValues.defaultMonth];
+  const { defaultDay, defaultYear } = defaultValues;
+
   const months = {
     January: 31,
     February: 29,
@@ -33,10 +64,16 @@ function DateInput({ setGivenState }) {
 
   const years = getYears();
 
-  const [pickedMonth, setPickedMonth] = useState('Select Month');
+  function dateValidator(month, day, year) {
+    if (Date.parse(`${day} ${month} ${year} 00:00:00 GMT`)) return setStateValid(true);
+
+    return setStateValid(false);
+  }
+
+  const [pickedMonth, setPickedMonth] = useState(defaultMonth);
   const [daysInPickedMonth, setDaysInPickedMonth] = useState([]);
-  const [pickedDay, setPickedDay] = useState('Select Day');
-  const [pickedYear, setPickedYear] = useState('Select Year');
+  const [pickedDay, setPickedDay] = useState(defaultDay);
+  const [pickedYear, setPickedYear] = useState(defaultYear);
 
   function handlePickMonth(inputMonth) {
     const days = [];
@@ -50,12 +87,20 @@ function DateInput({ setGivenState }) {
     setDaysInPickedMonth(days);
   }
 
+  useEffect(() => {
+    if (defaultMonth !== 'Select Month') handlePickMonth(defaultMonth);
+  }, []);
+
   return (
-    <View style={styles.datePicker}>
+    <View>
       <Picker
+        itemStyle={styles.dobPicker}
+        style={styles.dobPicker}
         selectedValue={pickedMonth}
         onValueChange={(newMonth) => {
           handlePickMonth(newMonth);
+
+          dateValidator(newMonth, pickedDay, pickedYear);
 
           setGivenState(Date.parse(`${pickedDay} ${newMonth} ${pickedYear} 00:00:00 GMT`));
         }}
@@ -67,9 +112,12 @@ function DateInput({ setGivenState }) {
       </Picker>
 
       <Picker
+        itemStyle={styles.dobPicker}
         selectedValue={pickedDay}
         onValueChange={(newDay) => {
           setPickedDay(newDay);
+
+          dateValidator(pickedMonth, newDay, pickedYear);
 
           setGivenState(Date.parse(`${newDay} ${pickedMonth} ${pickedYear} 00:00:00 GMT`));
         }}
@@ -81,9 +129,12 @@ function DateInput({ setGivenState }) {
       </Picker>
 
       <Picker
+        itemStyle={styles.dobPicker}
         selectedValue={pickedYear}
         onValueChange={(newYear) => {
           setPickedYear(newYear);
+
+          dateValidator(pickedMonth, pickedDay, newYear);
 
           setGivenState(Date.parse(`${pickedDay} ${pickedMonth} ${newYear} 00:00:00 GMT`));
         }}
@@ -98,11 +149,3 @@ function DateInput({ setGivenState }) {
 }
 
 export default DateInput;
-
-// --== USAGE ==--
-
-// initialise state:
-// const [givenDate, setGivenDate] = useState();
-
-// invoke component, pass setState function on props:
-// <DateInput setGivenState={setGivenDate} />;

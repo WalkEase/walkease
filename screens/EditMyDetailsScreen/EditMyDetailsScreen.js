@@ -3,9 +3,9 @@ import { Image, ScrollView, Text, TextInput, View } from 'react-native';
 import { set, ref } from 'firebase/database';
 import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
-import Header from '../../components/Header/Header';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
+import DateInput from '../../components/DateInput/DateInput';
 
 function EditMyDetailsScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -17,7 +17,10 @@ function EditMyDetailsScreen({ navigation }) {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [postCode, setPostCode] = useState(user.postCode);
+
   const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
+  const [dateOfBirthValid, SetDateOfBirthVaild] = useState(true);
+
   const [userBio, setUserBio] = useState(user.userBio);
 
   function handleSave() {
@@ -58,6 +61,7 @@ function EditMyDetailsScreen({ navigation }) {
 
           <View style={styles.input_contain}>
             <TextInput
+              autoCapitalize="none"
               multiline
               value={avatarUrl}
               onChangeText={(newText) => {
@@ -106,6 +110,7 @@ function EditMyDetailsScreen({ navigation }) {
           </View>
           <View style={styles.input_contain}>
             <TextInput
+              autoCapitalize="characters"
               value={postCode}
               onChangeText={(newText) => {
                 setPostCode(newText);
@@ -113,15 +118,20 @@ function EditMyDetailsScreen({ navigation }) {
               style={styles.input}
             />
           </View>
-          <View style={styles.input_contain}>
-            <TextInput
-              value={dateOfBirth}
-              onChangeText={(newText) => {
-                setDateOfBirth(newText);
+
+          <View>
+            <Text>Date of Birth</Text>
+            <DateInput
+              setGivenState={setDateOfBirth}
+              setStateValid={SetDateOfBirthVaild}
+              defaultValues={{
+                defaultMonth: new Date(dateOfBirth).getMonth(),
+                defaultDay: String(new Date(dateOfBirth).getDate()),
+                defaultYear: String(new Date(dateOfBirth).getFullYear()),
               }}
-              style={styles.input}
             />
           </View>
+
           <ScrollView style={[styles.input_contain, styles.input_contain_bio]}>
             <TextInput
               multiline

@@ -7,7 +7,7 @@ import Nav from '../../components/Nav/Nav';
 import { config } from '../../.api';
 import styles from './styles';
 
-const SingleDogScreen = ({ navigation, route }) => {
+function SingleDogScreen({ navigation, route }) {
 
     // user & dog data
     const { user } = useContext(UserContext);
@@ -36,7 +36,7 @@ const SingleDogScreen = ({ navigation, route }) => {
     // postCode state
     const [dogPostCode, setDogPostCode] = useState(info[2]);
 
-    //date of birthstate
+    // date of birth state
     const [dogDateOfBirth, setDogDateOfBirth] = useState(info[3]);
     const [dogDateOfBirthValid, setDogDateOfBirthValid] = useState(true);
 
@@ -229,7 +229,7 @@ const SingleDogScreen = ({ navigation, route }) => {
                                     selectedValue={dogSize}
                                     onValueChange={(itemValue) => setDogSize(itemValue)}
                                 >
-                                    <Picker.Item label={"Currently " + dogSize} value={dogSize} />
+                                    <Picker.Item label={`Currently ${dogSize}`} value={dogSize} />
                                     <Picker.Item label="Very Small" value="Very Small" />
                                     <Picker.Item label="Small" value="Small" />
                                     <Picker.Item label="Medium" value="Medium" />

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
-import Header from '../../components/Header/Header';
+
 import Nav from '../../components/Nav/Nav';
 
 function MyDetailsScreen({ navigation }) {
@@ -28,14 +28,15 @@ function MyDetailsScreen({ navigation }) {
               <Text style={styles.details_list_item}>{user.postCode}</Text>
             </View>
             <View style={styles.list_detail_contain}>
-              <Text style={styles.details_list_header}>DoB</Text>
-              <Text style={styles.details_list_item}>{user.dateOfBirth}</Text>
+              <Text style={styles.details_list_header}>Age</Text>
+              <Text style={styles.details_list_item}>
+                {new Date(Date.now()).getFullYear() - new Date(user.dateOfBirth).getFullYear()}
+              </Text>
             </View>
             <View style={styles.list_detail_contain}>
               <Text style={styles.details_list_header}>About you</Text>
 
               <Text style={styles.details_list_item_bio}>{user.userBio}</Text>
-              {/* </ScrollView> */}
               <Text
                 style={styles.details_list_edit}
                 onPress={() => {

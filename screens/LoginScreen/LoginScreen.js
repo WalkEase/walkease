@@ -8,11 +8,10 @@ import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
 
-LogBox.ignoreLogs(
-  [
-    'Setting a timer for a long period of time',
-    "navigation.navigate is not a function.",
-  ])
+LogBox.ignoreLogs([
+  'Setting a timer for a long period of time',
+  'navigation.navigate is not a function.',
+]);
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
@@ -44,6 +43,7 @@ function LoginScreen({ navigation }) {
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <View style={styles.login_inputs_container}>
             <TextInput
+              autoCapitalize="none"
               style={styles.login_input}
               defaultValue={email}
               placeholder="email"
@@ -81,7 +81,7 @@ function LoginScreen({ navigation }) {
           </View>
         </KeyboardAvoidingView>
       </View>
-      <View style={styles.nav_container}></View>
+      <View style={styles.nav_container} />
     </>
   );
 }

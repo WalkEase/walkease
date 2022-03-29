@@ -16,7 +16,8 @@ function ListAWalkScreen({ navigation }) {
 
   const [walkMinutes, setWalkMinutes] = useState('');
   const [walkMinutesValid, setWalkMinutesValid] = useState(true);
-  const [dogName, setDogName] = useState('');
+  const [dogId, setDogId] = useState('Please choose dog');
+  const [pickedDog, setPickedDog] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
@@ -75,7 +76,7 @@ function ListAWalkScreen({ navigation }) {
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     // checking if post code and dogID valid before sending to Api
-    if (dogName.dogId !== undefined) {
+    if (pickedDog.dogId !== undefined) {
       if (postCode.match(postCodeRegex) != null) {
         fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
@@ -87,7 +88,7 @@ function ListAWalkScreen({ navigation }) {
             } else {
               const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
                 createdAt: Date.now(),
-                dogId: dogName.dogId,
+                dogId: pickedDog.dogId,
                 walkDesc,
                 walkRequirements,
                 walkMinutes,
@@ -204,16 +205,19 @@ function ListAWalkScreen({ navigation }) {
             />
           </View>
           <View style={styles.login_input}>
+            <Text style>Dog to Walk:</Text>
             <Picker
               style={styles.picker}
-              selectedValue={dogName}
+              selectedValue={dogId}
               onValueChange={(itemValue) => {
-                setDogName(itemValue);
+                setDogId(itemValue);
+
+                setPickedDog(dogObject[itemValue]);
               }}
             >
               <Picker.Item label="Please choose dog" value="Please choose dog" />
               {dogDataArray.map((dog) => (
-                <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
+                <Picker.Item key={dog.dogId} label={dog.name} value={dog.dogId} />
               ))}
             </Picker>
           </View>

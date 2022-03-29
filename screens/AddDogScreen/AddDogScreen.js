@@ -137,8 +137,10 @@ function AddDogScreen() {
                   setDogImage(true);
                 }}
               />
+              {!dogUrlValid ? (setDogImage(false)) : (setDogImage(true))}
 
               {!dogUrlValid ? (
+
                 <Text style={styles.invalid_input}>* Invalid dog URL, must be PNG/JPG</Text>
               ) : (
                 false

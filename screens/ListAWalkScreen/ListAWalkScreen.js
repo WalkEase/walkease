@@ -9,19 +9,21 @@ import { config } from '../../.api';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
-  const [walkDescValid, setWalkDescValid] = useState('');
+  const [walkDescValid, setWalkDescValid] = useState(true);
 
   const [walkRequirements, setWalkRequirements] = useState('');
-  const [walkRequirementsValid, setWalkRequirementsValid] = useState('');
+  const [walkRequirementsValid, setWalkRequirementsValid] = useState(true);
 
   const [walkMinutes, setWalkMinutes] = useState('');
-  const [walkMinutesValid, setWalkMinutesValid] = useState('');
+  const [walkMinutesValid, setWalkMinutesValid] = useState(true);
+  const [dogId, setDogId] = useState('Please choose dog');
+  const [pickedDog, setPickedDog] = useState({});
 
   const [isLoading, setIsLoading] = useState(true);
   const [dogObject, setDogsObject] = useState('');
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
-  const [dogData, setDogData] = useState('');
+
   const [dateTime, setDateTime] = useState('');
 
   const postCodeRegex =
@@ -47,6 +49,8 @@ function ListAWalkScreen({ navigation }) {
       </View>
     );
 
+  let validSignUp = true;
+
   // push dogs data to array
   const dogsIdsArray = Object.keys(dogObject);
   const dogDataArray = [];
@@ -54,8 +58,6 @@ function ListAWalkScreen({ navigation }) {
 
   // handle submit button
   function HandleSubmit() {
-    let validSignUp = true;
-
     if (!/^[a-zA-Z]+$/.test(walkDesc)) {
       setWalkRequirementsValid(false);
       validSignUp = false;
@@ -74,7 +76,7 @@ function ListAWalkScreen({ navigation }) {
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
     // checking if post code and dogID valid before sending to Api
-    if (dogData.dogId !== undefined) {
+    if (pickedDog.dogId !== undefined) {
       if (postCode.match(postCodeRegex) != null) {
         fetch(
           `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
@@ -86,7 +88,7 @@ function ListAWalkScreen({ navigation }) {
             } else {
               const updateWalk = push(ref(database, `data/walks/${user.uid}`), {
                 createdAt: Date.now(),
-                dogId: dogData.dogId,
+                dogId: pickedDog.dogId,
                 walkDesc,
                 walkRequirements,
                 walkMinutes,
@@ -100,10 +102,12 @@ function ListAWalkScreen({ navigation }) {
               update(ref(database, `data/walks/${user.uid}/${updateWalk.key}`), {
                 userId: user.uid,
               });
+              return 'dataUpdated';
             }
           })
-          .then(() => {
-            navigation.navigate('MyListedWalksScreen');
+          .then((dataUpdated) => {
+            console.log(dataUpdated);
+            if (dataUpdated !== undefined) navigation.navigate('MyListedWalksScreen');
           })
           .catch((error) => alert(error.message));
       } else {
@@ -201,16 +205,19 @@ function ListAWalkScreen({ navigation }) {
             />
           </View>
           <View style={styles.login_input}>
+            <Text style>Dog to Walk:</Text>
             <Picker
-              style={{ height: 17, width: 180 }}
-              selectedValue={dogData}
+              style={styles.picker}
+              selectedValue={dogId}
               onValueChange={(itemValue) => {
-                setDogData(itemValue);
+                setDogId(itemValue);
+
+                setPickedDog(dogObject[itemValue]);
               }}
             >
-              <Picker.Item label="Please choose dog" />
+              <Picker.Item label="Please choose dog" value="Please choose dog" />
               {dogDataArray.map((dog) => (
-                <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
+                <Picker.Item key={dog.dogId} label={dog.name} value={dog.dogId} />
               ))}
             </Picker>
           </View>

@@ -208,6 +208,12 @@ function ListAWalkScreen({ navigation }) {
           </View>
           <View style={styles.login_input}>
             <Picker
+              onFocus={() => {
+                setDogName(true);
+              }}
+              onBlur={() => {
+                setDogName(dogNameValid === 'Please choose dog');
+              }}
               style={{ height: 17, width: 180 }}
               selectedValue={dogName}
               onValueChange={(itemValue) => {
@@ -219,12 +225,12 @@ function ListAWalkScreen({ navigation }) {
                 <Picker.Item key={dog.dogId} label={dog.name} value={dog} />
               ))}
             </Picker>
+            {!dogNameValid ? (
+              <Text style={styles.invalid_input}>* Please select your Dog</Text>
+            ) : (
+              false
+            )}
           </View>
-          {!dogNameValid ? (
-            <Text style={styles.invalid_input}>* Please select your Dog</Text>
-          ) : (
-            false
-          )}
 
           <Button
             style={styles.login_button}

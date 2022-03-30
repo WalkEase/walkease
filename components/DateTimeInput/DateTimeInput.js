@@ -69,7 +69,7 @@ function DateTimeInput({
   function getSixty() {
     const list = [];
 
-    for (let i = 1; i <= 60; i += 1) {
+    for (let i = 0; i < 60; i += 1) {
       list.push(String(i));
     }
 

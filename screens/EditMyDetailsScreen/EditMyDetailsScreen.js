@@ -23,8 +23,11 @@ function EditMyDetailsScreen({ navigation }) {
   const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastNameValid, setLastNameValid] = useState(true);
 
-  // post code  && phone number state
+  //phone number state
   const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+  const [phoneNumberValid, setPhoneNumberValid] = useState(true);
+
+  // post code state
   const [postCode, setPostCode] = useState(user.postCode);
   const [postCodeValid, setPostCodeValid] = useState(true);
   const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
@@ -53,6 +56,11 @@ function EditMyDetailsScreen({ navigation }) {
 
     if (!/^[a-zA-Z]+$/.test(lastName)) {
       setLastNameValid(false);
+      validEdit = false;
+    }
+
+    if (!/^\(?0( *\d\)?){9,10}$/.test(phoneNumber)) {
+      setPhoneNumberValid(false);
       validEdit = false;
     }
 
@@ -204,15 +212,29 @@ function EditMyDetailsScreen({ navigation }) {
             )}
           </View>
 
-
-          <View style={styles.input_contain}>
+          <View>
             <TextInput
-              value={phoneNumber}
+              autoCapitalize="none"
+              style={styles.login_input}
+              defaultValue={phoneNumber}
+              placeholder="Phone Number"
               onChangeText={(newText) => {
                 setPhoneNumber(newText);
               }}
-              style={styles.input}
+              onFocus={() => {
+                setPhoneNumberValid(true);
+              }}
+              onBlur={() => setPhoneNumberValid(/^\(?0( *\d\)?){9,10}$/.test(phoneNumber))}
             />
+
+            {!phoneNumberValid ? (
+              <Text style={styles.invalid_input}>
+                * Please enter a valid UK phone number (starting with 0)
+              </Text>
+            ) : (
+              false
+            )}
+
           </View>
 
           <View style={styles.input_contain}>

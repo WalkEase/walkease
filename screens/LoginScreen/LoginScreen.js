@@ -8,10 +8,7 @@ import UserContext from '../../contexts/UserContext';
 import { auth, database } from '../../firebase';
 import styles from './styles';
 
-LogBox.ignoreLogs([
-  'Setting a timer for a long period of time',
-  'navigation.navigate is not a function.',
-]);
+LogBox.ignoreAllLogs();
 
 function LoginScreen({ navigation }) {
   const { setUser } = useContext(UserContext);

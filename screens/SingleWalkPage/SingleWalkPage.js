@@ -1,63 +1,19 @@
 import React from 'react';
 import { Text, View, Image, ScrollView, Button, Linking, Platform } from 'react-native';
 import MapView, { Marker, Callout } from 'react-native-maps';
+import Nav from '../../components/Nav/Nav';
 import styles from './styles';
 
-export default function SingleWalkPage({ route }) {
+export default function SingleWalkPage({ route, navigation }) {
   const { chosenWalk } = route.params;
   const { dog } = route.params;
 
   const parsedDate = new Date(chosenWalk.dateTime);
 
   return (
-    <ScrollView style={styles.scrollView}>
+    <>
       <View style={styles.container}>
-        <Text>Walk Info:</Text>
-        <Text>
-          <View style={styles.walk_img_contain}>
-            <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: `${dog.imageUrl}`,
-              }}
-            />
-          </View>
-          {'\n'}
-          <Text style={styles.boldText}>Dog name:</Text> {dog.name}
-          {'\n'}
-          <Text style={styles.boldText}>Dog size: </Text>
-          {dog.size}
-          {'\n'}
-          <Text style={styles.boldText}>Dog info: </Text>
-          {dog.dogBio} {'\n'} {'\n'}
-          <Text style={styles.boldText}>Date and time: </Text>
-          <Text>
-            {`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}
-            {'\n'}
-          </Text>
-          <Text style={styles.boldText}>Post code: </Text>{' '}
-          <Text>
-            {chosenWalk.postCode}
-            {'\n'}
-          </Text>
-          <Text style={styles.boldText}>Walk time: </Text>
-          {chosenWalk.walkMinutes}
-          min {'\n'}
-          <Text style={styles.boldText}>Dog age: </Text>{' '}
-          {new Date(Date.now()).getFullYear() - new Date(dog.dateOfBirth).getFullYear()} {'\n'}
-          <Text style={styles.boldText}>Walk requirements: </Text>
-          {chosenWalk.walkRequirements}
-          {'\n'}
-          <Text style={styles.boldText}>Walk description: </Text>
-          {chosenWalk.walkDesc}
-          {'\n'}
-        </Text>
-        <Button
-          title="Call owner"
-          onPress={() => {
-            handleCallNow(chosenWalk.phoneNumber);
-          }}
-        />
+        <Text style={styles.header}>Full Walk Information</Text>
         <MapView
           style={styles.map}
           showsUserLocation
@@ -74,30 +30,63 @@ export default function SingleWalkPage({ route }) {
               latitude: chosenWalk.coordinates.lat,
               longitude: chosenWalk.coordinates.lng,
             }}
-          >
-            <Callout>
-              <Text>
-                <Text style={styles.boldText}>Pick up time: </Text>
-                {chosenWalk.dateTime}
-                {'\n'}
-                <Text style={styles.boldText}>Post Code: </Text>
-                {chosenWalk.postCode}
-                {'\n'}
-                <Text style={styles.boldText}>Doggo name: </Text>
-                {dog.name}
-                {'\n'}
-                <Text style={styles.boldText}>Duration: </Text>
-                {chosenWalk.walkMinutes} min
-                {'\n'}
-                <Text style={styles.boldText}>Size: </Text>
-                {dog.size}
-                {'\n'}
-              </Text>
-            </Callout>
-          </Marker>
+          ></Marker>
         </MapView>
+
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.main_container}>
+            <Text style={styles.about_dog_text}>The dog you'll be walking</Text>
+            <View style={styles.dog_info_contain}>
+              <View style={styles.walk_img_contain}>
+                <View>
+                  <Text style={styles.dog_name}>{dog.name}</Text>
+                  <Text style={styles.boldText}>{dog.size} size</Text>
+                  <Text style={styles.boldText}>
+                    {new Date(Date.now()).getFullYear() - new Date(dog.dateOfBirth).getFullYear()}{' '}
+                    years old
+                  </Text>
+                </View>
+                <Image
+                  style={styles.tinyLogo}
+                  source={{
+                    uri: `${dog.imageUrl}`,
+                  }}
+                />
+              </View>
+              <Text style={styles.boldText_info}>About the dog: </Text>
+              <Text style={styles.boldText}>{dog.dogBio} </Text>
+            </View>
+            <Text style={styles.about_dog_text}>Walk Information</Text>
+            <View style={styles.walk_text_contain}>
+              <Text style={styles.boldText_info}>Date and time: </Text>
+              <Text style={styles.boldText}>
+                {`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}
+              </Text>
+              <Text style={styles.boldText}>{chosenWalk.walkMinutes} minutes long</Text>
+              <Text style={styles.boldText_info}>Post code: </Text>
+              <Text style={styles.boldText}>{chosenWalk.postCode}</Text>
+
+              <Text style={styles.boldText_info}>Walk requirements: </Text>
+              <Text style={styles.boldText}>{chosenWalk.walkRequirements}</Text>
+              <Text style={styles.boldText_info}>Description: </Text>
+              <Text style={styles.boldText}>{chosenWalk.walkDesc}</Text>
+              <View style={styles.call_button_contain}>
+                <Text
+                  style={styles.call_button}
+                  title="Call owner"
+                  onPress={() => {
+                    handleCallNow(chosenWalk.phoneNumber);
+                  }}
+                >
+                  Call owner
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
       </View>
-    </ScrollView>
+      <Nav navigation={navigation} />
+    </>
   );
 }
 

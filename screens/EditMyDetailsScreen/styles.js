@@ -9,9 +9,9 @@ export default StyleSheet.create({
   },
   avatar: {
     marginTop: 30,
-    width: "100%",
-    height: 100,
-    borderRadius: 90,
+    width: 110,
+    height: 110,
+    borderRadius: 80,
   },
 
   details_list_header: {
@@ -34,9 +34,9 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   input_contain: {
-    borderColor: '#386641',
-    borderWidth: 2,
-    width: '60%',
+    borderBottomColor: '#386641',
+    borderBottomWidth: 2,
+    width: '80%',
     marginVertical: 10,
     borderRadius: 5,
   },
@@ -92,7 +92,6 @@ export default StyleSheet.create({
     color: '#bc4749',
   },
   DoBContainer: {
-
     width: 200,
     marginVertical: 30,
   },
@@ -104,17 +103,15 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   date: {
-    width: "100%",
+    width: '100%',
   },
 
   login_input: {
     backgroundColor: 'white',
     paddingHorizontal: 15,
-    paddingVertical: 10,
+
     borderRadius: 10,
     marginTop: 5,
-    borderBottomWidth: 2,
-    borderBottomColor: '#386641',
     marginVertical: 5,
   },
 });

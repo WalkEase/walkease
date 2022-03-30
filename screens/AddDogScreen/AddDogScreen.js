@@ -84,7 +84,7 @@ function AddDogScreen({ navigation }) {
       createdAt: Date.now(),
       name: dogName,
       imageUrl: dogUrl,
-      dateOfBirth: dogDateOfBirth,
+      dateOfBirth: DoB,
       size,
       dogBio: bio,
       postCode: dogPostCode,

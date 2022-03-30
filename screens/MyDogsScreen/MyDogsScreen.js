@@ -73,7 +73,7 @@ function MyDogsScreen({ navigation, route }) {
                   <Text style={styles.item_name}>{item.title}</Text>
                   <Text style={styles.item_info}>
                     {new Date(Date.now()).getFullYear() -
-                      new Date(user.dateOfBirth).getFullYear(item.data[3])}{' '}
+                      new Date(item.data[3]).getFullYear()}{' '}
                     year's old
                   </Text>
                   <Text style={styles.item_info}>{item.data[0]} size</Text>

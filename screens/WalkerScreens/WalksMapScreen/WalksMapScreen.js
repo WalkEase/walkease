@@ -182,7 +182,12 @@ export default function WalkerWalkMap({ navigation }) {
                       </Text>
                       <Text
                         style={styles.more_info}
-                        onPress={() => navigation.navigate('LoginScreen')}
+                        onPress={() =>
+                          navigation.navigate('SingleWalkPage', {
+                            chosenWalk: walk,
+                            dog: dogObject[walk.userId][walk.dogId],
+                          })
+                        }
                       >
                         More info...
                       </Text>

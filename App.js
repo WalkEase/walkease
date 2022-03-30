@@ -18,6 +18,7 @@ import SingleDogScreen from './screens/SingleDogScreen/SingleDogScreen';
 import AddDogScreen from './screens/AddDogScreen/AddDogScreen';
 
 import Header from './components/Header/Header';
+import SingleWalkPage from './screens/SingleWalkPage/SingleWalkPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -93,6 +94,12 @@ export default function App() {
             name="AddDogScreen"
             options={{ headerShown: false }}
             component={AddDogScreen}
+          />
+
+          <Stack.Screen
+            name="SingleWalkPage"
+            options={{ headerShown: false }}
+            component={SingleWalkPage}
           />
         </Stack.Navigator>
       </NavigationContainer>

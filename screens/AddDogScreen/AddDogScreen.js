@@ -46,8 +46,6 @@ function AddDogScreen({ navigation }) {
   // post code state
   const [dogPostCode, setDogPostCode] = useState(user.postCode);
 
-  const DateRegex =
-    /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
 
   const handleAddDog = () => {
     let validDogAdd = true;
@@ -71,11 +69,6 @@ function AddDogScreen({ navigation }) {
       validDogAdd = false;
     }
 
-    if (size === 'Size?') {
-      setSizeValid(false);
-      validDogAdd = false;
-    }
-
     if (!validDogAdd) {
       return alert("Please check you've entered all information correctly");
     }
@@ -84,7 +77,7 @@ function AddDogScreen({ navigation }) {
       createdAt: Date.now(),
       name: dogName,
       imageUrl: dogUrl,
-      dateOfBirth: dogDateOfBirth,
+      dateOfBirth: DoB,
       size,
       dogBio: bio,
       postCode: dogPostCode,
@@ -120,7 +113,7 @@ function AddDogScreen({ navigation }) {
                 <TextInput
                   style={styles.login_input}
                   defaultValue={dogName}
-                  placeholder="Change your dog name"
+                  placeholder="Type your dog name"
                   onChangeText={(newText) => {
                     setDogName(newText);
                   }}
@@ -152,7 +145,7 @@ function AddDogScreen({ navigation }) {
                 <TextInput
                   style={styles.login_input}
                   defaultValue={dogUrl}
-                  placeholder="Change your dog picture Url"
+                  placeholder="Type your dog picture Url"
                   onChangeText={(newText) => {
                     setDogUrl(newText);
                   }}

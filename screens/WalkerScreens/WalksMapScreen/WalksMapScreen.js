@@ -105,38 +105,46 @@ export default function WalkerWalkMap({ navigation }) {
           >
             {/* display markers in map */}
 
-            {walksFlatArray.map((walk) => (
-              <Marker
-                key={walk.walkId}
-                // pinColor={}
-                onPress={() => {}}
-                coordinate={{
-                  latitude: walk.coordinates.lat,
-                  longitude: walk.coordinates.lng,
-                }}
-              >
-                <Callout>
-                  <Text>
-                    <Text style={styles.boldText}>Pick up time: </Text>
-                    {walk.dateTime}
-                    {'\n'}
-                    <Text style={styles.boldText}>Post Code: </Text>
-                    {walk.postCode}
-                    {'\n'}
-                    <Text style={styles.boldText}>Doggo name: </Text>
-                    {dogObject[walk.userId][walk.dogId].name}
-                    {'\n'}
-                    <Text style={styles.boldText}>Duration: </Text>
-                    {walk.walkMinutes} min
-                    {'\n'}
-                    <Text style={styles.boldText}>Size: </Text>
-                    {dogObject[walk.userId][walk.dogId].size}
-                    {'\n'}
-                    more info link {'\n'}
-                  </Text>
-                </Callout>
-              </Marker>
-            ))}
+            {walksFlatArray.map((walk) => {
+              const parsedDate = new Date(walk.dateTime);
+              return (
+                <Marker
+                  key={walk.walkId}
+                  // pinColor={}
+                  onPress={() => {}}
+                  coordinate={{
+                    latitude: walk.coordinates.lat,
+                    longitude: walk.coordinates.lng,
+                  }}
+                >
+                  <Callout
+                    onPress={() =>
+                      navigation.navigate('SingleWalkPage', {
+                        chosenWalk: walk,
+                        dog: dogObject[walk.userId][walk.dogId],
+                      })
+                    }
+                  >
+                    <Text>
+                      <Text style={styles.boldText}>Pick up time: </Text>
+                      {`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}
+                      {'\n'}
+                      <Text style={styles.boldText}>Post Code: </Text>
+                      {walk.postCode}
+                      {'\n'}
+                      <Text style={styles.boldText}>Doggo name: </Text>
+                      {dogObject[walk.userId][walk.dogId].name}
+                      {'\n'}
+                      <Text style={styles.boldText}>Duration: </Text>
+                      {walk.walkMinutes} min
+                      {'\n'}
+                      <Text style={styles.boldText}>Size: </Text>
+                      {dogObject[walk.userId][walk.dogId].size}
+                    </Text>
+                  </Callout>
+                </Marker>
+              );
+            })}
             {handleBluePinFromList(walkData)}
           </MapView>
 
@@ -147,56 +155,63 @@ export default function WalkerWalkMap({ navigation }) {
               <View style={styles.header_list_contain}>
                 <Text style={styles.header_list}>Dog walks list</Text>
               </View>
-              {walksFlatArray.map((walk) => (
-                <View key={walk.walkId} style={styles.walk_card}>
-                  <TouchableOpacity
-                    style={styles.walk_card}
-                    style={
-                      handleListColour === walk.walkId
-                        ? styles.walkListItems2
-                        : styles.walkListItems
-                    }
-                    onPress={() => {
-                      setWalkData(walk);
-                      setHandleListColour(walk.walkId);
-                    }}
-                  >
-                    <View style={styles.walk_img_contain}>
-                      <Image
-                        style={styles.tinyLogo}
-                        source={{
-                          uri: `${dogObject[walk.userId][walk.dogId].imageUrl}`,
-                        }}
-                      />
-                    </View>
-                    <View style={styles.walk_text_contain}>
-                      <Text style={styles.dog_name}>{dogObject[walk.userId][walk.dogId].name}</Text>
-                      <Text style={styles.boldText}>{walk.dateTime}</Text>
+              {walksFlatArray.map((walk) => {
+                const parsedDate = new Date(walk.dateTime);
+                return (
+                  <View key={walk.walkId} style={styles.walk_card}>
+                    <TouchableOpacity
+                      style={styles.walk_card}
+                      style={
+                        handleListColour === walk.walkId
+                          ? styles.walkListItems2
+                          : styles.walkListItems
+                      }
+                      onPress={() => {
+                        setWalkData(walk);
+                        setHandleListColour(walk.walkId);
+                      }}
+                    >
+                      <View style={styles.walk_img_contain}>
+                        <Image
+                          style={styles.tinyLogo}
+                          source={{
+                            uri: `${dogObject[walk.userId][walk.dogId].imageUrl}`,
+                          }}
+                        />
+                      </View>
+                      <View style={styles.walk_text_contain}>
+                        <Text style={styles.dog_name}>
+                          {dogObject[walk.userId][walk.dogId].name}
+                        </Text>
+                        <Text style={styles.boldText}>
+                          {`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}
+                        </Text>
 
-                      <Text style={styles.boldText}>{walk.postCode}</Text>
+                        <Text style={styles.boldText}>{walk.postCode}</Text>
 
-                      <Text style={styles.boldText}>{walk.walkMinutes} minutes long</Text>
+                        <Text style={styles.boldText}>{walk.walkMinutes} minutes long</Text>
 
-                      <Text style={styles.boldText}>
-                        {dogObject[walk.userId][walk.dogId].size} size
-                      </Text>
-                      <Text
-                        style={styles.more_info}
-                        onPress={() =>
-                          navigation.navigate('SingleWalkPage', {
-                            chosenWalk: walk,
-                            dog: dogObject[walk.userId][walk.dogId],
-                          })
-                        }
-                      >
-                        More info...
-                      </Text>
+                        <Text style={styles.boldText}>
+                          {dogObject[walk.userId][walk.dogId].size} size
+                        </Text>
+                        <Text
+                          style={styles.more_info}
+                          onPress={() =>
+                            navigation.navigate('SingleWalkPage', {
+                              chosenWalk: walk,
+                              dog: dogObject[walk.userId][walk.dogId],
+                            })
+                          }
+                        >
+                          More info...
+                        </Text>
 
-                      {/* display dog picture */}
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              ))}
+                        {/* display dog picture */}
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
             </View>
           </ScrollView>
         </View>

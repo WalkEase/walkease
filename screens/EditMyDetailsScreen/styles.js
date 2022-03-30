@@ -9,9 +9,9 @@ export default StyleSheet.create({
   },
   avatar: {
     marginTop: 30,
-    width: 100,
+    width: "100%",
     height: 100,
-    borderRadius: 80,
+    borderRadius: 90,
   },
 
   details_list_header: {
@@ -86,5 +86,9 @@ export default StyleSheet.create({
   cancel_save_text: {
     color: 'white',
     fontWeight: '700',
+  },
+  invalid_input: {
+    opacity: 0.85,
+    color: '#bc4749',
   },
 });

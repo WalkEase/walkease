@@ -24,6 +24,7 @@ function SingleDogScreen({ navigation, route }) {
     // URL state
     const [dogUrl, setDogUrl] = useState(image);
     const [dogUrlValid, setDogUrlValid] = useState(true);
+    const [dogImage, setDogImage] = useState(true);
 
     // size state
     const [dogSize, setDogSize] = useState(info[0]);
@@ -34,8 +35,6 @@ function SingleDogScreen({ navigation, route }) {
 
     // postCode state
     const [dogPostCode, setDogPostCode] = useState(info[2]);
-    const [dogValidPostCode, setDogValidPostCode] = useState(true);
-
 
     // date of birth state
     const [dogDateOfBirth, setDogDateOfBirth] = useState(info[3]);
@@ -44,8 +43,9 @@ function SingleDogScreen({ navigation, route }) {
     // loading state
     const [isLoading, setIsLoading] = useState(true);
 
+    // date validation regex
     const DateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-    const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
+
 
     useEffect(() => {
         onValue(ref(database, `data/dogs/${user.uid}/${dog}`), (res) => {
@@ -59,9 +59,7 @@ function SingleDogScreen({ navigation, route }) {
     const handleSubmitChanges = () => {
 
         setIsLoading(true);
-
         let validChanges = true;
-        let postCodeRegexPass = false;
 
         if (!/^[a-zA-Z]+$/.test(dogName)) {
             setDogNameValid(false);
@@ -83,17 +81,10 @@ function SingleDogScreen({ navigation, route }) {
             validChanges = false;
         }
 
-        if (!postCodeRegex.test(dogPostCode)) {
-            setDogDateOfBirthValid(false);
-            validChanges = false;
-            postCodeRegexPass = true;
-        }
-
-
         if (!validChanges) {
             setIsLoading(false);
             setDogDateOfBirthValid(true);
-            const alertString = (postCodeRegexPass === true) ? "Please provide valid post code" : "Please check you've entered all information correctly"
+            const alertString = "Please check you've entered all information correctly";
             return alert(alertString);
         }
 
@@ -106,29 +97,24 @@ function SingleDogScreen({ navigation, route }) {
         changes.createdAt = dogToEdit.createdAt;
         changes.dogId = dogToEdit.dogId;
 
-        fetch
-            (
-                `https://maps.googleapis.com/maps/api/geocode/json?address=${changes.postCode}&key=${config.MY_API_KEY}`
-            )
-            .then((response) => response.json())
-            .then((data) => {
+        set(ref(database, `data/dogs/${user.uid}/${dog}`), changes)
 
-                if (data.status === 'ZERO_RESULTS') {
-                    throw 'Post Code does not exist';
-                } else {
-                    set(ref(database, `data/dogs/${user.uid}/${dog}`), changes)
-                }
-            })
-            .then((res) => {
+            .then(() => {
                 navigation.navigate('MyDogsScreen');
             }).then(() => {
                 setIsLoading(false);
                 alert("Dog updated successfully");
             }).catch((err) => {
                 setIsLoading(false);
-                if (err === 'Post Code does not exist') alert(err);
-                else alert(err.message);
+                alert(err.message);
             })
+    }
+
+    const pickUpUri = (dogUrl) => {
+        if (dogImage)
+            return dogUrl;
+        else
+            return "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
     }
 
     if (isLoading)
@@ -141,15 +127,10 @@ function SingleDogScreen({ navigation, route }) {
     return (
         <>
             <ScrollView>
-
                 <View style={styles.main_contain}>
-
                     <KeyboardAvoidingView style={styles.container} behavior="padding">
-
                         <View style={styles.login_inputs_container}>
-
                             <View>
-
                                 <TextInput
                                     style={styles.login_input}
                                     defaultValue={dogName}
@@ -164,7 +145,6 @@ function SingleDogScreen({ navigation, route }) {
                                         setDogNameValid(/^[a-zA-Z]+$/.test(dogName));
                                     }}
                                 />
-
                                 {!dogNameValid ? (
                                     <Text style={styles.invalid_input}>
                                         * First Name must be UPPERCASE and lowercase letters only
@@ -173,10 +153,9 @@ function SingleDogScreen({ navigation, route }) {
                                     false
                                 )}
                             </View>
-
                             <View>
                                 <Text style={styles.text}>Dog image</Text>
-                                <Image source={{ uri: dogUrl }} alt="no image" style={styles.img} />
+                                <Image source={{ uri: pickUpUri(dogUrl) }} alt="no image" style={styles.img} resizeMode="contain" />
                                 <TextInput
                                     style={styles.login_input}
                                     defaultValue={dogUrl}
@@ -189,16 +168,15 @@ function SingleDogScreen({ navigation, route }) {
                                     }}
                                     onBlur={() => {
                                         setDogUrlValid(/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl));
+                                        setDogImage(/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl));
                                     }}
                                 />
-
                                 {!dogUrlValid ? (
                                     <Text style={styles.invalid_input}>* Invalid dog URL, must be PNG/JPG</Text>
                                 ) : (
                                     false
                                 )}
                             </View>
-
                             <View>
                                 <TextInput
                                     style={styles.login_input}
@@ -208,7 +186,6 @@ function SingleDogScreen({ navigation, route }) {
                                     onChangeText={(newText) => {
                                         setDogBio(newText);
                                     }}
-
                                     onFocus={() => {
                                         setDogBioValid(true);
                                     }}
@@ -216,7 +193,6 @@ function SingleDogScreen({ navigation, route }) {
                                         if (dogBio.length < 100 || dogBio.length > 200) setDogBioValid(false);
                                     }}
                                 />
-
                                 <Text style={{ textAlign: 'right' }}>{dogBio.length} chars</Text>
                                 {!dogBioValid ? (
                                     <Text style={styles.invalid_input}>
@@ -226,10 +202,7 @@ function SingleDogScreen({ navigation, route }) {
                                     false
                                 )}
                             </View>
-
                             <View>
-
-
                                 <TextInput
                                     style={styles.login_input}
                                     multiline
@@ -245,15 +218,12 @@ function SingleDogScreen({ navigation, route }) {
                                         setDogDateOfBirthValid(DateRegex.test(dogDateOfBirth));
                                     }}
                                 />
-
                                 {!dogDateOfBirthValid ? (
                                     <Text style={styles.invalid_input}>* Invalid dog date of birth, must be dd/mm/yyyy</Text>
                                 ) : (
                                     false
                                 )}
-
                             </View>
-
                             <View style={styles.picker}>
                                 <Picker
                                     selectedValue={dogSize}
@@ -268,33 +238,7 @@ function SingleDogScreen({ navigation, route }) {
                                 </Picker>
                             </View>
 
-                            <View>
-
-                                <TextInput
-                                    style={styles.login_input}
-                                    defaultValue={dogPostCode}
-                                    placeholder="Change your dog size"
-                                    onChangeText={(newText) => {
-                                        setDogPostCode(newText);
-                                    }}
-
-                                    onFocus={() => {
-                                        setDogValidPostCode(true);
-                                    }}
-                                    onBlur={() => {
-                                        setDogValidPostCode(postCodeRegex.test(dogPostCode));
-                                    }}
-                                />
-
-                                {!dogValidPostCode ? (
-                                    <Text style={styles.invalid_input}>* Invalid Post Code </Text>
-                                ) : (
-                                    false
-                                )}
-
-                            </View>
                         </View>
-
                         <View style={styles.save_cancel}>
                             <View style={styles.save_press}>
                                 <Text onPress={handleSubmitChanges} style={styles.cancel_save_text}>
@@ -312,16 +256,11 @@ function SingleDogScreen({ navigation, route }) {
                                 </Text>
                             </View>
                         </View>
-
                     </KeyboardAvoidingView>
-
-
                 </View>
             </ScrollView>
             <Nav style={styles.nav_container} navigation={navigation} />
         </>
     )
-
 }
-
 export default SingleDogScreen;

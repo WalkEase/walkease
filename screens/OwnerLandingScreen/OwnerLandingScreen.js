@@ -7,9 +7,7 @@ import styles from './styles';
 import { auth } from '../../firebase'
 
 function OwnerLandingScreen({ navigation }) {
-  const { user } = useContext(UserContext);
-  const { setUser } = useContext(UserContext);
-
+  const { user, setUser } = useContext(UserContext);
 
   return (
     <>
@@ -73,7 +71,7 @@ function OwnerLandingScreen({ navigation }) {
                   navigation.navigate('LoginScreen');
                 })
                   .catch((err) => {
-                    console.log('err sign out', err)
+                    alert('err sign out', err)
                   })
 
               }}

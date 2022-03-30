@@ -7,8 +7,7 @@ import { auth } from '../../../firebase'
 
 
 function WalkerLandingScreen({ navigation }) {
-  const { user } = useContext(UserContext);
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   return (
     <>
@@ -53,7 +52,7 @@ function WalkerLandingScreen({ navigation }) {
                   navigation.navigate('LoginScreen');
                 })
                   .catch((err) => {
-                    console.log('err sign out', err)
+                    alert('err sign out', err)
                   })
               }}
             >

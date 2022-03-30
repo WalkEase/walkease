@@ -289,6 +289,7 @@ function SignUpScreen({ navigation }) {
                   style={styles.login_input}
                   defaultValue={postCode}
                   placeholder="Post code"
+                  autoCapitalize="characters"
                   onChangeText={(newText) => {
                     setPostCode(newText);
                   }}

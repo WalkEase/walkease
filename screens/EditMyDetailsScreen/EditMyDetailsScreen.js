@@ -23,7 +23,8 @@ function EditMyDetailsScreen({ navigation }) {
   const [firstNameValid, setFirstNameValid] = useState(true);
   const [lastNameValid, setLastNameValid] = useState(true);
 
-  // post code state
+  // post code  && phone number state
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [postCode, setPostCode] = useState(user.postCode);
   const [postCodeValid, setPostCodeValid] = useState(true);
   const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
@@ -73,6 +74,7 @@ function EditMyDetailsScreen({ navigation }) {
     newObj.avatarUrl = avatarUrl;
     newObj.firstName = firstName;
     newObj.lastName = lastName;
+    newObj.phoneNumber = phoneNumber;
     newObj.postCode = postCode;
     newObj.dateOfBirth = dateOfBirth;
     newObj.userBio = userBio;
@@ -202,7 +204,18 @@ function EditMyDetailsScreen({ navigation }) {
             )}
           </View>
 
-          <View>
+
+          <View style={styles.input_contain}>
+            <TextInput
+              value={phoneNumber}
+              onChangeText={(newText) => {
+                setPhoneNumber(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+
+          <View style={styles.input_contain}>
             <TextInput
               style={styles.login_input}
               defaultValue={postCode}
@@ -285,7 +298,7 @@ function EditMyDetailsScreen({ navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView >
       <Nav navigation={navigation} />
     </>
   );

@@ -1,8 +1,10 @@
 import { Image, Text, View } from 'react-native';
 import React, { useContext } from 'react';
 
+import { signOut } from 'firebase/auth'
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
+import { auth } from '../../firebase'
 
 function OwnerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -66,8 +68,14 @@ function OwnerLandingScreen({ navigation }) {
             <Text
               style={styles.owner_list_item}
               onPress={() => {
-                navigation.navigate('LoginScreen');
-                setUser('empty');
+                signOut(auth).then(() => {
+                  setUser({})
+                  navigation.navigate('LoginScreen');
+                })
+                  .catch((err) => {
+                    console.log('err sign out', err)
+                  })
+
               }}
             >
               Sign Out

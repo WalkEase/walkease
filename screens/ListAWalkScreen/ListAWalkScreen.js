@@ -286,13 +286,6 @@ function ListAWalkScreen({ navigation }) {
                 </Text>
               </View>
             </View>
-            {/* <Button
-              style={styles.login_button}
-              accessibilityLabel="login-button"
-              onPress={HandleSubmit}
-            >
-              Submit
-            </Button> */}
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

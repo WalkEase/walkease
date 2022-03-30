@@ -105,7 +105,7 @@ function handleCallNow(phoneNumberFromWalks) {
   if (Platform.OS === 'android') {
     phoneNumber = `tel:${phoneNumberFromWalks}`;
   } else {
-    phoneNumber = `telprompt:555555555`;
+    phoneNumber = `telprompt:${phoneNumberFromWalks}`;
   }
 
   Linking.openURL(phoneNumber);

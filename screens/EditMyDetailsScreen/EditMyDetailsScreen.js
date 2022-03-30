@@ -9,7 +9,6 @@ import DateInput from '../../components/DateInput/DateInput';
 import { config } from '../../.api';
 
 function EditMyDetailsScreen({ navigation }) {
-
   const { user } = useContext(UserContext);
 
   // user avatar image state
@@ -30,7 +29,8 @@ function EditMyDetailsScreen({ navigation }) {
   // post code state
   const [postCode, setPostCode] = useState(user.postCode);
   const [postCodeValid, setPostCodeValid] = useState(true);
-  const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
+  const postCodeRegex =
+    /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
 
   // date of birth state
   const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
@@ -41,7 +41,6 @@ function EditMyDetailsScreen({ navigation }) {
   const [userBioValid, setUserBioValid] = useState(true);
 
   function handleSave() {
-
     let validEdit = true;
 
     if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
@@ -74,7 +73,6 @@ function EditMyDetailsScreen({ navigation }) {
       validEdit = false;
     }
 
-
     if (!validEdit) return alert("Please check you've entered all information correctly");
 
     const newObj = { ...user };
@@ -87,38 +85,35 @@ function EditMyDetailsScreen({ navigation }) {
     newObj.dateOfBirth = dateOfBirth;
     newObj.userBio = userBio;
 
-    fetch
-      (
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
-      )
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 'ZERO_RESULTS') {
           throw 'Post Code does not exist';
         } else {
-          return set(ref(database, `data/users/${user.uid}`), newObj)
+          return set(ref(database, `data/users/${user.uid}`), newObj);
         }
       })
       .then(() => {
-        alert("Update process successful")
-        navigation.navigate('MyDetailsScreen')
+        alert('Update process successful');
+        navigation.navigate('MyDetailsScreen');
       })
       .catch((err) => {
         if (err === 'Post Code does not exist') {
           alert(err);
-          return setPostCodeValid(false)
-        };
+          return setPostCodeValid(false);
+        }
         return alert(err.message);
-      })
+      });
   }
 
   const pickUpUri = (avatrUrl) => {
-
-    if (avatarImage)
-      return avatarUrl;
+    if (avatarImage) return avatarUrl;
     else
-      return "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png";
-  }
+      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/480px-No_image_available.svg.png';
+  };
 
   return (
     <>
@@ -129,7 +124,6 @@ function EditMyDetailsScreen({ navigation }) {
             source={{
               uri: pickUpUri(avatarUrl),
             }}
-            resizeMode="contain"
           />
           <Text style={styles.edit_text}>Edit your details below</Text>
 
@@ -148,7 +142,6 @@ function EditMyDetailsScreen({ navigation }) {
                 setValidAvatarUrl(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
                 setAvatarImage(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
               }}
-
               style={styles.input}
             />
 
@@ -175,7 +168,6 @@ function EditMyDetailsScreen({ navigation }) {
               onBlur={() => {
                 setFirstNameValid(/^[a-zA-Z]+$/.test(firstName));
               }}
-
             />
 
             {!firstNameValid ? (
@@ -212,7 +204,7 @@ function EditMyDetailsScreen({ navigation }) {
             )}
           </View>
 
-          <View>
+          <View style={styles.input_contain}>
             <TextInput
               autoCapitalize="none"
               style={styles.login_input}
@@ -234,7 +226,6 @@ function EditMyDetailsScreen({ navigation }) {
             ) : (
               false
             )}
-
           </View>
 
           <View style={styles.input_contain}>
@@ -246,7 +237,6 @@ function EditMyDetailsScreen({ navigation }) {
               onChangeText={(newText) => {
                 setPostCode(newText);
               }}
-
               onFocus={() => {
                 setPostCodeValid(true);
               }}
@@ -264,7 +254,8 @@ function EditMyDetailsScreen({ navigation }) {
 
           <View style={styles.DoBContainer}>
             <Text style={styles.subHeader}>Date of Birth</Text>
-            <DateInput style={styles.date}
+            <DateInput
+              style={styles.date}
               setGivenState={setDateOfBirth}
               setStateValid={SetDateOfBirthVaild}
               defaultValues={{
@@ -291,16 +282,14 @@ function EditMyDetailsScreen({ navigation }) {
                 if (userBio.length < 100 || userBio.length > 200) setUserBioValid(false);
               }}
             />
-            <Text>{userBio.length} chars</Text>
-
-            {!userBioValid ? (
-              <Text style={styles.invalid_input}>* Bio must be between 100 - 200 chars</Text>
-            ) : (
-              false
-            )}
-
-
           </View>
+          <Text>{userBio.length} chars</Text>
+
+          {!userBioValid ? (
+            <Text style={styles.invalid_input}>* Bio must be between 100 - 200 chars</Text>
+          ) : (
+            false
+          )}
 
           <View style={styles.save_cancel}>
             <View style={styles.save_press}>
@@ -320,7 +309,7 @@ function EditMyDetailsScreen({ navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView >
+      </ScrollView>
       <Nav navigation={navigation} />
     </>
   );

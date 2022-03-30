@@ -6,6 +6,7 @@ import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './Styles';
 import { useEffect } from 'react/cjs/react.production.min';
+import DogDateInput from '../../components/DogDateInput/DogDateInput';
 
 function AddDogScreen({ navigation }) {
 
@@ -36,8 +37,6 @@ function AddDogScreen({ navigation }) {
   const [dogPostCode, setDogPostCode] = useState(user.postCode);
 
 
-  const DateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-
   const handleAddDog = () => {
 
     let validDogAdd = true;
@@ -54,11 +53,6 @@ function AddDogScreen({ navigation }) {
 
     if (!/^.+[.].+[.].+[.](png|jpg)$/.test(dogUrl)) {
       setDogUrlValid(false);
-      validDogAdd = false;
-    }
-
-    if (!DateRegex.test(dogDateOfBirth)) {
-      setDogDateOfBirthValid(false);
       validDogAdd = false;
     }
 
@@ -164,33 +158,20 @@ function AddDogScreen({ navigation }) {
 
             </View>
 
-            <View>
+            <View style={styles.DoBContainer}>
+              <Text style={styles.subHeader}>Date of Birth</Text>
 
-              <TextInput
-                style={styles.login_input}
-                multiline
-                defaultValue={dogDateOfBirth}
-                placeholder="Change your dog date of birth"
-                onChangeText={(newText) => {
-                  setDogDateOfBirth(newText);
-                }}
-                onFocus={() => {
-                  setDogDateOfBirthValid(true);
-                }}
-                onBlur={() => {
-                  setDogDateOfBirthValid(DateRegex.test(dogDateOfBirth));
-                }}
-              />
+              <DogDateInput setGivenState={setDogDateOfBirth} setStateValid={setDogDateOfBirthValid} />
 
               {!dogDateOfBirthValid ? (
-                <Text style={styles.invalid_input}>* Invalid dog date of birth, must be dd/mm/yyyy</Text>
+                <Text style={styles.invalid_input}>* Please enter a valid date of birth</Text>
               ) : (
                 false
               )}
-
             </View>
 
             <View style={styles.picker}>
+              <Text> Size </Text>
               <Picker
                 selectedValue={size}
                 onValueChange={(itemValue) => setSize(itemValue)}

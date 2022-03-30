@@ -4,8 +4,8 @@ import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
-import { config } from '../../.api';
 import styles from './styles';
+import DogDateInput from '../../components/DogDateInput/DogDateInput';
 
 function SingleDogScreen({ navigation, route }) {
 
@@ -40,11 +40,9 @@ function SingleDogScreen({ navigation, route }) {
     const [dogDateOfBirth, setDogDateOfBirth] = useState(info[3]);
     const [dogDateOfBirthValid, setDogDateOfBirthValid] = useState(true);
 
+
     // loading state
     const [isLoading, setIsLoading] = useState(true);
-
-    // date validation regex
-    const DateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
 
 
     useEffect(() => {
@@ -73,11 +71,6 @@ function SingleDogScreen({ navigation, route }) {
 
         if (dogBio.length < 100 || dogBio.length > 200) {
             setDogBioValid(false);
-            validChanges = false;
-        }
-
-        if (!DateRegex.test(dogDateOfBirth)) {
-            setDogDateOfBirthValid(false);
             validChanges = false;
         }
 
@@ -202,28 +195,20 @@ function SingleDogScreen({ navigation, route }) {
                                     false
                                 )}
                             </View>
-                            <View>
-                                <TextInput
-                                    style={styles.login_input}
-                                    multiline
-                                    defaultValue={dogDateOfBirth}
-                                    placeholder="Change your dog date of birth"
-                                    onChangeText={(newText) => {
-                                        setDogDateOfBirth(newText);
-                                    }}
-                                    onFocus={() => {
-                                        setDogDateOfBirthValid(true);
-                                    }}
-                                    onBlur={() => {
-                                        setDogDateOfBirthValid(DateRegex.test(dogDateOfBirth));
+
+                            <View style={styles.DoBContainer}>
+                                <Text style={styles.subHeader}>Date of Birth</Text>
+                                <DogDateInput style={styles.date}
+                                    setGivenState={setDogDateOfBirth}
+                                    setStateValid={setDogDateOfBirthValid}
+                                    defaultValues={{
+                                        defaultMonth: new Date(dogDateOfBirth).getMonth(),
+                                        defaultDay: String(new Date(dogDateOfBirth).getDate()),
+                                        defaultYear: String(new Date(dogDateOfBirth).getFullYear()),
                                     }}
                                 />
-                                {!dogDateOfBirthValid ? (
-                                    <Text style={styles.invalid_input}>* Invalid dog date of birth, must be dd/mm/yyyy</Text>
-                                ) : (
-                                    false
-                                )}
                             </View>
+
                             <View style={styles.picker}>
                                 <Picker
                                     selectedValue={dogSize}

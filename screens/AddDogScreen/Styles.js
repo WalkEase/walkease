@@ -124,4 +124,9 @@ export default StyleSheet.create({
         color: 'white',
         fontWeight: '700',
     },
+    DoBContainer: {
+
+        width: 200,
+        marginVertical: 30,
+    },
 });

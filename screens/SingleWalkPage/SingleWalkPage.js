@@ -7,6 +7,8 @@ export default function SingleWalkPage({ route }) {
   const { chosenWalk } = route.params;
   const { dog } = route.params;
 
+  const parsedDate = new Date(chosenWalk.dateTime);
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -30,7 +32,7 @@ export default function SingleWalkPage({ route }) {
           {dog.dogBio} {'\n'} {'\n'}
           <Text style={styles.boldText}>Date and time: </Text>
           <Text>
-            {chosenWalk.dateTime}
+            {`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}
             {'\n'}
           </Text>
           <Text style={styles.boldText}>Post code: </Text>{' '}

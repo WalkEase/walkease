@@ -131,6 +131,7 @@ function SignUpScreen({ navigation }) {
           uid: res.user.uid,
           createdAt: Date.now(),
           email: `${email}`,
+          phoneNumber,
           userType,
           firstName,
           lastName,

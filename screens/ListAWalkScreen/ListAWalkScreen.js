@@ -6,6 +6,7 @@ import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
 import { config } from '../../.api';
+import Nav from '../../components/Nav/Nav';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
@@ -48,7 +49,28 @@ function ListAWalkScreen({ navigation }) {
         <Text>Loading...</Text>
       </View>
     );
-
+  if (!dogObject) {
+    return (
+      <>
+        <View style={styles.main_container}>
+          <View style={styles.no_walks_container}>
+            <Text style={styles.no_walks_text}>
+              There's currently no dogs on your account! Please add a dog{' '}
+              <Text
+                style={styles.here_text}
+                onPress={() => {
+                  navigation.navigate('AddDogScreen');
+                }}
+              >
+                HERE
+              </Text>
+            </Text>
+          </View>
+        </View>
+        <Nav navigation={navigation} />
+      </>
+    );
+  }
   let validSignUp = true;
 
   // push dogs data to array
@@ -117,121 +139,166 @@ function ListAWalkScreen({ navigation }) {
       return alert('Please choose the dog');
     }
   }
+
+  if (!dogObject) {
+    return (
+      <>
+        <View style={styles.main_container}>
+          <View style={styles.no_walks_container}>
+            <Text style={styles.no_walks_text}>
+              There's currently no dogs on your account! Please add a dog{' '}
+              <Text
+                style={styles.here_text}
+                onPress={() => {
+                  navigation.navigate('ListAWalkScreen');
+                }}
+              >
+                HERE
+              </Text>
+            </Text>
+          </View>
+        </View>
+        <Nav navigation={navigation} />
+      </>
+    );
+  }
   return (
-    <View style={styles.main_contain}>
-      <ScrollView>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <View style={styles.login_inputs_container}>
-            <Text style={styles.header}>WalkEase</Text>
+    <>
+      <View style={styles.main_container}>
+        <ScrollView style={styles.scrollView}>
+          <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <View style={styles.login_inputs_container}>
+              <Text style={styles.header}>List a dog walk</Text>
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={walkDesc}
-              placeholder="Walk Description"
-              onChangeText={(newText) => {
-                setWalkDesc(newText);
-              }}
-              onFocus={() => {
-                setWalkDescValid(true);
-              }}
-              onBlur={() => {
-                setWalkDescValid(/^[a-zA-Z]+$/.test(walkDesc));
-              }}
-            />
+              <TextInput
+                style={styles.login_input}
+                defaultValue={walkDesc}
+                placeholder="Walk Description"
+                onChangeText={(newText) => {
+                  setWalkDesc(newText);
+                }}
+                onFocus={() => {
+                  setWalkDescValid(true);
+                }}
+                onBlur={() => {
+                  setWalkDescValid(/^[a-zA-Z]+$/.test(walkDesc));
+                }}
+              />
 
-            {!walkDescValid ? (
-              <Text style={styles.invalid_input}>* walk description required(letters only)</Text>
-            ) : (
-              false
-            )}
+              {!walkDescValid ? (
+                <Text style={styles.invalid_input}>* walk description required(letters only)</Text>
+              ) : (
+                false
+              )}
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={walkRequirements}
-              placeholder="Walk Requirements"
-              onChangeText={(newText) => {
-                setWalkRequirements(newText);
-              }}
-              onFocus={() => {
-                setWalkRequirementsValid(true);
-              }}
-              onBlur={() => {
-                setWalkRequirementsValid(/^[a-zA-Z]+$/.test(walkRequirements));
-              }}
-            />
+              <TextInput
+                style={styles.login_input}
+                defaultValue={walkRequirements}
+                placeholder="Walk Requirements"
+                onChangeText={(newText) => {
+                  setWalkRequirements(newText);
+                }}
+                onFocus={() => {
+                  setWalkRequirementsValid(true);
+                }}
+                onBlur={() => {
+                  setWalkRequirementsValid(/^[a-zA-Z]+$/.test(walkRequirements));
+                }}
+              />
 
-            {!walkRequirementsValid ? (
-              <Text style={styles.invalid_input}>* walk requirements required (letters only)</Text>
-            ) : (
-              false
-            )}
+              {!walkRequirementsValid ? (
+                <Text style={styles.invalid_input}>
+                  * walk requirements required (letters only)
+                </Text>
+              ) : (
+                false
+              )}
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={walkMinutes}
-              placeholder="Walking minutes"
-              onChangeText={(newText) => {
-                setWalkMinutes(newText);
-              }}
-              onFocus={() => {
-                setWalkMinutesValid(true);
-              }}
-              onBlur={() => {
-                setWalkMinutesValid(/^[0-9]*$/.test(walkMinutes));
-              }}
-            />
+              <TextInput
+                style={styles.login_input}
+                defaultValue={walkMinutes}
+                placeholder="Walking minutes"
+                onChangeText={(newText) => {
+                  setWalkMinutes(newText);
+                }}
+                onFocus={() => {
+                  setWalkMinutesValid(true);
+                }}
+                onBlur={() => {
+                  setWalkMinutesValid(/^[0-9]*$/.test(walkMinutes));
+                }}
+              />
 
-            {!walkMinutesValid ? (
-              <Text style={styles.invalid_input}>* minutes required (numbers only)</Text>
-            ) : (
-              false
-            )}
+              {!walkMinutesValid ? (
+                <Text style={styles.invalid_input}>* minutes required (numbers only)</Text>
+              ) : (
+                false
+              )}
 
-            <TextInput
-              style={styles.login_input}
-              defaultValue={postCode}
-              placeholder="Post Code"
-              onChangeText={(newText) => {
-                setPostCode(newText.toUpperCase());
-              }}
-            />
-            <TextInput
-              style={styles.login_input}
-              defaultValue={dateTime}
-              placeholder="Date and time"
-              onChangeText={(newText) => {
-                setDateTime(newText);
-              }}
-            />
-          </View>
-          <View style={styles.login_input}>
-            <Text style>Dog to Walk:</Text>
-            <Picker
-              style={styles.picker}
-              selectedValue={dogId}
-              onValueChange={(itemValue) => {
-                setDogId(itemValue);
+              <TextInput
+                style={styles.login_input}
+                defaultValue={postCode}
+                placeholder="Post Code"
+                onChangeText={(newText) => {
+                  setPostCode(newText.toUpperCase());
+                }}
+              />
+              <TextInput
+                style={styles.login_input}
+                defaultValue={dateTime}
+                placeholder="Date and time"
+                onChangeText={(newText) => {
+                  setDateTime(newText);
+                }}
+              />
+            </View>
+            <View style={styles.picker_contain}>
+              <Text style={styles.subHeader}>Dog to be walked</Text>
+              <Picker
+                itemStyle={styles.picker}
+                style={styles.picker}
+                selectedValue={dogId}
+                onValueChange={(itemValue) => {
+                  setDogId(itemValue);
 
-                setPickedDog(dogObject[itemValue]);
-              }}
+                  setPickedDog(dogObject[itemValue]);
+                }}
+              >
+                <Picker.Item label="Please choose dog" value="Please choose dog" />
+                {dogDataArray.map((dog) => (
+                  <Picker.Item key={dog.dogId} label={dog.name} value={dog.dogId} />
+                ))}
+              </Picker>
+            </View>
+            <View style={styles.save_cancel}>
+              <View style={styles.save_press}>
+                <Text style={styles.cancel_save_text} onPress={HandleSubmit}>
+                  Submit
+                </Text>
+              </View>
+              <View style={styles.cancel_press}>
+                <Text
+                  style={styles.cancel_save_text}
+                  onPress={() => {
+                    navigation.navigate('OwnerLandingScreen');
+                  }}
+                >
+                  Cancel
+                </Text>
+              </View>
+            </View>
+            {/* <Button
+              style={styles.login_button}
+              accessibilityLabel="login-button"
+              onPress={HandleSubmit}
             >
-              <Picker.Item label="Please choose dog" value="Please choose dog" />
-              {dogDataArray.map((dog) => (
-                <Picker.Item key={dog.dogId} label={dog.name} value={dog.dogId} />
-              ))}
-            </Picker>
-          </View>
-
-          <Button
-            style={styles.login_button}
-            accessibilityLabel="login-button"
-            onPress={HandleSubmit}
-          >
-            Submit
-          </Button>
-        </KeyboardAvoidingView>
-      </ScrollView>
-    </View>
+              Submit
+            </Button> */}
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </View>
+      <Nav navigation={navigation} />
+    </>
   );
 }
 

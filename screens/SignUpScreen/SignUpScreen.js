@@ -127,7 +127,6 @@ function SignUpScreen({ navigation }) {
         }
       })
       .then((res) => {
-        console.log('res', res);
         set(ref(database, `data/users/${res.user.uid}`), {
           uid: res.user.uid,
           createdAt: Date.now(),

@@ -21,7 +21,7 @@ export default StyleSheet.create({
 
   login_inputs_container: {
     color: 'black',
-    width: '80%',
+    width: '60%',
     padding: 5,
     borderRadius: 5,
     marginTop: 20,
@@ -58,19 +58,15 @@ export default StyleSheet.create({
 
   header: {
     fontSize: 30,
-    opacity: 0.85,
-    color: '#bc4749',
-    fontWeight: '700',
+    fontWeight: 'bold',
+    color: 'black',
     marginBottom: 20,
-    textAlign: 'center',
   },
 
   subHeader: {
-    fontSize: 17,
-    opacity: 0.85,
-    color: '#bc4749',
-    fontWeight: '500',
-    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'black',
   },
 
   invalid_input: {

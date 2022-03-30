@@ -55,7 +55,7 @@ export default function SingleWalkPage({ route }) {
         <Button
           title="Call owner"
           onPress={() => {
-            handleCallNow(chosenWalk.phoneNumberMiguelTest);
+            handleCallNow(chosenWalk.phoneNumber);
           }}
         />
         <MapView

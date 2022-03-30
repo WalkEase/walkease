@@ -80,12 +80,12 @@ function ListAWalkScreen({ navigation }) {
 
   // handle submit button
   function HandleSubmit() {
-    if (!/^[a-zA-Z]+$/.test(walkDesc)) {
+    if (!/^[a-zA-Z\s]+$/.test(walkDesc)) {
       setWalkRequirementsValid(false);
       validSignUp = false;
     }
 
-    if (!/^[a-zA-Z]+$/.test(walkRequirements)) {
+    if (!/^[a-zA-Z\s]+$/.test(walkRequirements)) {
       setWalkMinutesValid(false);
       validSignUp = false;
     }
@@ -180,7 +180,7 @@ function ListAWalkScreen({ navigation }) {
                   setWalkDescValid(true);
                 }}
                 onBlur={() => {
-                  setWalkDescValid(/^[a-zA-Z]+$/.test(walkDesc));
+                  setWalkDescValid(/^[a-zA-Z\s]+$/.test(walkDesc));
                 }}
               />
 
@@ -201,7 +201,7 @@ function ListAWalkScreen({ navigation }) {
                   setWalkRequirementsValid(true);
                 }}
                 onBlur={() => {
-                  setWalkRequirementsValid(/^[a-zA-Z]+$/.test(walkRequirements));
+                  setWalkRequirementsValid(/^[a-zA-Z\s]+$/.test(walkRequirements));
                 }}
               />
 

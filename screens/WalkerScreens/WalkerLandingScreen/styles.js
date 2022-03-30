@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 export default StyleSheet.create({
   main_container: {
     height: '95%',
@@ -7,15 +8,17 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   walker_list: {
-    margin: 10,
+    margin: 0,
+    marginTop: 0,
     padding: 5,
     minHeight: '40%',
     width: '85%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'flex-start',
-    marginBottom: 40,
+    marginBottom: 110,
   },
   walker_list_item: {
+    marginTop: 0,
     fontSize: 20,
     fontWeight: '700',
     paddingVertical: 5,
@@ -31,8 +34,8 @@ export default StyleSheet.create({
   },
   avatar: {
     marginTop: 30,
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     borderRadius: 80,
     marginBottom: 30,
   },
@@ -46,12 +49,12 @@ export default StyleSheet.create({
   welcome_name: {
     fontSize: 25,
     fontWeight: '700',
-    padding: 5,
     color: '#386641',
-    marginBottom: 20,
+    marginBottom: 0,
   },
   welcome_contain: {
     alignContent: 'flex-start',
     width: '87%',
+    marginBottom: 0,
   },
 });

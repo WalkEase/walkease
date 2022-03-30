@@ -3,10 +3,11 @@ import React, { useContext } from 'react';
 
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
-import Header from '../../components/Header/Header';
 
 function OwnerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
+
 
   return (
     <>
@@ -61,9 +62,20 @@ function OwnerLandingScreen({ navigation }) {
               Listed Walks
             </Text>
           </View>
+          <View style={styles.owner_list_link_bottom_border}>
+            <Text
+              style={styles.owner_list_item}
+              onPress={() => {
+                navigation.navigate('LoginScreen');
+                setUser('empty');
+              }}
+            >
+              Sign Out
+            </Text>
+          </View>
         </View>
       </View>
-      <View style={styles.nav_container}></View>
+      <View style={styles.nav_container} />
     </>
   );
 }

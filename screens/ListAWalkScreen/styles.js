@@ -6,18 +6,19 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
+    width: '100%',
   },
-
-  main_contain: {
-    height: '100%',
-    flex: 1,
-    alignContent: 'space-around',
-    justifyContent: 'center',
+  main_container: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    height: '95%',
   },
 
   login_inputs_container: {
     color: 'black',
-    width: '60%',
+    width: '80%',
     padding: 5,
     borderRadius: 5,
     marginTop: 20,
@@ -34,6 +35,11 @@ export default StyleSheet.create({
     marginVertical: 5,
   },
 
+  scrollView: {
+    width: '100%',
+    flex: 1,
+  },
+
   login_button: {
     fontSize: 15,
     fontWeight: 'bold',
@@ -47,16 +53,25 @@ export default StyleSheet.create({
 
   picker: {
     backgroundColor: 'white',
-    marginTop: 0,
+
     width: 180,
     borderRadius: 10,
-    borderColor: '#386641',
+    height: 140,
+  },
+
+  picker_contain: {
+    marginTop: 15,
   },
 
   header: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'black',
+    fontSize: 25,
+    paddingVertical: 5,
+    opacity: 0.85,
+    color: '#bc4749',
+    fontWeight: '700',
+    textAlign: 'center',
+    marginTop: 20,
+    marginBottom: 20,
   },
 
   invalid_input: {
@@ -69,5 +84,62 @@ export default StyleSheet.create({
     backgroundColor: '#386641',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  save_press: {
+    display: 'flex',
+    alignItems: 'center',
+    borderColor: '#38664195',
+    backgroundColor: '#386641',
+    borderWidth: 2,
+    padding: 2,
+    width: 80,
+  },
+  cancel_press: {
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#bc4749',
+    borderColor: '#bc474995',
+    borderWidth: 2,
+    width: 80,
+    padding: 2,
+  },
+  cancel_save_text: {
+    color: 'white',
+    fontWeight: '700',
+  },
+  save_cancel: {
+    marginTop: 30,
+    justifyContent: 'space-evenly',
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    paddingVertical: 10,
+    marginBottom: 10,
+  },
+  subHeader: {
+    fontSize: 17,
+    opacity: 0.85,
+    color: '#bc4749',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  no_walks_text: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#386641',
+    textAlign: 'center',
+  },
+  here_text: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#bc4749',
+  },
+  no_walks_container: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    marginBottom: '10%',
+    width: '70%',
   },
 });

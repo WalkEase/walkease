@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 
 import UserContext from '../../../contexts/UserContext';
 import styles from './styles';
-import Header from '../../../components/Header/Header';
 
 function WalkerLandingScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -11,7 +10,7 @@ function WalkerLandingScreen({ navigation }) {
   return (
     <>
       <View style={styles.main_container}>
-        <View style={styles.welcome_contain}></View>
+        <View style={styles.welcome_contain} />
         <Image
           style={styles.avatar}
           source={{
@@ -22,16 +21,7 @@ function WalkerLandingScreen({ navigation }) {
           <Text style={styles.welcome_name}>{`Welcome ${user.firstName}`}</Text>
         </View>
         <View style={styles.walker_list}>
-          <View style={styles.walker_list_link_bottom_border}>
-            <Text
-              style={styles.walker_list_item}
-              onPress={() => {
-                navigation.navigate('WalksListScreen');
-              }}
-            >
-              Walks List
-            </Text>
-          </View>
+
           <View style={styles.walker_list_link_bottom_border}>
             <Text
               style={styles.walker_list_item}
@@ -52,9 +42,10 @@ function WalkerLandingScreen({ navigation }) {
               My Details
             </Text>
           </View>
+
         </View>
       </View>
-      <View style={styles.nav_container}></View>
+      <View style={styles.nav_container} />
     </>
   );
 }

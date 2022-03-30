@@ -1,12 +1,12 @@
 import { KeyboardAvoidingView, Text, TextInput, View, ScrollView, Picker } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { ref, onValue, push, update } from 'firebase/database';
-import Button from 'react-native-button';
 import { database } from '../../firebase';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
 import { config } from '../../.api';
 import Nav from '../../components/Nav/Nav';
+import DateTimeInput from '../../components/DateTimeInput/DateTimeInput';
 
 function ListAWalkScreen({ navigation }) {
   const [walkDesc, setWalkDesc] = useState('');
@@ -25,7 +25,9 @@ function ListAWalkScreen({ navigation }) {
   const [postCode, setPostCode] = useState('');
   const { user } = useContext(UserContext);
 
-  const [dateTime, setDateTime] = useState('');
+  const [dateTime, setDateTime] = useState();
+  const [dateTimeValid, setDateTimeValid] = useState(true);
+
   const postCodeRegex =
     /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/gi;
 
@@ -79,18 +81,22 @@ function ListAWalkScreen({ navigation }) {
 
   // handle submit button
   function HandleSubmit() {
-    if (!/^[a-zA-Z\s]+$/.test(walkDesc)) {
-      setWalkRequirementsValid(false);
+    if (walkDesc.length < 25 || walkDesc.length > 200) {
+      setWalkDescValid(false);
       validSignUp = false;
     }
 
-    if (!/^[a-zA-Z\s]+$/.test(walkRequirements)) {
-      setWalkMinutesValid(false);
+    if (walkRequirements.length > 200) {
+      setWalkRequirementsValid(false);
       validSignUp = false;
     }
 
     if (!/^[0-9]+$/.test(walkMinutes)) {
       setWalkMinutesValid(false);
+      validSignUp = false;
+    }
+
+    if (!dateTimeValid) {
       validSignUp = false;
     }
 
@@ -145,7 +151,7 @@ function ListAWalkScreen({ navigation }) {
         <View style={styles.main_container}>
           <View style={styles.no_walks_container}>
             <Text style={styles.no_walks_text}>
-              There's currently no dogs on your account! Please add a dog{' '}
+              There are currently no dogs on your account! Please add a dog{' '}
               <Text
                 style={styles.here_text}
                 onPress={() => {
@@ -170,6 +176,7 @@ function ListAWalkScreen({ navigation }) {
               <Text style={styles.header}>List a dog walk</Text>
 
               <TextInput
+                multiline
                 style={styles.login_input}
                 defaultValue={walkDesc}
                 placeholder="Walk Description"
@@ -180,17 +187,22 @@ function ListAWalkScreen({ navigation }) {
                   setWalkDescValid(true);
                 }}
                 onBlur={() => {
-                  setWalkDescValid(/^[a-zA-Z\s]+$/.test(walkDesc));
+                  if (walkDesc.length < 25 || walkDesc.length > 200) {
+                    setWalkDescValid(false);
+                  }
                 }}
               />
 
               {!walkDescValid ? (
-                <Text style={styles.invalid_input}>* walk description required(letters only)</Text>
+                <Text style={styles.invalid_input}>
+                  * Walk description required (must be between 25 - 200 chars)
+                </Text>
               ) : (
                 false
               )}
 
               <TextInput
+                multiline
                 style={styles.login_input}
                 defaultValue={walkRequirements}
                 placeholder="Walk Requirements"
@@ -201,13 +213,15 @@ function ListAWalkScreen({ navigation }) {
                   setWalkRequirementsValid(true);
                 }}
                 onBlur={() => {
-                  setWalkRequirementsValid(/^[a-zA-Z\s]+$/.test(walkRequirements));
+                  if (walkRequirements.length > 200) {
+                    setWalkRequirementsValid(false);
+                  }
                 }}
               />
 
               {!walkRequirementsValid ? (
                 <Text style={styles.invalid_input}>
-                  * walk requirements required (letters only)
+                  * Walk requirements required (max chars: 200)
                 </Text>
               ) : (
                 false
@@ -216,7 +230,7 @@ function ListAWalkScreen({ navigation }) {
               <TextInput
                 style={styles.login_input}
                 defaultValue={walkMinutes}
-                placeholder="Walking minutes"
+                placeholder="Walk Minutes"
                 onChangeText={(newText) => {
                   setWalkMinutes(newText);
                 }}
@@ -229,7 +243,7 @@ function ListAWalkScreen({ navigation }) {
               />
 
               {!walkMinutesValid ? (
-                <Text style={styles.invalid_input}>* minutes required (numbers only)</Text>
+                <Text style={styles.invalid_input}>* Please enter walk minutes (numbers only)</Text>
               ) : (
                 false
               )}
@@ -242,17 +256,18 @@ function ListAWalkScreen({ navigation }) {
                   setPostCode(newText.toUpperCase());
                 }}
               />
-              <TextInput
-                style={styles.login_input}
-                defaultValue={dateTime}
-                placeholder="Date and time"
-                onChangeText={(newText) => {
-                  setDateTime(newText);
-                }}
-              />
+
+              <Text>Select time of walk</Text>
+              <DateTimeInput setGivenState={setDateTime} setStateValid={setDateTimeValid} />
+
+              {!dateTimeValid ? (
+                <Text style={styles.invalid_input}>* Please enter a valid date and time</Text>
+              ) : (
+                false
+              )}
             </View>
             <View style={styles.picker_contain}>
-              <Text style={styles.subHeader}>Dog to be walked</Text>
+              <Text style={styles.subHeader}>Add a dog</Text>
               <Picker
                 itemStyle={styles.picker}
                 style={styles.picker}

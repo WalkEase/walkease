@@ -1,7 +1,6 @@
 import { KeyboardAvoidingView, Text, TextInput, View, LogBox } from 'react-native';
 import React, { useContext, useState } from 'react';
 
-import Button from 'react-native-button';
 import { ref, get, onValue } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import UserContext from '../../contexts/UserContext';

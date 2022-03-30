@@ -5,7 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
 import styles from './styles';
-import DogDateInput from '../../components/DogDateInput/DogDateInput';
+import DateInputDog from '../../components/DateInputDog/DateInputDog';
 
 function SingleDogScreen({ navigation, route }) {
 
@@ -76,7 +76,6 @@ function SingleDogScreen({ navigation, route }) {
 
         if (!validChanges) {
             setIsLoading(false);
-            setDogDateOfBirthValid(true);
             const alertString = "Please check you've entered all information correctly";
             return alert(alertString);
         }
@@ -198,7 +197,7 @@ function SingleDogScreen({ navigation, route }) {
 
                             <View style={styles.DoBContainer}>
                                 <Text style={styles.subHeader}>Date of Birth</Text>
-                                <DogDateInput style={styles.date}
+                                <DateInputDog style={styles.date}
                                     setGivenState={setDogDateOfBirth}
                                     setStateValid={setDogDateOfBirthValid}
                                     defaultValues={{
@@ -207,6 +206,14 @@ function SingleDogScreen({ navigation, route }) {
                                         defaultYear: String(new Date(dogDateOfBirth).getFullYear()),
                                     }}
                                 />
+                                {!dogDateOfBirthValid ? (
+                                    <Text style={styles.invalid_input}>
+                                        {`Please put valid date of birth`}
+                                    </Text>
+                                ) : (
+                                    false
+                                )}
+
                             </View>
 
                             <View style={styles.picker}>

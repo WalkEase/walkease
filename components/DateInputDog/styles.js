@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-    dobPicker: {
-        height: 60,
-    },
+  dobPicker: {
+    height: 60,
+  },
 });

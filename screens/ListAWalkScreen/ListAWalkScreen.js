@@ -106,7 +106,6 @@ function ListAWalkScreen({ navigation }) {
             }
           })
           .then((dataUpdated) => {
-            console.log(dataUpdated);
             if (dataUpdated !== undefined) navigation.navigate('MyListedWalksScreen');
           })
           .catch((error) => alert(error.message));

@@ -6,25 +6,77 @@ import Nav from '../../components/Nav/Nav';
 import styles from './styles';
 import UserContext from '../../contexts/UserContext';
 import DateInput from '../../components/DateInput/DateInput';
+import { config } from '../../.api';
 
 function EditMyDetailsScreen({ navigation }) {
+
   const { user } = useContext(UserContext);
 
+  // user avatar image state
   const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl);
   const [validAvatarUrl, setValidAvatarUrl] = useState(true);
   const [avatarImage, setAvatarImage] = useState(true);
 
+  // first && last name states
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
-  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
-  const [postCode, setPostCode] = useState(user.postCode);
+  const [firstNameValid, setFirstNameValid] = useState(true);
+  const [lastNameValid, setLastNameValid] = useState(true);
 
+  //phone number state
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+  const [phoneNumberValid, setPhoneNumberValid] = useState(true);
+
+  // post code state
+  const [postCode, setPostCode] = useState(user.postCode);
+  const [postCodeValid, setPostCodeValid] = useState(true);
+  const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
+
+  // date of birth state
   const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
   const [dateOfBirthValid, SetDateOfBirthVaild] = useState(true);
 
+  // user Bio state
   const [userBio, setUserBio] = useState(user.userBio);
+  const [userBioValid, setUserBioValid] = useState(true);
 
   function handleSave() {
+
+    let validEdit = true;
+
+    if (!/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl)) {
+      setValidAvatarUrl(false);
+      validEdit = false;
+    }
+
+    if (!/^[a-zA-Z]+$/.test(firstName)) {
+      setFirstNameValid(false);
+      validEdit = false;
+    }
+
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      setLastNameValid(false);
+      validEdit = false;
+    }
+
+    if (!/^\(?0( *\d\)?){9,10}$/.test(phoneNumber)) {
+      setPhoneNumberValid(false);
+      validEdit = false;
+    }
+
+    if (userBio.length < 100 || userBio.length > 200) {
+      setUserBioValid(false);
+      validEdit = false;
+    }
+
+    if (!postCodeRegex.test(postCode)) {
+      setPostCodeValid(false);
+      validEdit = false;
+    }
+
+
+    if (!validEdit) return alert("Please check you've entered all information correctly");
+
     const newObj = { ...user };
 
     newObj.avatarUrl = avatarUrl;
@@ -35,9 +87,29 @@ function EditMyDetailsScreen({ navigation }) {
     newObj.dateOfBirth = dateOfBirth;
     newObj.userBio = userBio;
 
-    set(ref(database, `data/users/${user.uid}`), newObj)
-      .then(() => navigation.navigate('MyDetailsScreen'))
-      .catch((error) => alert(error.message));
+    fetch
+      (
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
+      )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'ZERO_RESULTS') {
+          throw 'Post Code does not exist';
+        } else {
+          return set(ref(database, `data/users/${user.uid}`), newObj)
+        }
+      })
+      .then(() => {
+        alert("Update process successful")
+        navigation.navigate('MyDetailsScreen')
+      })
+      .catch((err) => {
+        if (err === 'Post Code does not exist') {
+          alert(err);
+          return setPostCodeValid(false)
+        };
+        return alert(err.message);
+      })
   }
 
   const pickUpUri = (avatrUrl) => {
@@ -74,7 +146,6 @@ function EditMyDetailsScreen({ navigation }) {
               }}
               onBlur={() => {
                 setValidAvatarUrl(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
-
                 setAvatarImage(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
               }}
 
@@ -88,53 +159,112 @@ function EditMyDetailsScreen({ navigation }) {
             ) : (
               false
             )}
-
           </View>
-
 
           <View style={styles.input_contain}>
             <TextInput
-              value={firstName}
+              style={styles.input}
+              defaultValue={firstName}
+              placeholder="First Name"
               onChangeText={(newText) => {
                 setFirstName(newText);
               }}
-              style={styles.input}
+              onFocus={() => {
+                setFirstNameValid(true);
+              }}
+              onBlur={() => {
+                setFirstNameValid(/^[a-zA-Z]+$/.test(firstName));
+              }}
+
             />
+
+            {!firstNameValid ? (
+              <Text style={styles.invalid_input}>
+                * First Name must be UPPERCASE and lowercase letters only
+              </Text>
+            ) : (
+              false
+            )}
           </View>
+
           <View style={styles.input_contain}>
             <TextInput
-              value={lastName}
+              style={styles.input}
+              defaultValue={lastName}
+              placeholder="Last Name"
               onChangeText={(newText) => {
                 setLastName(newText);
               }}
-              style={styles.input}
-            />
-          </View>
-
-          <View style={styles.input_contain}>
-            <TextInput
-              value={phoneNumber}
-              onChangeText={(newText) => {
-                setPhoneNumber(newText);
+              onFocus={() => {
+                setLastNameValid(true);
               }}
-              style={styles.input}
-            />
-          </View>
-
-          <View style={styles.input_contain}>
-            <TextInput
-              autoCapitalize="characters"
-              value={postCode}
-              onChangeText={(newText) => {
-                setPostCode(newText);
+              onBlur={() => {
+                setLastNameValid(/^[a-zA-Z]+$/.test(lastName));
               }}
-              style={styles.input}
             />
+
+            {!lastNameValid ? (
+              <Text style={styles.invalid_input}>
+                * Last Name must be UPPERCASE and lowercase letters only
+              </Text>
+            ) : (
+              false
+            )}
           </View>
 
           <View>
-            <Text>Date of Birth</Text>
-            <DateInput
+            <TextInput
+              autoCapitalize="none"
+              style={styles.login_input}
+              defaultValue={phoneNumber}
+              placeholder="Phone Number"
+              onChangeText={(newText) => {
+                setPhoneNumber(newText);
+              }}
+              onFocus={() => {
+                setPhoneNumberValid(true);
+              }}
+              onBlur={() => setPhoneNumberValid(/^\(?0( *\d\)?){9,10}$/.test(phoneNumber))}
+            />
+
+            {!phoneNumberValid ? (
+              <Text style={styles.invalid_input}>
+                * Please enter a valid UK phone number (starting with 0)
+              </Text>
+            ) : (
+              false
+            )}
+
+          </View>
+
+          <View style={styles.input_contain}>
+            <TextInput
+              style={styles.login_input}
+              defaultValue={postCode}
+              placeholder="Post code"
+              autoCapitalize="characters"
+              onChangeText={(newText) => {
+                setPostCode(newText);
+              }}
+
+              onFocus={() => {
+                setPostCodeValid(true);
+              }}
+              onBlur={() => {
+                setPostCodeValid(postCodeRegex.test(postCode));
+              }}
+            />
+
+            {!postCodeValid ? (
+              <Text style={styles.invalid_input}>* Invalid Post Code </Text>
+            ) : (
+              false
+            )}
+          </View>
+
+          <View style={styles.DoBContainer}>
+            <Text style={styles.subHeader}>Date of Birth</Text>
+            <DateInput style={styles.date}
               setGivenState={setDateOfBirth}
               setStateValid={SetDateOfBirthVaild}
               defaultValues={{
@@ -145,16 +275,33 @@ function EditMyDetailsScreen({ navigation }) {
             />
           </View>
 
-          <ScrollView style={[styles.input_contain, styles.input_contain_bio]}>
+          <View style={styles.input_contain}>
             <TextInput
+              style={styles.login_input}
               multiline
-              value={userBio}
+              defaultValue={userBio}
+              placeholder="Tell me about yourself"
               onChangeText={(newText) => {
                 setUserBio(newText);
               }}
-              style={styles.input}
+              onFocus={() => {
+                setUserBioValid(true);
+              }}
+              onBlur={() => {
+                if (userBio.length < 100 || userBio.length > 200) setUserBioValid(false);
+              }}
             />
-          </ScrollView>
+            <Text>{userBio.length} chars</Text>
+
+            {!userBioValid ? (
+              <Text style={styles.invalid_input}>* Bio must be between 100 - 200 chars</Text>
+            ) : (
+              false
+            )}
+
+
+          </View>
+
           <View style={styles.save_cancel}>
             <View style={styles.save_press}>
               <Text onPress={handleSave} style={styles.cancel_save_text}>
@@ -173,7 +320,7 @@ function EditMyDetailsScreen({ navigation }) {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </ScrollView >
       <Nav navigation={navigation} />
     </>
   );

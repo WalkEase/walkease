@@ -91,4 +91,30 @@ export default StyleSheet.create({
     opacity: 0.85,
     color: '#bc4749',
   },
+  DoBContainer: {
+
+    width: 200,
+    marginVertical: 30,
+  },
+  subHeader: {
+    fontSize: 17,
+    opacity: 0.85,
+    color: '#bc4749',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  date: {
+    width: "100%",
+  },
+
+  login_input: {
+    backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginTop: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: '#386641',
+    marginVertical: 5,
+  },
 });

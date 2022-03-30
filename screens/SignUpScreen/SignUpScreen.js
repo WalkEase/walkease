@@ -8,13 +8,16 @@ import UserContext from '../../contexts/UserContext';
 import DateInput from '../../components/DateInput/DateInput';
 import { config } from '../../.api';
 
-
 function SignUpScreen({ navigation }) {
   const { setUser } = useContext(UserContext);
 
   // email state
   const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState(true);
+
+  // phoneNumber state
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberValid, setPhoneNumberValid] = useState(true);
 
   // password state
   const [password, setPassword] = useState('');
@@ -36,7 +39,8 @@ function SignUpScreen({ navigation }) {
   // post code state
   const [postCode, setPostCode] = useState('');
   const [postCodeValid, setPostCodeValid] = useState(true);
-  const postCodeRegex = /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
+  const postCodeRegex =
+    /([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})/i;
 
   // avatarUrl state
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -46,6 +50,7 @@ function SignUpScreen({ navigation }) {
   const [userBio, setUserBio] = useState('');
   const [userBioValid, setUserBioValid] = useState(true);
 
+  // userType state
   const [userTypeValid, setUserTypeValid] = useState(true);
 
   const handleSignUp = () => {
@@ -55,6 +60,11 @@ function SignUpScreen({ navigation }) {
 
     if (!/^.+@.+.[.].+$/.test(email)) {
       setEmailValid(false);
+      validSignUp = false;
+    }
+
+    if (!/^\(?0( *\d\)?){9,10}$/.test(phoneNumber)) {
+      setPhoneNumberValid(false);
       validSignUp = false;
     }
 
@@ -105,20 +115,18 @@ function SignUpScreen({ navigation }) {
 
     if (!validSignUp) return alert("Please check you've entered all information correctly");
 
-    fetch
-      (
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
-      )
+    fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${postCode}&key=${config.MY_API_KEY}`
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.status === 'ZERO_RESULTS') {
           throw 'Post Code does not exist';
         } else {
-          return createUserWithEmailAndPassword(auth, email, password)
+          return createUserWithEmailAndPassword(auth, email, password);
         }
       })
       .then((res) => {
-        console.log('res', res)
         set(ref(database, `data/users/${res.user.uid}`), {
           uid: res.user.uid,
           createdAt: Date.now(),
@@ -143,16 +151,16 @@ function SignUpScreen({ navigation }) {
       })
       .then((user) => {
         const userTypeIn = user.val().userType;
-        alert("SignUp process successful")
+        alert('SignUp process successful');
         navigation.navigate(`${userTypeIn}LandingScreen`);
       })
       .catch((err) => {
         if (err === 'Post Code does not exist') {
           alert(err);
-          return setPostCodeValid(false)
-        };
+          return setPostCodeValid(false);
+        }
         return alert(err.message);
-      })
+      });
   };
 
   return (
@@ -177,6 +185,28 @@ function SignUpScreen({ navigation }) {
               />
               {!emailValid ? (
                 <Text style={styles.invalid_input}>* Invalid email format</Text>
+              ) : (
+                false
+              )}
+
+              <TextInput
+                autoCapitalize="none"
+                style={styles.login_input}
+                defaultValue={phoneNumber}
+                placeholder="Phone Number"
+                onChangeText={(newText) => {
+                  setPhoneNumber(newText);
+                }}
+                onFocus={() => {
+                  setPhoneNumberValid(true);
+                }}
+                onBlur={() => setPhoneNumberValid(/^\(?0( *\d\)?){9,10}$/.test(phoneNumber))}
+              />
+
+              {!phoneNumberValid ? (
+                <Text style={styles.invalid_input}>
+                  * Please enter a valid UK phone number (starting with 0)
+                </Text>
               ) : (
                 false
               )}
@@ -284,7 +314,6 @@ function SignUpScreen({ navigation }) {
                 false
               )}
               <View>
-
                 <TextInput
                   style={styles.login_input}
                   defaultValue={postCode}
@@ -293,7 +322,6 @@ function SignUpScreen({ navigation }) {
                   onChangeText={(newText) => {
                     setPostCode(newText);
                   }}
-
                   onFocus={() => {
                     setPostCodeValid(true);
                   }}
@@ -307,7 +335,6 @@ function SignUpScreen({ navigation }) {
                 ) : (
                   false
                 )}
-
               </View>
               <View style={styles.DoBContainer}>
                 <Text style={styles.subHeader}>Date of Birth</Text>

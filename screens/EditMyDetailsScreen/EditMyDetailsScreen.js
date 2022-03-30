@@ -16,6 +16,7 @@ function EditMyDetailsScreen({ navigation }) {
 
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
   const [postCode, setPostCode] = useState(user.postCode);
 
   const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
@@ -29,6 +30,7 @@ function EditMyDetailsScreen({ navigation }) {
     newObj.avatarUrl = avatarUrl;
     newObj.firstName = firstName;
     newObj.lastName = lastName;
+    newObj.phoneNumber = phoneNumber;
     newObj.postCode = postCode;
     newObj.dateOfBirth = dateOfBirth;
     newObj.userBio = userBio;
@@ -108,6 +110,17 @@ function EditMyDetailsScreen({ navigation }) {
               style={styles.input}
             />
           </View>
+
+          <View style={styles.input_contain}>
+            <TextInput
+              value={phoneNumber}
+              onChangeText={(newText) => {
+                setPhoneNumber(newText);
+              }}
+              style={styles.input}
+            />
+          </View>
+
           <View style={styles.input_contain}>
             <TextInput
               autoCapitalize="characters"

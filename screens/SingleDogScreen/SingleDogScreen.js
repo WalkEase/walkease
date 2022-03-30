@@ -201,8 +201,10 @@ function SingleDogScreen({ navigation, route }) {
                   false
                 )}
               </View>
-              <View style={styles.picker}>
+              <View style={styles.picker_contain}>
                 <Picker
+                  style={styles.picker}
+                  itemStyle={styles.picker}
                   selectedValue={dogSize}
                   onValueChange={(itemValue) => setDogSize(itemValue)}
                 >

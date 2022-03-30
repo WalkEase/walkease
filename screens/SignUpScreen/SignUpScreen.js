@@ -283,6 +283,7 @@ function SignUpScreen({ navigation }) {
               ) : (
                 false
               )}
+
               <View>
 
                 <TextInput
@@ -309,6 +310,7 @@ function SignUpScreen({ navigation }) {
                 )}
 
               </View>
+
               <View style={styles.DoBContainer}>
                 <Text style={styles.subHeader}>Date of Birth</Text>
 
@@ -366,6 +368,7 @@ function SignUpScreen({ navigation }) {
                 false
               )}
             </View>
+
             <View style={styles.save_cancel}>
               <View style={styles.save_press}>
                 <Text onPress={() => handleSignUp()} style={styles.cancel_save_text}>

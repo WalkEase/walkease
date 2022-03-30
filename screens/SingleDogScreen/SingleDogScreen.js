@@ -131,12 +131,9 @@ function SingleDogScreen({ navigation, route }) {
               </View>
               <View>
                 <Text style={styles.text}>Dog image</Text>
-                <Image
-                  source={{ uri: pickUpUri(dogUrl) }}
-                  alt="no image"
-                  style={styles.img}
-                  resizeMode="contain"
-                />
+                <View style={styles.img_contain}>
+                  <Image source={{ uri: pickUpUri(dogUrl) }} alt="no image" style={styles.img} />
+                </View>
                 <TextInput
                   style={styles.login_input}
                   defaultValue={dogUrl}

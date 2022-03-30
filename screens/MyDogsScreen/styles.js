@@ -1,114 +1,125 @@
 import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
-    main_container: {
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-    },
+  main_container: {
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
 
-    no_dog_container: {
-        flex: 1,
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        backgroundColor: 'white',
+  no_dog_container: {
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
 
-    },
+  header: {
+    marginTop: 20,
+    marginBottom: 5,
+    fontSize: 25,
+    fontWeight: '700',
+    opacity: 0.85,
+    color: '#386641',
+    borderRadius: 10,
+  },
 
-    header: {
-        justifyContent: 'center',
-        marginTop: 5,
-        marginBottom: 10,
-        paddingTop: 10,
-        fontSize: 24,
-        color: "black",
-        borderRadius: 10,
+  sectionHeader: {
+    fontWeight: 'bold',
+  },
 
-    },
+  item_name: {
+    fontSize: 20,
+    fontWeight: '700',
+    opacity: 0.85,
+    color: '#bc4749',
+  },
 
-    sectionHeader: {
-        paddingBottom: 10,
-        paddingRight: 10,
-        fontWeight: 'bold',
+  //   item_born: {
+  //     fontSize: 14,
+  //     paddingVertical: 10,
+  //     paddingHorizontal: 40,
+  //     backgroundColor: 'white',
+  //     color: '#386641',
+  //     fontWeight: '500',
+  //     textAlign: 'center',
+  //   },
 
-    },
+  item_info: {
+    paddingVertical: 5,
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#386641',
+  },
 
+  header_info_map: {
+    marginVertical: 10,
+    marginHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
 
-    item_name: {
+  img: {
+    width: 80,
+    height: 80,
+    borderRadius: 80,
+    marginRight: 20,
+  },
+  buttons_contain: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
 
-        textAlign: 'center',
-        borderRadius: 10,
-        backgroundColor: "#386641",
-        paddingTop: 10,
-        color: "white",
-        fontSize: 20,
-        height: 40,
-    },
+  list_walk: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    margin: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    width: '35%',
+    color: 'white',
+    backgroundColor: '#386641',
+    textAlign: 'center',
+  },
+  addDog: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    margin: 5,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    width: '35%',
+    color: 'white',
+    backgroundColor: '#386641',
+    textAlign: 'center',
+  },
 
-    item_born: {
+  edit: {
+    fontSize: 16,
+    width: '95%',
+    fontWeight: '700',
+    opacity: 0.85,
+    color: '#bc4749',
 
-        fontSize: 14,
-        paddingVertical: 10,
-        paddingHorizontal: 40,
-        backgroundColor: 'white',
-        color: '#386641',
-        fontWeight: '500',
-        textAlign: "center",
-    },
+    marginBottom: 5,
+  },
+  dog_card: {
+    width: '90%',
+    marginVertical: 20,
+    borderBottomColor: '#bc474995',
+    borderBottomWidth: 2,
+  },
+  scroll_view: {
+    width: '100%',
+  },
 
-
-
-    item_info: {
-
-        fontSize: 14,
-        paddingVertical: 20,
-        paddingHorizontal: 40,
-        backgroundColor: 'white',
-        color: '#386641',
-        fontWeight: '500',
-        textAlign: "justify",
-    },
-
-    header_info_map: {
-        marginVertical: 10,
-        marginHorizontal: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        backgroundColor: "white",
-    },
-
-    map_img: {
-        width: 35,
-        height: 35,
-    },
-    img: {
-        width: "100%",
-        height: 180,
-    },
-
-    addDog: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        margin: 10,
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        borderRadius: 15,
-        color: 'black',
-        backgroundColor: 'white',
-    },
-
-    edit: {
-        fontSize: 16,
-        width: "95%",
-        fontWeight: 'bold',
-        margin: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 30,
-
-        borderWidth: 2,
-        color: 'black',
-        backgroundColor: 'white',
-        borderRadius: 10,
-        marginBottom: 20,
-    }
+  img_info_contain: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });

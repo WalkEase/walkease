@@ -7,15 +7,11 @@ import { database } from '../../firebase';
 import Nav from '../../components/Nav/Nav';
 import styles from './styles';
 
-
 function MyDogsScreen({ navigation, route }) {
-
   const { user } = useContext(UserContext);
-
 
   const [myDogs, setMyDogs] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     onValue(ref(database, `data/dogs/${user.uid}`), (res) => {
@@ -24,25 +20,24 @@ function MyDogsScreen({ navigation, route }) {
     });
   }, []);
 
-
-  const dogsArray = (myDogs !== null) ? Object.keys(myDogs) : [];
+  const dogsArray = myDogs !== null ? Object.keys(myDogs) : [];
   const dogSections = dogsArray.map((dog) => {
     const listId = dog;
     return {
       title: myDogs[dog].name,
       data: [myDogs[dog].size, myDogs[dog].dogBio, myDogs[dog].postCode, myDogs[dog].dateOfBirth],
       image: myDogs[dog].imageUrl,
-      nameId: listId
-    }
-  })
+      nameId: listId,
+    };
+  });
 
   const handleAddDog = () => {
     navigation.navigate('AddDogScreen');
-  }
+  };
 
   const handleGoToListWalk = () => {
     navigation.navigate('ListAWalkScreen');
-  }
+  };
 
   if (isLoading)
     return (
@@ -56,61 +51,71 @@ function MyDogsScreen({ navigation, route }) {
       <View style={styles.no_dog_container}>
         <Text style={styles.header}> You have no dogs added</Text>
 
-        <Button
-          style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
+        <Button style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
           Add Dog
         </Button>
-
       </View>
     );
 
   return (
     <View style={styles.main_container}>
-
-      <Text style={styles.header}>My Lovely Dogs  </Text>
+      <Text style={styles.header}>My Lovely Dogs </Text>
       <FlatList
         style={styles.sectionHeader}
+        contentContainerStyle={{ alignItems: 'center' }}
         data={dogSections}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) =>
-          <View >
-            <ScrollView>
-
-              <Text style={styles.item_name}>{item.title}</Text>
-
-              <View style={styles.header_info_map}>
-                <Image style={styles.map_img} source={require('../../assets/map_icon.png')} />
-                <Text style={styles.details_list_item}>{item.data[2]}</Text>
-
+        renderItem={({ item }) => (
+          <View style={styles.dog_card}>
+            <ScrollView style={styles.scroll_view}>
+              <View style={styles.img_info_contain}>
+                <View style={styles.dog_info}>
+                  <Text style={styles.item_name}>{item.title}</Text>
+                  <Text style={styles.item_info}>
+                    {new Date(Date.now()).getFullYear() -
+                      new Date(user.dateOfBirth).getFullYear(item.data[3])}{' '}
+                    year's old
+                  </Text>
+                  <Text style={styles.item_info}>{item.data[0]} size</Text>
+                </View>
+                <View style={styles.img_contain}>
+                  <Image source={{ uri: item.image }} style={styles.img} />
+                </View>
               </View>
-              <Text style={styles.item_born}>Born: {item.data[3]}       Size: {item.data[0]} </Text>
               <Text style={styles.item_info}>{item.data[1]}</Text>
-              <Image source={{ uri: item.image }} style={styles.img} />
 
-              <Button
+              <Text
                 style={styles.edit}
-                onPress={() => { navigation.navigate('SingleDogScreen', { dog: item.nameId, name: item.title, image: item.image, info: item.data }); }}>
+                onPress={() => {
+                  navigation.navigate('SingleDogScreen', {
+                    dog: item.nameId,
+                    name: item.title,
+                    image: item.image,
+                    info: item.data,
+                  });
+                }}
+              >
                 Edit
-              </Button>
-
+              </Text>
             </ScrollView>
           </View>
-
-        }
+        )}
       />
+      <View style={styles.buttons_contain}>
+        <Text style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog}>
+          Add Dog
+        </Text>
 
-      < Button
-        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleAddDog} >
-        Add Dog
-      </Button >
-
-      < Button
-        style={styles.addDog} accessibilityLabel="add-dog-button" onPress={handleGoToListWalk} >
-        Go to List Walk Page
-      </Button >
-
+        <Text
+          style={styles.list_walk}
+          accessibilityLabel="list-a-walk-button"
+          onPress={handleGoToListWalk}
+        >
+          List a Walk
+        </Text>
+      </View>
       <Nav navigation={navigation} />
-    </View >
+    </View>
   );
 }
 

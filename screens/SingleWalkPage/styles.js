@@ -14,7 +14,7 @@ export default StyleSheet.create({
   },
   map: {
     width: '90%',
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height / 2,
     flex: 1,
     marginTop: 15,
   },
@@ -79,6 +79,7 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     height: '95%',
   },
+
   walk_card: {
     width: '100%',
     flexDirection: 'row',

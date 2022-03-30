@@ -8,8 +8,10 @@ import UserContext from '../../contexts/UserContext';
 import DateInput from '../../components/DateInput/DateInput';
 
 function EditMyDetailsScreen({ navigation }) {
+
   const { user } = useContext(UserContext);
 
+  // user avatar image state
   const [avatarUrl, setAvatarUrl] = useState(user.avatarUrl);
   const [validAvatarUrl, setValidAvatarUrl] = useState(true);
   const [avatarImage, setAvatarImage] = useState(true);
@@ -72,7 +74,6 @@ function EditMyDetailsScreen({ navigation }) {
               }}
               onBlur={() => {
                 setValidAvatarUrl(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
-
                 setAvatarImage(/^.+[.].+[.].+[.](png|jpg)$/.test(avatarUrl));
               }}
 

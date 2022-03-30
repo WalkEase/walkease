@@ -65,7 +65,7 @@ function MyListedWalksScreen({ navigation }) {
   walksArr = walksArr.map((walk) => {
     return walk[0];
   });
-  console.log(dogs, '<----');
+
 
   return (
     <>

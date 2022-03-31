@@ -13,7 +13,7 @@ export default StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     backgroundColor: 'white',
-    height: '95%',
+    height: '92%',
   },
 
   login_inputs_container: {

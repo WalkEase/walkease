@@ -77,6 +77,13 @@ function MyListedWalksScreen({ navigation }) {
             return (
               <View key={walk} style={styles.walk_card}>
                 <View style={styles.img_text}>
+                  <View style={styles.walk_text_contain}>
+                    <Text style={styles.dog_name}>{dogs[walks[walk].dogId].name}</Text>
+                    <Text
+                      style={styles.walk_info}
+                    >{`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}</Text>
+                    <Text style={styles.walk_info}>{`${walks[walk].walkMinutes} minute walk`}</Text>
+                  </View>
                   <View style={styles.walk_img_contain}>
                     <Image
                       style={styles.img}
@@ -84,13 +91,6 @@ function MyListedWalksScreen({ navigation }) {
                         uri: dogs[walks[walk].dogId].imageUrl,
                       }}
                     />
-                  </View>
-                  <View style={styles.walk_text_contain}>
-                    <Text style={styles.dog_name}>{dogs[walks[walk].dogId].name}</Text>
-                    <Text
-                      style={styles.walk_info}
-                    >{`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}</Text>
-                    <Text style={styles.walk_info}>{`${walks[walk].walkMinutes} minute walk`}</Text>
                   </View>
                 </View>
 

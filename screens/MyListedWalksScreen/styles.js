@@ -10,8 +10,9 @@ export default StyleSheet.create({
   },
 
   header_contain: {
-    marginTop: 60,
+    marginVertical: 30,
     width: '70%',
+    alignItems: 'center',
   },
 
   header: {
@@ -28,8 +29,8 @@ export default StyleSheet.create({
     height: 44,
   },
   img: {
-    width: 70,
-    height: 70,
+    width: 90,
+    height: 90,
     borderRadius: 80,
   },
   img_text: {
@@ -50,8 +51,8 @@ export default StyleSheet.create({
     width: '70%',
     // borderBottomWidth: 3,
     // borderBottomColor: '#bc474995',
-    borderTopWidth: 3,
-    borderTopColor: '#bc474995',
+    borderBottomWidth: 3,
+    borderBottomColor: '#bc474995',
     height: 160,
   },
   list: {

@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   nav_container: {
     width: '100%',
-    height: '5%',
+    height: '8%',
     backgroundColor: '#386641',
     justifyContent: 'space-between',
     alignItems: 'center',

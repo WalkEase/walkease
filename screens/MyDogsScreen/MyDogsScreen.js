@@ -72,8 +72,7 @@ function MyDogsScreen({ navigation, route }) {
                 <View style={styles.dog_info}>
                   <Text style={styles.item_name}>{item.title}</Text>
                   <Text style={styles.item_info}>
-                    {new Date(Date.now()).getFullYear() -
-                      new Date(item.data[3]).getFullYear()}{' '}
+                    {new Date(Date.now()).getFullYear() - new Date(item.data[3]).getFullYear()}{' '}
                     year's old
                   </Text>
                   <Text style={styles.item_info}>{item.data[0]} size</Text>
@@ -83,21 +82,20 @@ function MyDogsScreen({ navigation, route }) {
                 </View>
               </View>
               <Text style={styles.item_info}>{item.data[1]}</Text>
-
-              <Text
-                style={styles.edit}
-                onPress={() => {
-                  navigation.navigate('SingleDogScreen', {
-                    dog: item.nameId,
-                    name: item.title,
-                    image: item.image,
-                    info: item.data,
-                  });
-                }}
-              >
-                Edit
-              </Text>
             </ScrollView>
+            <Text
+              style={styles.edit}
+              onPress={() => {
+                navigation.navigate('SingleDogScreen', {
+                  dog: item.nameId,
+                  name: item.title,
+                  image: item.image,
+                  info: item.data,
+                });
+              }}
+            >
+              Edit
+            </Text>
           </View>
         )}
       />

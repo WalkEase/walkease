@@ -5,12 +5,7 @@ export default Header = () => {
   return (
     <View style={styles.header_container}>
       <Text style={styles.header_text}>WalkEase</Text>
-      <Image
-        style={styles.avatar}
-        source={{
-          uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Nicolas_Cage_-_KirkWeaver.jpg/1200px-Nicolas_Cage_-_KirkWeaver.jpg',
-        }}
-      />
+      <Image style={styles.map_img} source={require('../../assets/dogIcon.png')} />
     </View>
   );
 };

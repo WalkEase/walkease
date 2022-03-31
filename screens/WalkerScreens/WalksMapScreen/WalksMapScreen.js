@@ -1,26 +1,10 @@
 import MapView, { Marker, Callout } from 'react-native-maps';
-import { Text, View, Button, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Button, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { onValue, ref } from 'firebase/database';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { database } from '../../../firebase';
 import styles from './styles';
 import Nav from '../../../components/Nav/Nav';
-
-function handleBluePinFromList(walk) {
-  if (walk !== undefined) {
-    return (
-      <Marker
-        pinColor="blue"
-        coordinate={{
-          latitude: walk.coordinates.lat,
-          longitude: walk.coordinates.lng,
-        }}
-      >
-        <Callout />
-      </Marker>
-    );
-  }
-}
 
 export default function WalkerWalkMap({ navigation }) {
   const [handleListColour, setHandleListColour] = useState();
@@ -28,10 +12,10 @@ export default function WalkerWalkMap({ navigation }) {
   const [isLoadingWalks, setIsLoadingWalks] = useState(true);
   const [isLoadingDogs, setIsLoadingDogs] = useState(true);
   const [dogObject, setDogsObject] = useState('');
-  const [walkData, setWalkData] = useState();
 
   const walksNestedArray = [];
   const walksArray = [];
+  const mapRef = useRef(null);
 
   {
     // fetch walks data from database
@@ -94,14 +78,16 @@ export default function WalkerWalkMap({ navigation }) {
             <Text style={styles.header}>Dog walks available </Text>
           </View>
           <MapView
+            ref={mapRef}
             style={styles.map}
             showsUserLocation
             initialRegion={{
               latitude: 53.48093470818428,
               longitude: -2.242502936136497,
-              latitudeDelta: 0.0922,
+              latitudeDelta: 0.08,
               longitudeDelta: 0.0421,
             }}
+            mapPadding={{ top: Dimensions.get('window').height / 9 }}
           >
             {/* display markers in map */}
 
@@ -145,8 +131,19 @@ export default function WalkerWalkMap({ navigation }) {
                 </Marker>
               );
             })}
-            {handleBluePinFromList(walkData)}
           </MapView>
+
+          {/* recenter map */}
+          <TouchableOpacity
+            onPress={() =>
+              mapRef.current.animateToCoordinate({
+                latitude: 53.48093470818428,
+                longitude: -2.242502936136497,
+              })
+            }
+          >
+            <Text style={styles.recenter}>Map recenter</Text>
+          </TouchableOpacity>
 
           {/* display walks list */}
 
@@ -167,7 +164,11 @@ export default function WalkerWalkMap({ navigation }) {
                           : styles.walkListItems
                       }
                       onPress={() => {
-                        setWalkData(walk);
+                        mapRef.current.animateToCoordinate({
+                          latitude: walk.coordinates.lat,
+                          longitude: walk.coordinates.lng,
+                        });
+
                         setHandleListColour(walk.walkId);
                       }}
                     >

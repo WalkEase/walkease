@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Text, View, FlatList, Image, ScrollView } from 'react-native';
+import { get, onValue, ref, remove } from 'firebase/database';
 import Nav from '../../components/Nav/Nav';
 import UserContext from '../../contexts/UserContext';
 import styles from './styles';
 import { database } from '../../firebase';
-import { get, onValue, ref, remove } from 'firebase/database';
 
 function MyListedWalksScreen({ navigation }) {
   const { user } = useContext(UserContext);
@@ -62,10 +62,7 @@ function MyListedWalksScreen({ navigation }) {
 
   let walksArr = Object.entries(walks);
 
-  walksArr = walksArr.map((walk) => {
-    return walk[0];
-  });
-
+  walksArr = walksArr.map((walk) => walk[0]);
 
   return (
     <>
@@ -75,6 +72,8 @@ function MyListedWalksScreen({ navigation }) {
             <Text style={styles.header}>Listed walks</Text>
           </View>
           {walksArr.map((walk) => {
+            const parsedDate = new Date(walks[walk].dateTime);
+
             return (
               <View key={walk} style={styles.walk_card}>
                 <View style={styles.img_text}>
@@ -88,9 +87,10 @@ function MyListedWalksScreen({ navigation }) {
                   </View>
                   <View style={styles.walk_text_contain}>
                     <Text style={styles.dog_name}>{dogs[walks[walk].dogId].name}</Text>
-                    <Text style={styles.walk_info}>{walks[walk].dateTime}</Text>
+                    <Text
+                      style={styles.walk_info}
+                    >{`${parsedDate.getDate()}/${parsedDate.getMonth()}/${parsedDate.getFullYear()}, ${parsedDate.getHours()}:${parsedDate.getMinutes()}`}</Text>
                     <Text style={styles.walk_info}>{`${walks[walk].walkMinutes} minute walk`}</Text>
-                    <Text style={styles.more_info}>More info...</Text>
                   </View>
                 </View>
 

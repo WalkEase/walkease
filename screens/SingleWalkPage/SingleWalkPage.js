@@ -30,7 +30,7 @@ export default function SingleWalkPage({ route, navigation }) {
               latitude: chosenWalk.coordinates.lat,
               longitude: chosenWalk.coordinates.lng,
             }}
-          ></Marker>
+          />
         </MapView>
 
         <ScrollView style={styles.scrollView}>

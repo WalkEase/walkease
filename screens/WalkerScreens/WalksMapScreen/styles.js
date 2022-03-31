@@ -130,4 +130,5 @@ export default StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
   },
+  recenter: { color: '#386641' },
 });

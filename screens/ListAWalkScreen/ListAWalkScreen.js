@@ -257,7 +257,7 @@ function ListAWalkScreen({ navigation }) {
                 }}
               />
 
-              <Text>Select time of walk</Text>
+              <Text style={styles.subHeader}>Select time of walk</Text>
               <DateTimeInput setGivenState={setDateTime} setStateValid={setDateTimeValid} />
 
               {!dateTimeValid ? (

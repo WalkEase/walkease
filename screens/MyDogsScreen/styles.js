@@ -35,16 +35,6 @@ export default StyleSheet.create({
     color: '#bc4749',
   },
 
-  //   item_born: {
-  //     fontSize: 14,
-  //     paddingVertical: 10,
-  //     paddingHorizontal: 40,
-  //     backgroundColor: 'white',
-  //     color: '#386641',
-  //     fontWeight: '500',
-  //     textAlign: 'center',
-  //   },
-
   item_info: {
     paddingVertical: 5,
     fontSize: 15,

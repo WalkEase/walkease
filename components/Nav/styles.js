@@ -16,6 +16,7 @@ export default StyleSheet.create({
   map_img: {
     width: 15,
     height: 15,
+    marginLeft: 10,
   },
   home_container: {
     width: '57%',

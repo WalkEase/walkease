@@ -16,7 +16,13 @@ For iOS: https://apps.apple.com/us/app/expo-go/id982107779<br>For Android: https
 
 ![QR code to launch app in expo go](https://qr.expo.dev/expo-go?owner=willmcb94&slug=walkease&releaseChannel=default&host=exp.host)
 
+#### Important
+
+IOS users will need to request permission to access the app, please email us at walkease@yahoo.com and we will go ahead and give you viewing rights on the app.
+
 ### <b>Step 3</b> - Try it out!
+
+As an FYI the app is completely functional on both Android and IOS however it is best viewed on IOS as react native styling appears differently on both platforms and we decided to gear the styling towards use on IOS.
 
 We welcome any feedback about our project!
 

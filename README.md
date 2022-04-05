@@ -48,6 +48,8 @@ These must be added in the root directory of the repository and should look like
 
 Next, you must install all required dependencies
 
+There is currently a known issue with Expo where it doesn't work with the latest node version so if you're having any trouble try and downgrade to v16.0.0
+
 - `'npm i'` (this may take a while the first time)
 
 <br> Useful scripts (also found in 'package.json'):

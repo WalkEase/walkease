@@ -46,7 +46,7 @@ These must be added in the root directory of the repository and should look like
 
 ### <b>Step 3</b> - Install npm packages, scripts to run
 
-Next, you must install all required dependencies
+Next, you must install all required dependencies.
 
 There is currently a known issue with Expo where it doesn't work with the latest node version so if you're having any trouble try and downgrade to v16.0.0
 

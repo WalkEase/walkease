@@ -12,15 +12,26 @@ For iOS: https://apps.apple.com/us/app/expo-go/id982107779<br>For Android: https
 
 ### <b>Step 2</b> - Scan the QR code OR click the link from your mobile device:
 
-[Open App in Expo](exp://exp.host/@willmcb94/walkease?release-channel=default)
+[Open App in Expo](exp://exp.host/@nc-walkease/walkease?release-channel=default)
 
-![QR code to launch app in expo go](https://qr.expo.dev/expo-go?owner=willmcb94&slug=walkease&releaseChannel=default&host=exp.host)
+![QR code to launch app in expo go](https://qr.expo.dev/expo-go?owner=nc-walkease&slug=walkease&releaseChannel=default&host=exp.host)
 
 #### Important
 
 IOS users will need to request permission to access the app, please email us at walkease@yahoo.com and we will go ahead and give you viewing rights on the app.
 
 ### <b>Step 3</b> - Try it out!
+
+Please feel free to use our test accounts -
+
+| username             | password |
+| -------------------- | -------- |
+| owner1@walkease.com  | password |
+| owner2@walkease.com  | password |
+| walker1@walkease.com | password |
+| walker2@walkease.com | password |
+
+Or alternatively sign up but these accounts cannot be deleted by users so please do not enter any personal or sensitive information.
 
 As an FYI the app is completely functional on both Android and IOS however it is best viewed on IOS as react native styling appears differently on both platforms and we decided to gear the styling towards use on IOS.
 
